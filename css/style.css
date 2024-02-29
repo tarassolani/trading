@@ -155,7 +155,7 @@ h1 {
 .search-input {
     margin-left: auto;
     margin-right: auto;
-    width: 94.3%;
+    width: 100%;
     padding: 20px;
     border: none;
     border-radius: 50px;
@@ -193,8 +193,15 @@ h1 {
     border: 1px solid #d3d3d3;
     margin: 0 20px;
     padding: 15px;
+    transition:  .3s ease;
+}
+
+/* Slot singolo */
+.crypto-slot:hover {
+    background-color: #3f3f3f4f;
+    filter: drop-shadow(0 0 10px rgba(83, 83, 83, 0.404));
     cursor: pointer;
-    transition: background-color 1s ease;
+    transition: .2s ;
 }
 
 /* Info aggiuntive nello slot */
