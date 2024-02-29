@@ -1,0 +1,206 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Poppins:wght@400;700&family=Rubik:wght@600;800&display=swap');
+
+.top-right-links {
+    position: absolute; 
+    top: 20px; 
+    right: 20px;
+    font-size: 1em; 
+    margin-right: 10px;
+}
+
+.top-right-links a {
+    color: #fff; 
+    text-decoration: none;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+.top-right-links a:hover {
+   text-decoration: underline; 
+}
+
+@keyframes spin {
+    0% {
+     --rotate: 0deg;
+    }
+    25% {
+        --rotate: 120deg;
+    }
+    55%{
+        --rotate:180deg;
+    }
+    80%{
+        --rotate:300deg;
+    }
+    100% {
+     --rotate: 360deg;
+    }
+   }
+
+/* Proprietà personalizzata per l'angolo di rotazione */
+@property --rotate {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+}
+
+/* Impostazioni generali */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins';
+    background-color: #000;
+    color: #fff;
+    background-image: url('grain.png');
+    /* DA CAMBIARE L'IMMAGINE */
+}
+
+/* Contenitore principale */
+.container {
+    text-align: center;
+    margin-top: 20vh;
+}
+
+/* Titolo */
+h1 {
+    font-weight: 700;
+    font-size: 5.5em;
+    width: 70%;
+    margin: 0 auto;
+}
+
+/* Descrizione */
+.description {
+    font-size: 1.5em;
+    margin: 20px 0;
+    color: #d8d5d5;
+}
+
+/* Form di ricerca */
+.search-form {
+    display: inline-block;
+    width: 80%;
+    margin-top: 30px;
+}
+
+/* Barra di ricerca */
+.search-bar {
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    /* Importante per il posizionamento */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    /* O in alternativa un background semi-trasparente */
+    transition: 2s;
+}
+
+/* Effetto luminoso - livello 1 */
+.search-bar::before {
+    content: "";
+    position: absolute;
+    inset: -4px;
+    border-radius: 50px;
+    background-image: linear-gradient(var(--rotate),
+            #5ddcff, #3c67e3 43%, #4e00c2);
+    z-index: -1;
+    animation-name: spin;
+    animation-duration: 7s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease;
+    
+}
+
+/* Effetto luminoso - livello 2 */
+.search-bar:after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50px;
+    background-image: linear-gradient(var(--rotate),
+            #5ddcff, #3c67e3 43%, #4e00c2);
+    filter: blur(25px);
+    z-index: -1;
+    animation-name: spin;
+    animation-duration: 7s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease;
+    opacity: 0;
+    transition: all .4s;
+}
+
+
+/* Effetto luminoso - livello 2 */
+.search-bar:hover:after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50px;
+    background-image: linear-gradient(var(--rotate),
+            #5ddcff, #3c67e3 43%, #4e00c2);
+    filter: blur(25px);
+    z-index: -1;
+    opacity: 0.7;
+    animation-name: spin;
+    animation-duration: 7s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease;
+    transition: all .7s;
+}
+
+/* Input di ricerca */
+.search-input {
+    margin-left: auto;
+    margin-right: auto;
+    width: 94.3%;
+    padding: 20px;
+    border: none;
+    border-radius: 50px;
+    background-color: #000;
+    color: #ebebeb;
+    font-size: 1.5em;
+    outline: none;
+}
+
+
+/* Placeholder */
+.search-input::placeholder {
+    color: #555;
+    transition: .7s;
+}
+
+/* Placeholder */
+.search-input:hover::placeholder {
+    color: #b1afaf;
+    transition: .4s;
+}
+
+/* Slot per le criptovalute */
+.crypto-slots {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+/* Slot singolo */
+.crypto-slot {
+    background-color: transparent;
+    color: #fff;
+    border-radius: 50px;
+    border: 1px solid #d3d3d3;
+    margin: 0 20px;
+    padding: 15px;
+    cursor: pointer;
+    transition: background-color 1s ease;
+}
+
+/* Info aggiuntive nello slot */
+.crypto-slot small {
+    display: block;
+    color: #ddd;
+    font-weight: normal;
+    font-size: 0.8em;
+}
