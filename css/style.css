@@ -37,14 +37,12 @@
     }
    }
 
-/* Proprietà personalizzata per l'angolo di rotazione */
 @property --rotate {
     syntax: "<angle>";
     initial-value: 0deg;
     inherits: false;
 }
 
-/* Impostazioni generali */
 body {
     margin: 0;
     padding: 0;
@@ -55,13 +53,12 @@ body {
     /* DA CAMBIARE L'IMMAGINE */
 }
 
-/* Contenitore principale */
+/* CONTENITORE PRINCIPALE */
 .container {
     text-align: center;
     margin-top: 20vh;
 }
 
-/* Titolo */
 h1 {
     font-weight: 700;
     font-size: 5.5em;
@@ -76,14 +73,14 @@ h1 {
     color: #d8d5d5;
 }
 
-/* Form di ricerca */
+/* FORM DI RICERCA */
 .search-form {
     display: inline-block;
     width: 80%;
     margin-top: 30px;
 }
 
-/* Barra di ricerca */
+/* BARRA DI RICERCA*/
 .search-bar {
     width: 60%;
     margin-left: auto;
@@ -98,7 +95,6 @@ h1 {
     transition: 2s;
 }
 
-/* Effetto luminoso - livello 1 */
 .search-bar::before {
     content: "";
     position: absolute;
@@ -114,7 +110,6 @@ h1 {
     
 }
 
-/* Effetto luminoso - livello 2 */
 .search-bar:after {
     content: "";
     position: absolute;
@@ -133,7 +128,6 @@ h1 {
 }
 
 
-/* Effetto luminoso - livello 2 */
 .search-bar:hover:after {
     content: "";
     position: absolute;
@@ -151,7 +145,6 @@ h1 {
     transition: all .7s;
 }
 
-/* Input di ricerca */
 .search-input {
     margin-left: auto;
     margin-right: auto;
@@ -165,20 +158,32 @@ h1 {
     outline: none;
 }
 
-
-/* Placeholder */
 .search-input::placeholder {
     color: #555;
     transition: .7s;
 }
 
-/* Placeholder */
 .search-input:hover::placeholder {
     color: #b1afaf;
     transition: .4s;
 }
 
-/* Slot per le criptovalute */
+.material-symbols-outlined {
+    font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 48;
+    color: #555;
+    transition: .2s;
+}
+.material-symbols-outlined:hover {
+    color: rgb(248, 248, 248);
+    cursor: pointer;
+    transition: .3s;
+}
+
+/* SLOT CRIPTOVALUTE */
 .crypto-slots {
     display: flex;
     justify-content: center;
@@ -196,7 +201,6 @@ h1 {
     transition:  .3s ease;
 }
 
-/* Slot singolo */
 .crypto-slot:hover {
     background-color: #3f3f3f4f;
     filter: drop-shadow(0 0 10px rgba(83, 83, 83, 0.404));
@@ -204,7 +208,6 @@ h1 {
     transition: .2s ;
 }
 
-/* Info aggiuntive nello slot */
 .crypto-slot small {
     display: block;
     color: #ddd;
