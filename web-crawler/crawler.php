@@ -1,28 +1,30 @@
 <?php
-// Definizione API key
+ini_set('display_errors', 1);
+
+// API key definition
 $apiKey = "a3975305-35e9-47e3-baae-a04ab54de810";
 
-// Impostazioni cURL
+// cURL settings
 $ch = curl_init();
 
-// Funzione per la decodifica JSON con gestione errori
+// Function for JSON decoding with error handling
 function json_decode_safe($response) {
     $data = json_decode($response, true);
 
     if (!$data) {
-        echo "Errore nella decodifica JSON: " . json_last_error_msg() . "\n";
+        echo "JSON decoding error: " . json_last_error_msg() . "\n";
         return null;
     }
 
     return $data;
 }
 
-// Ciclo per le pagine di dati
-for ($page = 1; $page <= 10; $page++) {
-    echo "**Pagina $page**\n";
+// Loop for data pages
+for ($page = 1; $page <= 10000; $page++) {
+    echo "**Page $page**\n";
 
-    // Richiesta API
-    echo "Richiesta API...\n";
+    // API request
+    echo "API request...\n";
     $url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?start=$page&limit=100&convert=USD&CMC_PRO_API_KEY=$apiKey";
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -32,86 +34,84 @@ for ($page = 1; $page <= 10; $page++) {
 
     $response = curl_exec($ch);
 
-    // Controlla eventuali errori
+    // Check for errors
     if (curl_errno($ch)) {
         $error_msg = curl_error($ch);
-        echo "Errore cURL: $error_msg\n";
+        echo "cURL error: $error_msg\n";
         continue;
     }
 
-    // Decodifica il JSON e gestisci la risposta
-    $data = json_decode_safe($response); 
+    // Decode the JSON and handle the response
+    $data = json_decode_safe($response);
 
     if (!$data) {
-        // Gestisci errore di decodifica del JSON
+        // Handle JSON decoding error
         continue;
     } else {
-        // Processa i dati delle criptovalute
+        // Process cryptocurrency data
         foreach ($data['data'] as $crypto) {
-            echo "Elaborazione criptovaluta: " . $crypto['name'] . "\n";
+            echo "Processing cryptocurrency: " . $crypto['name'] . "\n";
 
-            // Valori da inserire nel database
+            // Values to insert into the database
             $name = $crypto['name'];
-            //$icon = file_get_contents($crypto['logo']); // Sostituisci con URL dell'icona
-            $project = $crypto['description']; // Potrebbe essere necessario un parsing
-            $supply = (int) $crypto['circulating_supply'];
+            $supply = (int) $crypto['circulating_supply']; // Conversion to integer
             $coinCode = $crypto['symbol'];
 
-            // Connessione al database
-            echo "Connessione al database...\n";
+            // Database connection
+            echo "Connecting to the database...\n";
             $conn = connectDB();
 
-            // Query per l'inserimento
-            $sql = "INSERT INTO Crypto(name, project, supply, coinCode) VALUES (?, ?, ?, ?)";
+            // Insert query
+            $sql = "INSERT IGNORE INTO Crypto (name, supply, coinCode) VALUES (?, ?, ?)";
 
-            // Preparazione della query
-            echo "Preparazione della query...\n";
+            // Query preparation
+            echo "Preparing query...\n";
             $stmt = $conn->prepare($sql);
 
-            // Bind dei valori alla query
-            echo "Bind dei valori alla query...\n";
-            $stmt->bind_param("ssis", $name, $project, $supply, $coinCode);
+            // Bind values to the query
+            echo "Binding values to the query...\n";
+            $stmt->bind_param("sis", $name, $supply, $coinCode); // "ssis" for data types
 
-            // Esecuzione della query
-            echo "Esecuzione della query...\n";
+            // Query execution
+            echo "Executing query...\n";
             $stmt->execute();
 
-            // Controllo dell'esito
+            // Check the result
             if ($stmt->error) {
-                echo "Errore durante l'inserimento di ". $crypto['name'] . ": " . $stmt->error . "\n";
+                echo "Error inserting " . $crypto['name'] . ": " . $stmt->error . "\n";
             } else {
-                echo "Dati per " . $crypto['name'] . " inseriti correttamente.\n";
+                echo "Data for " . $crypto['name'] . " inserted successfully.\n";
             }
 
-            // Chiusura della query
-            echo "Chiusura della query...\n";
+            // Close the query
+            echo "Closing query...\n";
             $stmt->close();
 
-            // Chiusura connessione
+            // Close connection
             $conn->close();
         }
     }
 }
 
-// Chiusura cURL
+// Close cURL
 curl_close($ch);
 
-echo "**Fine script**\n";
+echo "**End of script**\n";
 
-// Funzione per la connessione al database
+// Function to connect to the database
 function connectDB() {
     $servername = "localhost";
     $username = "root";
     $password = "";
     $dbname = "dbRegolare";
 
-    // Creazione della connessione
-    echo "Creazione connessione al database...\n";
+    // Create connection
+    echo "Creating database connection...\n";
     $conn = new mysqli($servername, $username, $password, $dbname);
 
-    // Controllo della connessione
+    // Check connection
     if ($conn->connect_error) {
-        die("Errore di connessione al database: " . $conn->connect_error);
+        die("Database connection error: " . $conn->connect_error);
     }
 
     return $conn;
