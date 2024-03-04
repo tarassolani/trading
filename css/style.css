@@ -13,10 +13,13 @@
     text-decoration: none;
     margin-right: 5px;
     margin-left: 5px;
+    transition: .2s;
 }
 
 .top-right-links a:hover {
-   text-decoration: underline; 
+   text-decoration: underline;
+   filter: drop-shadow(0 0 30px rgb(110, 214, 255));
+   transition: .4s;
 }
 
 @keyframes spin {
@@ -43,6 +46,17 @@
     inherits: false;
 }
 
+@keyframes glowAnimation {
+    0% {
+        filter: drop-shadow(0 0 10px #4ec7807e);
+        color: #67df99;
+    }
+    100% {
+        filter: drop-shadow(0 0 13px #afffd7);
+        color: #90ffbe;
+    }
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -53,7 +67,7 @@ body {
     /* DA CAMBIARE L'IMMAGINE */
 }
 
-/* CONTENITORE PRINCIPALE */
+
 .container {
     text-align: center;
     margin-top: 20vh;
@@ -86,12 +100,10 @@ h1 {
     margin-left: auto;
     margin-right: auto;
     position: relative;
-    /* Importante per il posizionamento */
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: transparent;
-    /* O in alternativa un background semi-trasparente */
     transition: 2s;
 }
 
@@ -169,11 +181,16 @@ h1 {
 }
 
 .material-symbols-outlined {
-    font-variation-settings:
+    position: relative;
+    right: 40px;
+    margin-right: -35px;
+    padding-right: 4px;
+    /*font-variation-settings:
     'FILL' 0,
     'wght' 400,
     'GRAD' 0,
-    'opsz' 48;
+    'opsz' 48;*/
+    display: inline-block;
     color: #555;
     transition: .2s;
 }
@@ -181,6 +198,9 @@ h1 {
     color: rgb(248, 248, 248);
     cursor: pointer;
     transition: .3s;
+}
+span.size-medio{
+    font-size: 32px;
 }
 
 /* SLOT CRIPTOVALUTE */
@@ -193,10 +213,9 @@ h1 {
 /* Slot singolo */
 .crypto-slot {
     background-color: transparent;
-    color: #fff;
     border-radius: 50px;
     border: 1px solid #d3d3d3;
-    margin: 0 20px;
+    margin: 0 10px;
     padding: 15px;
     transition:  .3s ease;
 }
@@ -208,9 +227,66 @@ h1 {
     transition: .2s ;
 }
 
-.crypto-slot small {
-    display: block;
-    color: #ddd;
-    font-weight: normal;
-    font-size: 0.8em;
+.crypto-slot .crypto-descr{
+    font-size: 0.9em;
+    color: #88ffba;
+    filter: drop-shadow(0 0 13px #4ec7807e);
+    animation: glowAnimation 1s infinite alternate;
+}
+
+.crypto-slot .crypto-code{
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+.crypto-img {
+    width: 30px;
+    height: auto;
+    margin-right: 10px;
+    margin-left: 2px;
+    vertical-align: middle;
+}
+
+/* RISULTATI DI RICERCA */
+#search-results{
+    width: 60%;
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #000000;
+    border-radius: 10px;
+    filter: drop-shadow(0 0 13px rgba(32, 32, 32, 0.288));
+    margin-top: 35px;
+    visibility: hidden;
+}
+
+.search-result-item{
+    width: 100%;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    background-color: transparent;
+    border-bottom: 1px solid #3f3f3f4f;
+    transition: .3s;
+}
+.search-result-item:hover{
+    background-color: #3f3f3f4f;
+    cursor: pointer;
+    transition: .2s;
+    filter: drop-shadow(0 0 10px rgba(83, 83, 83, 0.404));
+}
+
+.search-result-item img{
+    float: left;
+    padding-left: 25px;
+}
+
+.search-result-item .crypto-code{
+    float: left;
+    padding-left: 15px;
+    font-weight: bold;
+}
+
+.search-result-item .crypto-supply{
+    float: right;
+    padding-right: 25px;
 }
