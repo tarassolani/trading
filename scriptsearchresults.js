@@ -24,32 +24,29 @@ document.addEventListener('DOMContentLoaded', function () {
         clearSearchResults();
 
         results.forEach(crypto => {
-            const resultItem = document.createElement('div');
-            resultItem.className = 'search-result-item';
+            const tr = searchResultsContainer.insertRow();
+            tr.className = 'search-result-item';
 
-            const imgElement = document.createElement('img');
-            imgElement.src = 'data:image/png;base64,' + crypto.Icon;
-            imgElement.alt = crypto.coinCode;
-            imgElement.className = 'crypto-img';
+            const td = tr.insertCell();
+            td.className='td-crypto-img';
+            const img = document.createElement('img');
+            img.src = 'data:image/png;base64,' + crypto.Icon;
+            img.alt = crypto.coinCode;
+            img.className = 'crypto-img';
+            td.appendChild(img);
 
-            const coinCodeElement = document.createElement('span');
-            coinCodeElement.textContent = crypto.coinCode;
-            coinCodeElement.className = 'crypto-code';
+            const td2 = tr.insertCell();
+            td2.textContent = crypto.coinCode;
+            td2.className = 'td-crypto-code';
 
-            const nameElement = document.createElement('span');
-            nameElement.textContent = crypto.name;
-            nameElement.className = 'crypto-name';
+            const td3 = tr.insertCell();
+            td3.textContent = crypto.name;
+            td3.className = 'td-crypto-name';
 
-            const supplyElement = document.createElement('span');
-            supplyElement.textContent = `Supply:  ${crypto.supply}`;
-            supplyElement.className = 'crypto-supply';
+            const td4 = tr.insertCell();
+            td4.textContent = `Supply: ${crypto.supply}`;
+            td4.className = 'td-crypto-supply';
 
-            resultItem.appendChild(imgElement);
-            resultItem.appendChild(coinCodeElement);
-            resultItem.appendChild(nameElement);
-            resultItem.appendChild(supplyElement);
-
-            searchResultsContainer.appendChild(resultItem);
             searchResultsContainer.style.visibility = "visible";
         });
     }

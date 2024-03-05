@@ -27,12 +27,9 @@
             </div>
         </form>
         <div class="crypto-slots">
-            <!--<div class="crypto-slot"><img src="btc-icon.png" alt="BTC"><span class="crypto-title">BTC</span><br><span class="crypto-descr">+12,1%</span></div>
-            <div class="crypto-slot"><img src="sol-icon.png" alt="SOL"><span class="crypto-title">SOL</span><br><span class="crypto-descr">+5,43%</span></div>
-            <div class="crypto-slot"><img src="eth-icon.png" alt="ETH"><span class="crypto-title">ETH</span><br><span class="crypto-descr">+6,12%</span></div>-->
         </div>
-        <div id="search-results">
-        </div>
+        <table id="search-results">
+        </table>
     </div>
 </body>
 
