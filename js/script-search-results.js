@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
     searchInput.addEventListener('input', function () {
         var searchText = searchInput.value.trim();
         if (searchText.length > 0) {
-            fetch(`getsearchresults.php?searchText=${searchText}`)
+            fetch(`pages/get-search-results.php?searchText=${searchText}`)
                 .then(response => response.json())
                 .then(data => {
                     displaySearchResults(data);

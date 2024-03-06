@@ -5,16 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <title>Regolare.com</title>
-    <script src="scriptstartingcoins.js"></script>
-    <script src="scriptsearchresults.js"></script>
+    <script src="js/script-starting-coins.js"></script>
+    <script src="js/script-search-results.js"></script>
 </head>
 
 <body>
     <div class="top-right-links">
-        <a href="php/login.php"><strong>Sign in</strong></a> or <a href="php/signup.php"><strong>Sign up</strong></a>
+        <a href="pages/signin.html"><strong>Sign in</strong></a> or <a href="pages/signup.html"><strong>Sign up</strong></a>
     </div>
 
     <div class="container">
