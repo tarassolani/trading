@@ -67,6 +67,59 @@ body {
     /* DA CAMBIARE L'IMMAGINE */
 }
 
+/* YEA */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: transparent;
+}
+
+nav #logo {
+    font-size: 2.5em;
+    font-weight: 700;
+    text-decoration: none;
+    color: #fff;
+    cursor: pointer;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+nav #logo:hover {
+    text-decoration: none;
+}
+
+nav #logo:hover .material-symbols-outlined {
+    filter: drop-shadow(0 0 10px rgba(32, 32, 32, 0.5));
+}
+
+nav #menu-icon {
+    font-size: 1.5em;
+    cursor: pointer;
+    padding-bottom: 30px;
+}
+
+nav #menu-icon:hover {
+    filter: drop-shadow(0 0 10px rgba(32, 32, 32, 0.5));
+}
+
+nav .top-right-links {
+    display: flex;
+    align-items: center;
+}
+nav .top-right-links a {
+    color: #fff;
+    text-decoration: none;
+    margin-right: 10px;
+    transition: .2s;
+}
+nav .top-right-links a:hover {
+    text-decoration: underline;
+    filter: drop-shadow(0 0 30px rgb(110, 214, 255));
+    transition: .4s;
+}
+
 
 .container {
     text-align: center;
@@ -78,6 +131,17 @@ h1 {
     font-size: 5.5em;
     width: 70%;
     margin: 0 auto;
+}
+
+h2 {
+    font-weight: 400;
+    font-size: 2.5em;
+    margin-bottom: 30px;
+    margin-left: 100px;
+    float:left;
+    width: 25%;
+    vertical-align: middle;
+    text-align: right;
 }
 
 /* Descrizione */
@@ -107,7 +171,15 @@ h1 {
     transition: 2s;
 }
 
-.search-bar::before {
+.search-bar-right-holder {
+    padding-top: 30px;
+    height: 135px;
+    vertical-align: middle;
+    width: 65%;
+    float: right;
+}
+
+.search-bar::before, .search-bar-wide::before{
     content: "";
     position: absolute;
     inset: -4px;
@@ -122,7 +194,7 @@ h1 {
     
 }
 
-.search-bar:after {
+.search-bar:after, .search-bar-wide::after {
     content: "";
     position: absolute;
     inset: 0;
@@ -140,7 +212,7 @@ h1 {
 }
 
 
-.search-bar:hover:after {
+.search-bar:hover:after, .search-bar-wide:hover:after {
     content: "";
     position: absolute;
     inset: 0;
@@ -155,6 +227,19 @@ h1 {
     animation-iteration-count: infinite;
     animation-timing-function: ease;
     transition: all .7s;
+}
+
+/*BARRA DI RICERCA MA BIG*/
+.search-bar-wide {
+    width: 80%;
+    margin-left: 2px;
+    margin-right: auto;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    transition: 2s;
 }
 
 .search-input {
@@ -181,10 +266,6 @@ h1 {
 }
 
 .material-symbols-outlined {
-    position: relative;
-    right: 40px;
-    margin-right: -35px;
-    padding-right: 4px;
     /*font-variation-settings:
     'FILL' 0,
     'wght' 400,
@@ -200,6 +281,10 @@ h1 {
     transition: .3s;
 }
 span.size-medio{
+    position: relative;
+    right: 40px;
+    margin-right: -35px;
+    padding-right: 4px;
     font-size: 32px;
 }
 
@@ -258,11 +343,9 @@ span.size-medio{
     margin-top: 35px;
     visibility: hidden;
     border-collapse: collapse;
+    margin-bottom: 40px;
 }
 
-#search-results tbody{
-    width: 100%;
-}
 
 .search-result-item:first-child td:first-child { border-top-left-radius: 10px; }
 .search-result-item:first-child td:last-child { border-top-right-radius: 10px; }
@@ -296,7 +379,7 @@ span.size-medio{
 .td-crypto-code {
     width: 15%;
     text-align: left;
-    padding-left: 10px;
+    font-weight: bold;
 }
 
 .td-crypto-name {
@@ -308,4 +391,80 @@ span.size-medio{
     width: 35%;
     text-align: right;
     padding-right: 20px;
+}
+
+/* BIG TABELLA */
+#search-results-wider{
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #000000;
+    border-radius: 10px;
+    margin-top: 35px;
+    border-collapse: collapse;
+    margin-bottom: 40px;
+    border: 1px solid #3f3f3f4f;
+}
+
+#search-results-wider td{
+    padding-left: 5px;
+}
+
+#search-results-wider th{
+    font-weight: 300;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+#top-row th{
+    border: 1px solid #3f3f3f4f;
+    transition: .3s;
+}
+
+#top-row th:hover {
+    transition: .3s;
+    background-color: #51e5ffa1;
+    filter: drop-shadow(0 0 10px #3c67e3);
+}
+
+
+#th-crypto{
+    width: 40%;
+}
+#th-crypto-price{
+    width: 10%;
+}
+#th-crypto-variation{
+    width: 10%;
+}
+#th-crypto-supply{
+    width: 30%;
+}
+
+.td-det-crypto-img{
+    text-align: center;
+    width: 4%;
+}
+.td-det-crypto-code{
+    text-align: left;
+    font-weight: bold;
+    width: 10%;
+}
+.td-det-crypto-name{
+    text-align: left;
+    width: 26%;
+}
+.td-det-crypto-price{
+    text-align: left;
+    color: #88ffba;
+    filter: drop-shadow(0 0 13px #4ec7807e);
+    animation: glowAnimation 1s infinite alternate;
+}
+.td-det-crypto-variation{
+    text-align: left;
+    color: #88ffba;
+}
+.td-det-crypto-supply{
+    text-align: right;
+    padding-right: 15px;
 }
