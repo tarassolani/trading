@@ -13,7 +13,7 @@
 
 <body>
     <div class="top-right-links">
-        <a href="pages/signin.html"><strong>Sign in</strong></a> or <a href="pages/signup.html"><strong>Sign up</strong></a>
+        <a href="pages/signin.php"><strong>Sign in</strong></a> or <a href="pages/signup.html"><strong>Sign up</strong></a>
     </div>
 
     <div class="container">

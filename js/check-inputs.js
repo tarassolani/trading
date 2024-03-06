@@ -3,14 +3,14 @@ function checkAllNumbers(input) {
     let value = input.value.trim();
     let isPhoneNumber = input.getAttribute('name') === 'phone-number';
 
-    if (value !== "" && expression.test(value) && (!isPhoneNumber || (isPhoneNumber && value.length === 10))) {
+    if (value !== "" && expression.test(value) && (!isPhoneNumber || (isPhoneNumber && (value.length >= 10 && value.length <=13)))) {
         input.classList.remove('error');
         removeErrorMessage(input);
     } else {
         input.classList.add('error');
         if (!input.parentNode.querySelector('.error-message')) {
             if (isPhoneNumber) {
-                createErrorMessage(input, 'Not a valid phone number (should be 10 digits)');
+                createErrorMessage(input, 'Not a valid phone number (should be 10-13 digits)');
             } else {
                 createErrorMessage(input, 'Not a valid number');
             }
@@ -19,7 +19,7 @@ function checkAllNumbers(input) {
 }
 
 function checkAllLetters(input) {
-    let expression = /^[a-zA-Z]+$/;
+    let expression = /^[a-zA-ZÀ-ÿ\s]+$/;
     let value = input.value.trim();
 
     if (value !== "" && expression.test(value)) {
