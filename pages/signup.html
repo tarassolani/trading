@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'>
     <link rel="stylesheet" href="../css/signin.css">
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <script src="../js/check-inputs.js"></script>
     <style>
         .hidden {
@@ -54,15 +53,19 @@
 
             <div class="input-box hidden">
                 <input type="email" name="email" placeholder="Email" required>
+                <i class='bx bxs-envelope' ></i>
             </div>
             <div class="input-box hidden">
                 <input type="text" name="username" placeholder="Username">
+                <i class='bx bxs-user'></i>
             </div>
             <div class="input-box hidden">
                 <input type="password" name="password" id="password" placeholder="Password">
+                <i class='bx bxs-lock-alt' ></i>
             </div>
             <div class="input-box hidden">
                 <input type="password" name="confirm-password" id="confirm-password" onblur="checkPasswordMatch(this)" placeholder="Confirm password">
+                <i class='bx bxs-lock-alt' ></i>
             </div>
 
             <button class="btn" id="submit" onclick="toggleInputsVisibility(event)">→</button>
