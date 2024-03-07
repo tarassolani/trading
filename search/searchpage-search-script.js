@@ -48,11 +48,11 @@ document.addEventListener('DOMContentLoaded', function () {
             td4.className = 'td-det-crypto-price';
 
             const td5 = tr.insertCell();
-            td5.textContent = "+42.0%";         //METTERE VARIETION
+            td5.textContent = "+12.0%";         //METTERE VARIETION
             td5.className = 'td-det-crypto-variation';
 
             const td6 = tr.insertCell();
-            td6.textContent = `Supply: ${crypto.supply}`;
+            td6.textContent = `${crypto.supply}`;
             td6.className = 'td-det-crypto-supply';
 
             //searchResultsContainer.style.visibility = "visible";

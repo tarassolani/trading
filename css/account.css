@@ -1,0 +1,293 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Poppins:wght@400;700&family=Rubik:wght@600;800&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif; /* Assicurati di avere il font Poppins caricato */
+    background-color: black; /* Sostituisci con il tuo colore di sfondo */
+    color: white;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* YEA */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: transparent;
+}
+
+nav #logo {
+    font-size: 2.5em;
+    font-weight: 700;
+    text-decoration: none;
+    color: #fff;
+    cursor: pointer;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+nav #logo:hover {
+    text-decoration: none;
+}
+
+nav #logo:hover .material-symbols-outlined {
+    filter: drop-shadow(0 0 10px rgba(32, 32, 32, 0.5));
+}
+
+nav #menu-icon {
+    float: left;
+    font-size: 1.5em;
+    cursor: pointer;
+    padding-bottom: 10px;
+}
+.material-symbols-outlined {
+    /*font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 48;*/
+    display: inline-block;
+    color: #555;
+    transition: .2s;
+}
+.material-symbols-outlined:hover {
+    color: rgb(248, 248, 248);
+    cursor: pointer;
+    transition: .3s;
+}
+nav #menu-icon:hover {
+    filter: drop-shadow(0 0 10px rgba(32, 32, 32, 0.5));
+}
+
+nav .top-right-links {
+    display: flex;
+    align-items: center;
+}
+nav .top-right-links a {
+    color: #fff;
+    text-decoration: none;
+    margin-right: 10px;
+    transition: .2s;
+}
+nav .top-right-links a:hover {
+    text-decoration: underline;
+    filter: drop-shadow(0 0 30px rgb(110, 214, 255));
+    transition: .4s;
+}
+
+.material-symbols-outlined {
+    /*font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 48;*/
+    display: inline-block;
+    color: #555;
+    transition: .2s;
+}
+.material-symbols-outlined:hover {
+    color: rgb(248, 248, 248);
+    cursor: pointer;
+    transition: .3s;
+}
+
+h1 {
+    font-weight: 700;
+    font-size: 5.5em;
+    width: 70%;
+    margin: 0 auto;
+}
+
+#left-div {
+    width: 50%;
+    float: left;
+}
+
+#right-div {
+    width: 50%;
+    float: left;
+}
+
+.account-info {
+    overflow: hidden; /* Aggiungi overflow hidden per evitare problemi di layout */
+}
+
+.account-info,
+.account-balance,
+.positions {
+    width: 80%;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, .2);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+    border-radius: 10px;
+    padding: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 30px;
+
+}
+
+.account-info h2,
+.account-info p,
+.account-balance h3,
+.positions h3 {
+    color: #fff;
+}
+
+.account-info h3{
+    display: inline-block;
+    margin-top: -5px;
+}
+
+.copy-btn{
+    margin-left: 5px;
+}
+
+.account-info h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+#account-dashboard{
+    font-weight: 400;
+    font-size: 2.5em;
+    vertical-align: middle;
+    text-align: left;
+    margin-left: 9%;
+}
+
+.account-info p {
+    font-size: 18px;
+}
+
+.wallet-info,
+.chart-container {
+    margin-top: 20px;
+}
+
+.hash-container {
+    display: flex;
+    align-items: center;
+    width: 80%;
+}
+
+#username{
+    vertical-align: middle;
+    margin-top: 0;
+}
+
+#wallet-hash {
+    flex-grow: 1;
+    padding: 10px;
+    background: transparent;
+    border: 1px solid #272727;
+    border-radius: 5px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    transition: .4s;
+}
+
+#wallet-hash:hover {
+    white-space: normal;
+    word-wrap: break-word;
+    max-height: none;
+    background-color: #272727;
+    transition: .5s;
+}
+
+button {
+    margin-left: 10px;
+    padding: 10px;
+    background-color: #555;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #777;
+}
+
+
+/* TABELLAAA */
+#search-results-wider{
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #000000;
+    border-radius: 10px;
+    margin-top: 35px;
+    border-collapse: collapse;
+    margin-bottom: 40px;
+    border: 1px solid #3f3f3f4f;
+}
+
+#search-results-wider td{
+    padding-left: 5px;
+}
+
+#search-results-wider th{
+    font-weight: 300;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+#top-row th{
+    border: 1px solid #3f3f3f4f;
+    transition: .3s;
+}
+
+#top-row th:hover {
+    transition: .3s;
+    background-color: #51e5ffa1;
+    filter: drop-shadow(0 0 10px #3c67e3);
+}
+
+
+#th-crypto{
+    width: 40%;
+}
+#th-crypto-price{
+    width: 10%;
+}
+#th-crypto-variation{
+    width: 10%;
+}
+#th-crypto-supply{
+    width: 30%;
+}
+
+.td-det-crypto-img{
+    text-align: center;
+    width: 4%;
+}
+.td-det-crypto-code{
+    text-align: left;
+    font-weight: bold;
+    width: 10%;
+}
+.td-det-crypto-name{
+    text-align: left;
+    width: 26%;
+}
+.td-det-crypto-price{
+    text-align: left;
+    color: #88ffba;
+    filter: drop-shadow(0 0 13px #4ec7807e);
+    animation: glowAnimation 1s infinite alternate;
+}
+.td-det-crypto-variation{
+    text-align: left;
+    color: #88ffba;
+}
+.td-det-crypto-supply{
+    text-align: right;
+    padding-right: 15px;
+}

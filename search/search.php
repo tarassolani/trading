@@ -18,7 +18,7 @@
         <a id="logo" href="../index.php">Regolare.com</a>
 
         <div class="top-right-links">
-            <a href="php/login.php"><strong>Sign in</strong></a> or <a href="php/signup.php"><strong>Sign up</strong></a>
+            <a href="../pages/signin.php"><strong>Sign in</strong></a> or <a href="../pages/signup.html"><strong>Sign up</strong></a>
         </div>
     </nav>
 

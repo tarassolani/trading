@@ -2,7 +2,7 @@
 //Una volta caricato il file, si leggono i risultati della query di 'getstartingoincs.php'
 //I risultati della query si convertono in immagine/elementi html e vengono aggiunti alla pagina
 document.addEventListener('DOMContentLoaded', function () {
-    fetch('pages/get-starting-coins.php')
+    fetch(`pages/get-starting-coins.php`)
         .then(response => response.json())
         .then(data => {
             data.forEach(crypto => {

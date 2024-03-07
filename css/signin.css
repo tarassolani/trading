@@ -26,6 +26,7 @@ body{
     color: #fff;
     border-radius: 10px;
     padding: 30px 40px;
+    margin-top: 100px;
 }
 
 .wrapper h1{
@@ -126,4 +127,79 @@ body{
     font-size: 0.8em;
     margin-top: 5px;
     margin-left: 10px;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: transparent;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+}
+
+nav #logo {
+    font-size: 2.5em;
+    font-weight: 700;
+    text-decoration: none;
+    color: #fff;
+    cursor: pointer;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+nav #logodiv {
+    display: block;
+}
+
+nav #logo:hover {
+    text-decoration: none;
+}
+
+nav #logo:hover .material-symbols-outlined {
+    filter: drop-shadow(0 0 10px rgba(32, 32, 32, 0.5));
+}
+
+nav #menu-icon {
+    font-size: 1.5em;
+    cursor: pointer;
+    padding-bottom: 10px;
+}
+.material-symbols-outlined {
+    /*font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 48;*/
+    display: inline-block;
+    color: #555;
+    transition: .2s;
+}
+.material-symbols-outlined:hover {
+    color: rgb(248, 248, 248);
+    cursor: pointer;
+    transition: .3s;
+}
+nav #menu-icon:hover {
+    filter: drop-shadow(0 0 10px rgba(32, 32, 32, 0.5));
+}
+
+nav .top-right-links {
+    display: flex;
+    align-items: center;
+}
+nav .top-right-links a {
+    color: #fff;
+    text-decoration: none;
+    margin-right: 10px;
+    transition: .2s;
+}
+nav .top-right-links a:hover {
+    text-decoration: underline;
+    filter: drop-shadow(0 0 30px rgb(110, 214, 255));
+    transition: .4s;
 }
