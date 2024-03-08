@@ -9,6 +9,7 @@
     <title>Regolare.com</title>
     <script src="js/script-starting-coins.js"></script>
     <script src="js/script-search-results.js"></script>
+    <script src="js/real-time-prices.js"></script>
 </head>
 
 <body>

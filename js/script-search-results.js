@@ -43,6 +43,19 @@ document.addEventListener('DOMContentLoaded', function () {
             td4.textContent = `$${crypto.price}`; 
             td4.className = 'td-crypto-price';
 
+            const td5 = tr.insertCell();
+            const span = document.createElement('span');
+            span.textContent = `${crypto.percent_change}%`; 
+
+            if(`${crypto.percent_change}` > 0){
+                span.classList.add('highlight-green');
+            }
+            else{
+                span.classList.add('highlight-red');
+            }
+            td5.appendChild(span); 
+            td5.className = 'td-crypto-price';
+
             searchResultsContainer.style.visibility = "visible";
         });
     }

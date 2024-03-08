@@ -468,3 +468,15 @@ span.size-medio{
     text-align: right;
     padding-right: 15px;
 }
+
+.highlight-green {
+    background-color: #008000;
+    border-radius: 5px;
+    padding: 2px 5px;
+}
+
+.highlight-red {
+    background-color: #FF0000;
+    border-radius: 5px;
+    padding: 2px 5px;
+}
