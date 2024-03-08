@@ -454,15 +454,20 @@ span.size-medio{
     text-align: left;
     width: 26%;
 }
-.td-det-crypto-price{
+.td-det-crypto-price-green{
     text-align: left;
     color: #88ffba;
     filter: drop-shadow(0 0 13px #4ec7807e);
     animation: glowAnimation 1s infinite alternate;
 }
+.td-det-crypto-price-red{
+    text-align: left;
+    color: #ff4a4a !important;
+    filter: drop-shadow(0 0 13px #ff2020);
+    animation: glowAnimation 1s infinite alternate;
+}
 .td-det-crypto-variation{
     text-align: left;
-    color: #88ffba;
 }
 .td-det-crypto-supply{
     text-align: right;

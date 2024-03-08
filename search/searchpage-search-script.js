@@ -44,12 +44,22 @@ document.addEventListener('DOMContentLoaded', function () {
             td3.className = 'td-det-crypto-name';
 
             const td4 = tr.insertCell();
-            td4.textContent = "69,000 USDT";         //METTERE PREZO
-            td4.className = 'td-det-crypto-price';
+            td4.textContent = `$${crypto.price}`;
 
             const td5 = tr.insertCell();
-            td5.textContent = "+12.0%";         //METTERE VARIETION
+            const span = document.createElement('span');
+            span.textContent = `${crypto.percent_change}%`;
             td5.className = 'td-det-crypto-variation';
+
+            if(`${crypto.percent_change}` > 0){
+                span.classList.add('highlight-green');
+                td4.className = 'td-det-crypto-price-green';
+            }
+            else{
+                span.classList.add('highlight-red');
+                td4.className = 'td-det-crypto-price-red';
+            }
+            td5.appendChild(span);
 
             const td6 = tr.insertCell();
             td6.textContent = `${crypto.supply}`;

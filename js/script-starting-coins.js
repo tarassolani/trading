@@ -16,8 +16,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 cryptoCode.textContent = crypto.coinCode;
 
                 var cryptoDesc = document.createElement('span');
-                cryptoDesc.className = 'crypto-descr';
-                cryptoDesc.textContent = '+12,1%';
+                cryptoDesc.textContent = `${crypto.percent_change}%`;
+                
+                if(`${crypto.percent_change}` > 0){
+                    cryptoDesc.className = 'td-det-crypto-price-green';
+                }
+                else{
+                    cryptoDesc.className = 'td-det-crypto-price-red';
+                }
 
                 var cryptoSlotElement = document.createElement('div');
                 cryptoSlotElement.className = 'crypto-slot';
