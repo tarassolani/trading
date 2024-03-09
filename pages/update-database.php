@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -14,22 +16,17 @@ $receivedHash = $_POST['hash'];
 
 $receivedHash = substr($receivedHash, 0, 50);
 
-$userID = $_SESSION['user_id'] ?? $_COOKIE['user_id'] ?? null;
+$userID = $_SESSION['login-info'] ?? $_COOKIE['login-info'] ?? null;
 
 if ($userID) {
-    $sql = "UPDATE users SET hash = ? WHERE id = ?";
+    $sql = "UPDATE Users SET hash = ? WHERE username = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("si", $receivedHash, $userID);
+    $stmt->bind_param("ss", $receivedHash, $userID);
 
-    if ($stmt->execute()) {
-        echo "Hash updated successfully.";
-    } else {
-        echo "Error while updating database: " . $stmt->error;
+    if (!$stmt->execute()) {
+        trigger_error("Can't update database", E_USER_ERROR);
     }
-
     $stmt->close();
-} else {
-    echo "User ID not valid.";
 }
 
 $conn->close();
