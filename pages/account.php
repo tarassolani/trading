@@ -1,3 +1,64 @@
+<?php
+session_start();
+if (isset($_COOKIE['login-info']) || isset($_SESSION['login-info'])) {
+    $username = isset($_SESSION['login-info']) ? $_SESSION['login-info'] : $_COOKIE['login-info'];
+
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    $dbname = "dbRegolare";
+
+    $conn = new mysqli($servername, $username, $password, $dbname);
+
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+    $username = isset($_SESSION['login-info']) ? $_SESSION['login-info'] : $_COOKIE['login-info'];
+
+    $sql = "SELECT name, surname, birthDate, country, city, street, streetNumber, phoneNumber, email, hash FROM users WHERE username = ?";
+    $stmt = $conn->prepare($sql);
+
+    // Collega il parametro
+    $stmt->bind_param("s", $username);
+
+    // Esegui la query
+    $stmt->execute();
+
+    // Ottieni il risultato della query
+    $result = $stmt->get_result();
+
+    // Verifica se ci sono risultati
+    if ($result->num_rows > 0) {
+        // Ottieni i dati dell'utente
+        $userData = $result->fetch_assoc();
+    } else {
+        // Utente non trovato, gestisci come preferisci
+        $userData = null;
+    }
+
+    // Chiudi la connessione al database
+    $stmt->close();
+    $conn->close();
+    // Se l'hash è null, visualizza il bottone "Create Wallet", altrimenti mostra l'hash
+    $walletContent = ($userData['hash'] === null) ? '<button onclick="createWallet()">Create Wallet</button>' : '<span id="wallet-hash">' . $userData['hash'] . '</span>';
+
+    // Altre informazioni da visualizzare nel div destro
+    $otherInfo = "<p>{$userData['name']} {$userData['surname']}</p>
+                  <p>{$userData['birthDate']}</p>
+                  <p>{$userData['country']}, {$userData['city']}</p>
+                  <p>{$userData['street']} {$userData['streetNumber']}</p>
+                  <p>{$userData['phoneNumber']}</p>
+                  <p>{$userData['email']}</p>";
+} else {
+    // Utente non autenticato, gestisci come preferisci
+    $username = "Guest";
+    $walletContent = "";
+    $otherInfo = "";
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 

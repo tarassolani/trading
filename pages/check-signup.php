@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST['password'];
 
     if ($stmt->execute()) {
-        header("Location: "); //pagina taras :)
+        header("Location: account.php");
         exit();
     } else {
         echo "Error inserting record: " . $stmt->error;
