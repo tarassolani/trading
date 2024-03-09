@@ -19,44 +19,33 @@ if (isset($_COOKIE['login-info']) || isset($_SESSION['login-info'])) {
     $sql = "SELECT name, surname, birthDate, country, city, street, streetNumber, phoneNumber, email, hash FROM users WHERE username = ?";
     $stmt = $conn->prepare($sql);
 
-    // Collega il parametro
     $stmt->bind_param("s", $username);
 
-    // Esegui la query
     $stmt->execute();
 
-    // Ottieni il risultato della query
     $result = $stmt->get_result();
 
-    // Verifica se ci sono risultati
     if ($result->num_rows > 0) {
-        // Ottieni i dati dell'utente
         $userData = $result->fetch_assoc();
     } else {
-        // Utente non trovato, gestisci come preferisci
         $userData = null;
     }
 
-    // Chiudi la connessione al database
     $stmt->close();
     $conn->close();
-    // Se l'hash è null, visualizza il bottone "Create Wallet", altrimenti mostra l'hash
-    $walletContent = ($userData['hash'] === null) ? '<button onclick="createWallet()">Create Wallet</button>' : '<span id="wallet-hash">' . $userData['hash'] . '</span>';
 
-    // Altre informazioni da visualizzare nel div destro
-    $otherInfo = "<p>{$userData['name']} {$userData['surname']}</p>
-                  <p>{$userData['birthDate']}</p>
-                  <p>{$userData['country']}, {$userData['city']}</p>
+    $walletContent = ($userData['hash'] === null || $userData['hash'] === "") ? '<button id="wallet-button" onclick="createWallet()">
+    <span class="material-symbols-outlined" id="loader" class="loader"></span>
+    Create Wallet
+    </button>' : '<span id="wallet-hash">' . $userData['hash'] . '</span>';
+
+    $otherInfo = "<p>{$userData['birthDate']}</p>
+                  <p>{$userData['country']}, {$userData['city']}</p>    
                   <p>{$userData['street']} {$userData['streetNumber']}</p>
                   <p>{$userData['phoneNumber']}</p>
                   <p>{$userData['email']}</p>";
-} else {
-    // Utente non autenticato, gestisci come preferisci
-    $username = "Guest";
-    $walletContent = "";
-    $otherInfo = "";
+    $nameLastname = $userData['name'] . " " . $userData['surname'];
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -83,20 +72,23 @@ if (isset($_COOKIE['login-info']) || isset($_SESSION['login-info'])) {
 
     <div class="account-info">
         <div id="left-div">
-            <h2 id="username">@unclepear</h2>
-            <p id="name-surname">Benjamin 'Uncle' Pearson</p>
+            <h2 id="username">@<?php echo $username ?></h2>
+            <p id="name-surname">
+                <?php echo $nameLastname ?>
+            </p>
 
             <div class="wallet-info">
+                <br>
                 <h3>Wallet Address</h3>
-                <span class="material-symbols-outlined copy-btn" onclick="copyContent()">content_copy</span>
+                <span class="material-symbols-outlined copy-btn" id="btn-inviz" onclick="copyContent()">content_copy</span>
                 <div class="hash-container">
-                    <span id="wallet-hash">
-                        8016AC908B188B88E3DA81624AE6E9661C9096D832A0FA57681C6556FEDDE6DA79825BF838AB3C14F9C13174AEF4330C3A5A32BD9B3A7B0C96124F94D70E011898E4A2BFB0F3F556F30BDA0FFC0C5675
-                    </span>
+                    <?php echo $walletContent ?>
+
                 </div>
             </div>
         </div>
         <div id="right-div">
+            <?php echo $otherInfo ?>
         </div>
 
     </div>
@@ -115,6 +107,54 @@ if (isset($_COOKIE['login-info']) || isset($_SESSION['login-info'])) {
             document.body.removeChild(tempInput);
 
             alert("Wallet hash copied!");
+        }
+
+        function createWallet() {
+            var walletButton = document.getElementById("wallet-button");
+
+            walletButton.disabled = true;
+            walletButton.classList.add("loading");
+            var loader = document.getElementById("loader");
+            loader.style.display = "inline-block";
+
+            setTimeout(function () {
+                var uniqueHash = generateUniqueHash();
+
+                var hashContainer = document.createElement("span");
+                hashContainer.id = "wallet-hash";
+                hashContainer.textContent = uniqueHash;
+
+                var walletInfo = document.querySelector(".wallet-info");
+                walletButton.style.display = "none";
+                walletInfo.appendChild(hashContainer);
+
+                updateDatabaseWithHash(uniqueHash);
+                
+            }, 2000);
+
+        }
+
+        function generateUniqueHash() {
+            var characters = 'ABCDEF0123456789';
+            var hash = '';
+
+            for (var i = 0; i < 50; i++) {
+                hash += characters.charAt(Math.floor(Math.random() * characters.length));
+            }
+
+            return hash;
+        }
+
+        function updateDatabaseWithHash(hash) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'update-database.php', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    console.log('Database updated successfully.');
+                }
+            };
+            xhr.send('hash=' + hash);
         }
     </script>
 
