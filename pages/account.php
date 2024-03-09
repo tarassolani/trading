@@ -58,6 +58,8 @@ if (isset($_COOKIE['login-info']) || isset($_SESSION['login-info'])) {
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <script src="../js/account.js"></script>
+    <script src="../js/load-users.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 
     <title>Account dashboard</title>
 </head>
 
@@ -84,9 +86,16 @@ if (isset($_COOKIE['login-info']) || isset($_SESSION['login-info'])) {
                 <span class="material-symbols-outlined copy-btn" id="btn-inviz" onclick="copyContent()">content_copy</span>
                 <div class="hash-container">
                     <?php echo $walletContent ?>
-
                 </div>
             </div>
+
+            <script>
+            <?php if (!empty($walletContent)): ?>
+                var btnCopy = document.getElementById('btn-inviz');
+                btnCopy.style.visibility = "visible";
+            <?php endif; ?>
+            </script>
+
         </div>
         <div id="right-div">
             <?php echo $otherInfo ?>
@@ -96,8 +105,38 @@ if (isset($_COOKIE['login-info']) || isset($_SESSION['login-info'])) {
 
     <div class="account-balance">
         <h3>Account Balance</h3>
-        <div id="chart-container"></div>
+        <div class="chart-container" style="height: 300px;">
+            <span id="total-balance">1000 USDT</span>
+            <canvas id="myChart"></canvas> 
+        </div>
+
+        <script>
+            var data = {
+                labels: ["1", "2", "3", "4", "5", "6", "7"], 
+                datasets: [{
+                    label: "",
+                    data: [10, 20, 30, 40, 50, 60, 70],
+                    backgroundColor: ["#3366ff", "#3399ff", "#33ccff", "#33ffff", "#66ffff", "#99ffff", "#ccffff"],
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    tension: 0.4,
+                }]
+            };
+
+            var ctx = document.getElementById('myChart').getContext('2d'); 
+            var myChart = new Chart(ctx, {
+                type: 'line',
+                data: data,
+                options: {
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        </script>
     </div>
+
 
     <div class="positions">
         <h3>Positions</h3>
@@ -109,6 +148,19 @@ if (isset($_COOKIE['login-info']) || isset($_SESSION['login-info'])) {
                 <th id="th-crypto-supply">Supply</th>
                 <th id="th-crypto-trading">Trading</th>
             </tr>
+        </table>
+    </div>
+
+    <div class="friends">
+        <h3>Friends</h3>
+        <div class="search-bar-right-holder">
+            <div class="search-bar-wide">
+                <input type="text" name="search" placeholder="Search for user..." class="search-input">
+                <span class="material-symbols-outlined size-medio" onclick="searchform.submit()">&#xe8b6;</span>
+            </div>
+        </div>
+        <table id = "already-friend">You have no friends right now</table>
+        <table id="friends-table">
         </table>
     </div>
 </body>

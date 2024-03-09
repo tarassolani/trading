@@ -1,17 +1,15 @@
 function copyContent() {
-    var walletHash = document.getElementById("wallet-hash");
+    var walletHash = document.getElementById("wallet-hash").textContent;
 
-    var tempInput = document.createElement("textarea");
-    tempInput.value = walletHash.textContent;
-    document.body.appendChild(tempInput);
-
-    tempInput.select();
-    /*document.execCommand("copy");
-
-    document.body.removeChild(tempInput);
-
-    alert("Wallet hash copied!");*/
+    navigator.clipboard.writeText(walletHash)
+    .then(function() {
+        alert("Wallet hash copied!");
+    })
+    .catch(function(error) {
+        console.error('Copy failed: ', error);
+    });
 }
+
 
 function createWallet() {
     var walletButton = document.getElementById("wallet-button");
