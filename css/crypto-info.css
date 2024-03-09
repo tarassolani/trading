@@ -1,0 +1,119 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Poppins:wght@400;700&family=Rubik:wght@600;800&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif; /* Assicurati di avere il font Poppins caricato */
+    background-color: black; /* Sostituisci con il tuo colore di sfondo */
+    color: white;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* YEA */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: transparent;
+}
+
+nav #logo {
+    font-size: 2.5em;
+    font-weight: 700;
+    text-decoration: none;
+    color: #fff;
+    cursor: pointer;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+nav #logo:hover {
+    text-decoration: none;
+}
+
+nav #logo:hover .material-symbols-outlined {
+    filter: drop-shadow(0 0 10px rgba(32, 32, 32, 0.5));
+}
+
+nav #menu-icon {
+    font-size: 1.5em;
+    cursor: pointer;
+    padding-bottom: 30px;
+}
+
+nav #menu-icon:hover {
+    filter: drop-shadow(0 0 10px rgba(32, 32, 32, 0.5));
+}
+
+nav .top-right-links {
+    display: flex;
+    align-items: center;
+}
+nav .top-right-links a {
+    color: #fff;
+    text-decoration: none;
+    margin-right: 10px;
+    transition: .2s;
+}
+nav .top-right-links a:hover {
+    text-decoration: underline;
+    filter: drop-shadow(0 0 30px rgb(110, 214, 255));
+    transition: .4s;
+}
+
+.top-right-links {
+    position: absolute; 
+    top: 20px; 
+    right: 20px;
+    font-size: 1em; 
+    margin-right: 10px;
+}
+
+.top-right-links a {
+    color: #fff; 
+    text-decoration: none;
+    margin-right: 5px;
+    margin-left: 5px;
+    transition: .2s;
+}
+
+.top-right-links a:hover {
+   text-decoration: underline;
+   filter: drop-shadow(0 0 30px rgb(110, 214, 255));
+   transition: .4s;
+}
+
+.tradingview-widget-container{
+    width: 100% !important;
+    height: 650px !important;
+}
+
+/* Altri stili CSS ... */
+
+.cripto-info {
+    display: flex; /* Layout con colonne */
+    justify-content: space-between;
+    padding: 40px;
+}
+
+.cripto-left {
+    flex: 1;  /* Colonna sinistra prende spazio disponibile */
+    margin-right: 30px;
+}
+
+.cripto-left img {
+   width: 100px;
+   margin-bottom: 20px;
+}
+
+.cripto-right {
+   flex: 2;  /* Colonna destra prende più spazio */
+}
+
+.buy-sell-buttons {
+    display: flex;
+    justify-content: space-around; /* Pulsanti distanziati */
+    margin-top: 20px;
+}
