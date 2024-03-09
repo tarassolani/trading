@@ -21,6 +21,9 @@ document.addEventListener('DOMContentLoaded', function () {
         clearSearchResults();
         results.forEach(crypto => {
             const tr = searchResultsContainer.insertRow();
+            tr.addEventListener("click", () => {
+                window.location.href = `pages/crypto-info.php?coinCode=${crypto.coinCode}`;
+              });
             tr.className = 'search-result-item';
 
             const td = tr.insertCell();

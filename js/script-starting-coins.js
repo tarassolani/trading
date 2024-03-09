@@ -27,6 +27,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 var cryptoSlotElement = document.createElement('div');
                 cryptoSlotElement.className = 'crypto-slot';
+                cryptoSlotElement.addEventListener("click", () => {
+                    window.location.href = `pages/crypto-info.php?coinCode=${crypto.coinCode}`;
+                  });
                 cryptoSlotElement.appendChild(cryptoImg);
                 cryptoSlotElement.appendChild(cryptoCode);
                 cryptoSlotElement.appendChild(document.createElement('br'));

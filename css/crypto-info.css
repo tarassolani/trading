@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Poppins:wght@400;700&family=Rubik:wght@600;800&display=swap');
 
 body {
-    font-family: 'Poppins', sans-serif; /* Assicurati di avere il font Poppins caricato */
-    background-color: black; /* Sostituisci con il tuo colore di sfondo */
+    font-family: 'Poppins', sans-serif;
+    background-color: black;
     color: white;
     margin: 0;
     padding: 0;
@@ -10,7 +10,6 @@ body {
     flex-direction: column;
 }
 
-/* YEA */
 nav {
     display: flex;
     justify-content: space-between;
@@ -51,12 +50,14 @@ nav .top-right-links {
     display: flex;
     align-items: center;
 }
+
 nav .top-right-links a {
     color: #fff;
     text-decoration: none;
     margin-right: 10px;
     transition: .2s;
 }
+
 nav .top-right-links a:hover {
     text-decoration: underline;
     filter: drop-shadow(0 0 30px rgb(110, 214, 255));
@@ -64,15 +65,15 @@ nav .top-right-links a:hover {
 }
 
 .top-right-links {
-    position: absolute; 
-    top: 20px; 
+    position: absolute;
+    top: 20px;
     right: 20px;
-    font-size: 1em; 
+    font-size: 1em;
     margin-right: 10px;
 }
 
 .top-right-links a {
-    color: #fff; 
+    color: #fff;
     text-decoration: none;
     margin-right: 5px;
     margin-left: 5px;
@@ -85,35 +86,212 @@ nav .top-right-links a:hover {
    transition: .4s;
 }
 
-.tradingview-widget-container{
+.tradingview-widget-container {
     width: 100% !important;
     height: 650px !important;
 }
 
-/* Altri stili CSS ... */
-
-.cripto-info {
-    display: flex; /* Layout con colonne */
+.crypto-info {
+    display: flex;
     justify-content: space-between;
     padding: 40px;
 }
 
-.cripto-left {
-    flex: 1;  /* Colonna sinistra prende spazio disponibile */
+.crypto-left {
+    flex: 1;
     margin-right: 30px;
+    border-radius: 15px;
+    padding: 30px;
+    overflow: hidden;
+    background-color: rgba(7, 7, 7, 1);
+    border: 1px solid rgb(34, 34, 34);
+    transition: .3s ease-in-out;
+
 }
 
-.cripto-left img {
-   width: 100px;
-   margin-bottom: 20px;
+
+.crypto-left:hover {
+    filter: drop-shadow(0 0 50px rgba(32, 32, 32, 0.5));
+    background-color: rgb(15, 15, 15);
+    transition: .2s ease-in-out;
 }
 
-.cripto-right {
-   flex: 2;  /* Colonna destra prende più spazio */
+.crypto-left img {
+    width: 30px;
+    height: auto;
+    margin-right: 10px;
+    margin-left: 2px;
+    margin-top: 10px;
+    vertical-align: middle;
+    transition: filter 0.3s ease-in-out;
+}
+
+.crypto-left img:hover {
+    filter: drop-shadow(0 0 10px rgba(112, 112, 112, 0.8));
+    transition: filter 0.2s ease-in-out;
+}
+
+.crypto-left-text {
+    padding: 10px;
+}
+
+.crypto-left-text span {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.crypto-left-text span:first-child {
+    margin-bottom: 5px;
+}
+
+.crypto-right {
+    flex: 2;
+}
+
+#chart-container {
+    transition: .3s;
+}
+
+#chart-container:hover {
+    filter: drop-shadow(0 0 50px rgba(53, 53, 53, 0.5));
+    transition: .2s;
+}
+
+.buy-sell-container {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
 }
 
 .buy-sell-buttons {
     display: flex;
-    justify-content: space-around; /* Pulsanti distanziati */
-    margin-top: 20px;
+    justify-content: space-around;
+    margin-top: 10px;
+    font-size: 1.1em;
+    align-items: center;
+}
+
+.buy-sell-buttons a {
+    text-decoration: none;
+    color: white;
+    border-radius: 10px;
+    padding: 10px 20px;
+    background-color: transparent;
+    transition: .3s;
+    margin-right: 10px;
+}
+
+.buy-sell-buttons a:hover {
+    background-color: black;
+    color: white;
+    transition: .3s;
+}
+
+.buy-sell-buttons a.compra {
+    background-color: #089981;
+    filter: drop-shadow(0 0 10px #0899816c);
+    transition: .3s;
+}
+
+.buy-sell-buttons a.compra:hover {
+    background-color: #089981;
+    color: black;
+    filter: drop-shadow(0 0 18px #0dbb9e63);
+    transition: .2s;
+}
+
+.buy-sell-buttons a.vendi {
+    background-color: #F23645;
+    filter: drop-shadow(0 0 10px #f236466c);
+    transition: .3s;
+}
+
+.buy-sell-buttons a.vendi:hover {
+    background-color: #F23645;
+    color: black;
+    filter: drop-shadow(0 0 18px #fa435250);
+    transition: .2s;
+}
+
+.buy-sell-buttons label {
+    margin-left: 5px;
+    font-size: 1.2em;
+    color: rgb(70, 70, 70);
+    margin-right: 5px;
+}
+
+.custom-number-input {
+    display: flex;
+    align-items: center;
+    position: relative;
+    margin-right: 35px;
+}
+
+.custom-number-input input {
+    width: 4em;
+    padding: 5px;
+    border: 1px solid #333;
+    border-collapse: collapse;
+    background-color: transparent;
+    color: white;
+    font-size: 1.05em;
+    text-align: center;
+    line-height: 1.8;
+
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.custom-number-input input::-webkit-inner-spin-button,
+.custom-number-input input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.custom-number-input button {
+    width: 2em;
+    background-color: black;
+    color: white;
+    border-collapse: collapse;
+    margin-left: 0;
+    margin-right: 0;
+    cursor: pointer;
+    margin: 0;
+    font-size: 1.2em;
+    outline: none;
+    line-height: 1.95;
+    transition: .3s;
+}
+
+.custom-number-input button:hover {
+    background-color: #111;
+    filter: drop-shadow(0 0 20px rgba(53, 53, 53, 0.5));
+    transition: .2s;
+    color: white;
+}
+
+.custom-number-input .decrement-button {
+    border-left: 1px solid #333;
+    border-top: 1px solid #333;
+    border-bottom: 1px solid #333;
+    border-right: none;
+}
+
+.custom-number-input .increment-button {
+    border-right: 1px solid #333;
+    border-top: 1px solid #333;
+    border-bottom: 1px solid #333;
+    border-left: none;
+}
+
+
+
+#chart-container {
+    transition: .3s;
+    height: 100%;
+}
+
+#chart-container:hover {
+    filter: drop-shadow(0 0 50px rgba(53, 53, 53, 0.5));
+    transition: .2s;
 }
