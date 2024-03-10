@@ -15,8 +15,8 @@ document.addEventListener('DOMContentLoaded', function () {
             clearSearchResults();
         }
     });
+    
 
-    //Funzione che mostra tutti i risultati di ricerca
     function displaySearchResults(results) {
         clearSearchResults();
         results.forEach(user => {
@@ -38,32 +38,79 @@ document.addEventListener('DOMContentLoaded', function () {
                 fetch(`../pages/add-friend.php?username=${user.username}`)
                     .then(response => response.json())
                     .then(data => {
-                        addFriend(user.username);
+                        if (data.success) {
+                            addFriend(user.username);
+                        } else {
+                            alert(data.error); // Mostra un alert con il messaggio di errore
+                        }
                     })
-                    .catch(error => console.error('Error:', error));
+                    .catch(error => console.error('Error:', error));});
+                        
+                searchResultsContainer.style.visibility = "visible";
             });
-            
-            searchResultsContainer.style.visibility = "visible";
-        });
     }
 
-    function addFriend(friend){
-        var table = document.getElementById("already-friend");
-        table.textContent = "";
-
-        const td = tr.insertCell();
-        td.textContent = friend;
-
-        const td2 = tr.insertCell();
-
-        const span = document.createElement("span");
-        span.textContent = "group_add";
-        span.classList.add("material-symbols-outlined");
-    }
-
-    //Funzione che pulisce i risultati di ricerca, quando l'input è vuoto
     function clearSearchResults() {
         searchResultsContainer.innerHTML = '';
         searchResultsContainer.style.visibility = "hidden";
     }
 });
+
+function addFriend(friend){
+    var table = document.getElementById("already-friend");
+
+    var noFriendsElement = document.getElementById("no-friends");
+
+    if (noFriendsElement) {
+        noFriendsElement.remove();
+    }
+
+    const tr = table.insertRow();
+
+    const td = tr.insertCell();
+    td.textContent = friend;
+
+    const td2 = tr.insertCell();
+
+    const span = document.createElement("span");
+    span.textContent = "group_remove";
+    span.classList.add("material-symbols-outlined");
+
+    td2.appendChild(span);
+
+    span.addEventListener('click', function() {
+        removeFriendDB(friend);
+    });
+}
+
+function removeFriendDB(friend){
+    fetch(`../pages/remove-friend.php?username=${friend}`)
+            .then(response => response.json())
+            .then(data => {
+                removeFriend(friend);
+            })
+            .catch(error => console.error('Error:', error));
+}
+
+function removeFriend(friend) {
+    var table = document.getElementById("already-friend");
+    var rows = table.getElementsByTagName("tr");
+
+    for (var i = 0; i < rows.length; i++) {
+        var row = rows[i];
+        var cells = row.getElementsByTagName("td");
+        
+        if (cells.length > 0 && cells[0].textContent === friend) {
+            row.remove();
+        }
+    }
+
+    if (table.rows.length === 0) {
+        const p = document.createElement("p");
+        p.setAttribute("id", "no-friends");
+        p.style.width = "300px";
+        p.textContent = "You have no friends right now";
+
+        table.appendChild(p);
+    }
+}

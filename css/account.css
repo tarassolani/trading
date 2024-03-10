@@ -353,9 +353,18 @@ button:hover {
     position: relative;
 }
 
+#already-friend {
+    float: left;
+    width: 100px;
+}
+
 #friends-table{
     float: right;
     margin-right: 35px;
+}
+
+#no-friends{
+    float: left;
 }
 
 .search-bar-right-holder {

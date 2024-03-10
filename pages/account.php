@@ -159,7 +159,54 @@ if (isset($_COOKIE['login-info']) || isset($_SESSION['login-info'])) {
                 <span class="material-symbols-outlined size-medio" onclick="searchform.submit()">&#xe8b6;</span>
             </div>
         </div>
-        <table id = "already-friend">You have no friends right now</table>
+        <table id="already-friend">
+            <?php
+            $username = isset($_SESSION['login-info']) ? $_SESSION['login-info'] : $_COOKIE['login-info'];
+
+            $servername = "localhost";
+            $db_username = "root";
+            $password = "";
+            $dbname = "dbRegolare";
+        
+            $conn = new mysqli($servername, $db_username, $password, $dbname);
+        
+            if ($conn->connect_error) {
+                die("Connection failed: " . $conn->connect_error);
+            }
+            // Query per ottenere gli amici dell'utente
+            $sql_friends = "SELECT friend1, friend2 FROM Friends WHERE friend1 = ? OR friend2 = ?";
+            $stmt_friends = $conn->prepare($sql_friends);
+            $stmt_friends->bind_param("ss", $username, $username);
+            $stmt_friends->execute();
+            $result_friends = $stmt_friends->get_result();
+
+            // Array per memorizzare gli amici
+            $friends_array = array();
+
+            // Popola l'array degli amici
+            while ($row_friends = $result_friends->fetch_assoc()) {
+                if ($row_friends['friend1'] == $username) {
+                    $friends_array[] = $row_friends['friend2'];
+                } else {
+                    $friends_array[] = $row_friends['friend1'];
+                }
+            }
+
+            // Chiudi la query degli amici
+            $stmt_friends->close();
+
+            // Popola la tabella degli amici già presenti
+            if (!empty($friends_array)) {
+                foreach ($friends_array as $friend_username) {
+                    echo "<tr><td>{$friend_username}</td><td><span class='material-symbols-outlined' onclick=\"removeFriendDB('{$friend_username}')\">group_remove</span></td></tr>";
+                }
+            } else {
+                echo '<p id="no-friends">You have no friends right now</p>';
+            }
+            $conn->close();
+            ?>
+        </table>
+
         <table id="friends-table">
         </table>
     </div>
