@@ -51,14 +51,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const td5 = tr.insertCell();
             const span = document.createElement('span');
-            span.textContent = `${crypto.percent_change}%`;
             td5.className = 'td-det-crypto-variation';
 
             if(`${crypto.percent_change}` > 0){
+                span.textContent = `+${crypto.percent_change}%`;
                 span.classList.add('highlight-green');
                 td4.className = 'td-det-crypto-price-green';
             }
             else{
+                span.textContent = `${crypto.percent_change}%`;
                 span.classList.add('highlight-red');
                 td4.className = 'td-det-crypto-price-red';
             }

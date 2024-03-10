@@ -46,14 +46,25 @@
     inherits: false;
 }
 
-@keyframes glowAnimation {
+@keyframes glowAnimationGreen {
     0% {
         filter: drop-shadow(0 0 10px #4ec7807e);
         color: #67df99;
     }
     100% {
-        filter: drop-shadow(0 0 13px #afffd7);
+        filter: drop-shadow(0 0 13px #afffd785);
         color: #90ffbe;
+    }
+}
+
+@keyframes glowAnimationRed {
+    0% {
+        filter: drop-shadow(0 0 10px #dd3240af);
+        color: #F23645;
+    }
+    100% {
+        filter: drop-shadow(0 0 13px #f15260cb);
+        color: #ff4f5d;
     }
 }
 
@@ -316,7 +327,7 @@ span.size-medio{
     font-size: 0.9em;
     color: #88ffba;
     filter: drop-shadow(0 0 13px #4ec7807e);
-    animation: glowAnimation 1s infinite alternate;
+    animation: glowAnimationGreen 1s infinite alternate;
 }
 
 .crypto-slot .crypto-code{
@@ -423,8 +434,10 @@ span.size-medio{
 
 #top-row th:hover {
     transition: .3s;
-    background-color: #51e5ffa1;
-    filter: drop-shadow(0 0 10px #3c67e3);
+    background-color: #089981;
+    color: black;
+    font-weight: bold;
+    filter: drop-shadow(0 0 10px #0899816c);
 }
 
 
@@ -458,13 +471,13 @@ span.size-medio{
     text-align: left;
     color: #089981;
     filter: drop-shadow(0 0 13px #4ec7805e);
-    animation: glowAnimation 1s infinite alternate;
+    animation: glowAnimationGreen 1s infinite alternate;
 }
 .td-det-crypto-price-red{
     text-align: left;
     color: #F23645 !important;
     filter: drop-shadow(0 0 13px #ff2020ab);
-    animation: glowAnimation 1s infinite alternate;
+    animation: glowAnimationRed 1s infinite alternate;
 }
 .td-det-crypto-variation{
     text-align: left;

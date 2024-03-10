@@ -1,9 +1,6 @@
 <?php
 header('Content-Type: application/json');
 
-// Check if prices are already stored in session
-session_start();
-
 $searchText = '%' . $_GET['searchText'] . '%';
 
 $servername = "localhost";
@@ -19,7 +16,7 @@ if ($conn->connect_error) {
 
 $searchText = '%' . $_GET['searchText'] . '%';
 
-$sql = "SELECT coinCode, name, supply, Icon FROM crypto WHERE name LIKE ? OR coinCode LIKE ?";
+$sql = "SELECT coinCode, name, supply, Icon, price, variation FROM crypto WHERE name LIKE ? OR coinCode LIKE ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param('ss', $searchText, $searchText);
 $stmt->execute();
@@ -30,19 +27,13 @@ $crypto_data = [];
 while ($row = $result->fetch_assoc()) {
     $base64Icon = base64_encode($row['Icon']);
 
-    // Accesso corretto al prezzo
-    $price = isset($_SESSION['crypto_prices'][$row['coinCode']]['price']) ? $_SESSION['crypto_prices'][$row['coinCode']]['price'] : 'Price not available'; 
-
-    // Accesso corretto alla percentuale di variazione
-    $percent_change = isset($_SESSION['crypto_prices'][$row['coinCode']]['percent_change']) ? $_SESSION['crypto_prices'][$row['coinCode']]['percent_change'] : 'Percent not available';
-
     $crypto_data[] = [
         'coinCode' => $row['coinCode'],
         'name' => $row['name'],
         'supply' => number_format($row['supply'], 0, '.', ','),
         'Icon' => $base64Icon,
-        'price' => $price,
-        'percent_change' => $percent_change // Aggiungi percentuale di variazione qui
+        'price' => number_format($row['price'],2),
+        'percent_change' => number_format($row['variation'],2)
     ];
 }
 $stmt->close();

@@ -16,12 +16,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 cryptoCode.textContent = crypto.coinCode;
 
                 var cryptoDesc = document.createElement('span');
-                cryptoDesc.textContent = `${crypto.percent_change}%`;
                 
                 if(`${crypto.percent_change}` > 0){
+                    cryptoDesc.textContent = `+${crypto.percent_change}%`;
                     cryptoDesc.className = 'td-det-crypto-price-green';
                 }
                 else{
+                    cryptoDesc.textContent = `${crypto.percent_change}%`;
                     cryptoDesc.className = 'td-det-crypto-price-red';
                 }
 

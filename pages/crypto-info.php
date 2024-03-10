@@ -13,11 +13,11 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$sql = "SELECT Icon FROM crypto WHERE coinCode = ?";
+$sql = "SELECT Icon, price, variation, name FROM crypto WHERE coinCode = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("s", $coinCode);
 $stmt->execute();
-$stmt->bind_result($icon);
+$stmt->bind_result($icon, $price, $variation, $cryptoName);
 $stmt->fetch();
 $stmt->close();
 
@@ -28,6 +28,45 @@ if ($icon) {
     $imgSrc = "data:image/jpeg;base64," . $base64Icon;
 }
 
+$apiKey = 'a3975305-35e9-47e3-baae-a04ab54de810';
+
+$cmcData = fetchDataFromApi($coinCode, $apiKey);
+
+function fetchDataFromApi($coinCode, $apiKey)
+{
+    $cmcUrl = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=$coinCode&convert=USDT";
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $cmcUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt(
+        $ch,
+        CURLOPT_HTTPHEADER,
+        array(
+            'X-CMC_PRO_API_KEY: ' . $apiKey
+        )
+    );
+
+    $cmcResponse = curl_exec($ch);
+    curl_close($ch);
+
+    return json_decode($cmcResponse, true);
+}
+
+// Aggiorna le variabili con dati dall'API
+if (isset($cmcData['data'][$coinCode]['quote']['USDT'])) {
+    $quote = $cmcData['data'][$coinCode]['quote']['USDT'];
+
+    $volume24 = isset($cmcData['data'][$coinCode]['quote']['USDT']['volume_24h']) ? $cmcData['data'][$coinCode]['quote']['USDT']['volume_24h'] : null;
+    $totalSupply = isset($cmcData['data'][$coinCode]['total_supply']) ? $cmcData['data'][$coinCode]['total_supply'] : null;
+    $maxSupply = isset($cmcData['data'][$coinCode]['max_supply']) ? $cmcData['data'][$coinCode]['max_supply'] : null;
+    $circulatingSupply = isset($cmcData['data'][$coinCode]['circulating_supply']) ? $cmcData['data'][$coinCode]['circulating_supply'] : null;
+    $marketCap = isset($cmcData['data'][$coinCode]['quote']['USDT']['market_cap']) ? $cmcData['data'][$coinCode]['quote']['USDT']['market_cap'] : null;
+
+    $percent_change_1h = isset($cmcData['data'][$coinCode]['quote']['USDT']['percent_change_1h']) ? $cmcData['data'][$coinCode]['quote']['USDT']['percent_change_1h'] : null;
+    $percent_change_7d = isset($cmcData['data'][$coinCode]['quote']['USDT']['percent_change_7d']) ? $cmcData['data'][$coinCode]['quote']['USDT']['percent_change_7d'] : null;
+    $percent_change_30d = isset($cmcData['data'][$coinCode]['quote']['USDT']['percent_change_30d']) ? $cmcData['data'][$coinCode]['quote']['USDT']['percent_change_30d'] : null;
+}
 ?>
 
 <!DOCTYPE html>
@@ -62,8 +101,79 @@ if ($icon) {
                 </strong>
             </span>
             <br>
-            <span id="crypto-price" style="float: center; margin-left: 10px;">$69,000.00</span>
-            <span id="crypto-percent" style="float: center; margin-left: 10px;">11.22%</span>
+            <span id="crypto-price" style="float: center; margin-left: 10px;"
+                class="<?php echo ($variation > 0) ? 'crypto-price-green' : 'crypto-price-red'; ?>">
+                $
+                <?php echo number_format($price, 2) ?>
+            </span>
+            <span id="crypto-percent" style="float: center; margin-left: 10px;"
+                class="<?php echo ($variation > 0) ? 'highlight-green' : 'highlight-red'; ?>">
+                <?php echo ($variation > 0) ? '+' . number_format($variation, 2) : number_format($variation, 2); ?>%
+            </span>
+
+            <p class="par-titles"><strong>Details about
+                    <?php echo $cryptoName ?>:
+                </strong></p>
+            <ul>
+                <li class="crypto-info-item">
+                    <p><strong>Volume 24h:</strong></p>
+                    <p class="crypto-info-value">
+                        <?php echo ($volume24 !== null) ? number_format($volume24) : 'N/A'; ?>
+                    </p>
+                </li>
+                <li class="crypto-info-item">
+                    <p><strong>Total Supply:</strong></p>
+                    <p class="crypto-info-value">
+                        <?php echo ($totalSupply !== null) ? number_format($totalSupply) : 'N/A'; ?>
+                    </p>
+                </li>
+                <li class="crypto-info-item">
+                    <p><strong>Max Supply:</strong></p>
+                    <p class="crypto-info-value">
+                        <?php echo ($maxSupply !== null) ? number_format($maxSupply) : 'N/A'; ?>
+                    </p>
+                </li>
+                <li class="crypto-info-item">
+                    <p><strong>Circulating Supply:</strong></p>
+                    <p class="crypto-info-value">
+                        <?php echo ($circulatingSupply !== null) ? number_format($circulatingSupply) : 'N/A'; ?>
+                    </p>
+                </li>
+                <li class="crypto-info-item">
+                    <p><strong>Market Cap:</strong></p>
+                    <p class="crypto-info-value">
+                        <?php echo ($marketCap !== null) ? "$ " . number_format($marketCap) : 'N/A'; ?>
+                    </p>
+                </li>
+            </ul>
+
+            <p class="par-titles"><strong>Performance:</strong></p>
+            <div class="performance-container">
+                <div class="performance-box <?php echo ($percent_change_1h > 0) ? 'positive' : 'negative'; ?>">
+                    <p class="performance-value">
+                        <?php echo ($percent_change_1h !== null) ? (($percent_change_1h > 0) ? '+' : '') . number_format($percent_change_1h, 2) . '%' : 'N/A'; ?>
+                    </p>
+                    <p class="performance-time">1H</p>
+                </div>
+                <div class="performance-box <?php echo ($variation > 0) ? 'positive' : 'negative'; ?>">
+                    <p class="performance-value">
+                        <?php echo ($variation !== null) ? (($variation > 0) ? '+' : '') . number_format($variation, 2) . '%' : 'N/A'; ?>
+                    </p>
+                    <p class="performance-time">1D</p>
+                </div>
+                <div class="performance-box <?php echo ($percent_change_7d > 0) ? 'positive' : 'negative'; ?>">
+                    <p class="performance-value">
+                        <?php echo ($percent_change_7d !== null) ? (($percent_change_7d > 0) ? '+' : '') . number_format($percent_change_7d, 2) . '%' : 'N/A'; ?>
+                    </p>
+                    <p class="performance-time">1W</p>
+                </div>
+                <div class="performance-box <?php echo ($percent_change_30d > 0) ? 'positive' : 'negative'; ?>">
+                    <p class="performance-value">
+                        <?php echo ($percent_change_30d !== null) ? (($percent_change_30d > 0) ? '+' : '') . number_format($percent_change_30d, 2) . '%' : 'N/A'; ?>
+                    </p>
+                    <p class="performance-time">1M</p>
+                </div>
+            </div>
         </div>
 
         <div class="crypto-right">

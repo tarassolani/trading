@@ -1,5 +1,26 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Poppins:wght@400;700&family=Rubik:wght@600;800&display=swap');
 
+@keyframes glowAnimationGreen {
+    0% {
+        filter: drop-shadow(0 0 10px #4ec7807e);
+        color: #67df99;
+    }
+    100% {
+        filter: drop-shadow(0 0 13px #afffd785);
+        color: #90ffbe;
+    }
+}
+@keyframes glowAnimationRed {
+    0% {
+        filter: drop-shadow(0 0 10px #dd3240af);
+        color: #F23645;
+    }
+    100% {
+        filter: drop-shadow(0 0 13px #f15260cb);
+        color: #ff4f5d;
+    }
+}
+
 body {
     font-family: 'Poppins', sans-serif;
     background-color: black;
@@ -284,8 +305,6 @@ nav .top-right-links a:hover {
     border-left: none;
 }
 
-
-
 #chart-container {
     transition: .3s;
     height: 100%;
@@ -294,4 +313,99 @@ nav .top-right-links a:hover {
 #chart-container:hover {
     filter: drop-shadow(0 0 50px rgba(53, 53, 53, 0.5));
     transition: .2s;
+}
+
+.highlight-green {
+    background-color: #089981;
+    border-radius: 5px;
+    padding: 2px 5px;
+}
+
+.highlight-red {
+    background-color: #F23645;
+    border-radius: 5px;
+    padding: 2px 5px;
+}
+
+.crypto-price-green{
+    text-align: left;
+    color: #089981;
+    filter: drop-shadow(0 0 13px #4ec7805e);
+    animation: glowAnimationGreen 1s infinite alternate;
+}
+.crypto-price-red{
+    text-align: left;
+    color: #F23645 !important;
+    filter: drop-shadow(0 0 13px #ff2020ab);
+    animation: glowAnimationRed 1s infinite alternate;
+}
+
+.crypto-info-item {
+    display: flex;
+    justify-content: space-between;
+    margin-left: -30px;
+    margin-bottom: -15px;
+}
+
+.crypto-info-value {
+    margin-right: 10px;
+}
+
+.par-titles{
+    margin-top: 25px;
+    margin-bottom: -15px;
+    text-decoration: underline;
+    font-size: 1.05em;
+}
+
+.performance-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+    margin-right: -5px;
+}
+
+.performance-box {
+    width: calc(33.33% - 10px);
+    padding: -2px;
+    border-radius: 12px;
+    text-align: center;
+    color: white;
+    margin-right: 5px;
+}
+
+.positive {
+    background-color: #089981;
+    filter: drop-shadow(0 0 10px #08998149);
+    transition: .3s;
+}
+
+.negative {
+    background-color: #F23645;
+    filter: drop-shadow(0 0 10px #fa435231);
+    transition: .3s;
+}
+
+.positive:hover {
+    background-color: #089981;
+    color: black;
+    filter: drop-shadow(0 0 18px #08998149);
+    transition: .2s;
+}
+
+.negative:hover {
+    background-color: #F23645;
+    color: black;
+    filter: drop-shadow(0 0 18px #fa435231);
+    transition: .2s;
+}
+
+.performance-value {
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: -20px;
+}
+
+.performance-time {
+    font-size: 16px;
 }

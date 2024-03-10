@@ -48,12 +48,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const td5 = tr.insertCell();
             const span = document.createElement('span');
-            span.textContent = `${crypto.percent_change}%`; 
-
             if(`${crypto.percent_change}` > 0){
+                span.textContent = `+${crypto.percent_change}%`;
                 span.classList.add('highlight-green');
             }
             else{
+                span.textContent = `${crypto.percent_change}%`;
                 span.classList.add('highlight-red');
             }
             td5.appendChild(span); 
