@@ -1,19 +1,9 @@
 <?php
+include 'connect-to-db.php';
 header('Content-Type: application/json');
 
 // Check if prices are already stored in session
 session_start();
-// Fetch symbols from your database
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "dbRegolare";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
 
 $sql = "SELECT coinCode FROM crypto";
 $result = $conn->query($sql);

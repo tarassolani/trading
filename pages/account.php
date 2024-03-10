@@ -1,18 +1,8 @@
 <?php
+include 'connect-to-db.php';
 session_start();
 if (isset($_COOKIE['login-info']) || isset($_SESSION['login-info'])) {
     $username = isset($_SESSION['login-info']) ? $_SESSION['login-info'] : $_COOKIE['login-info'];
-
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "dbRegolare";
-
-    $conn = new mysqli($servername, $username, $password, $dbname);
-
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
 
     $username = isset($_SESSION['login-info']) ? $_SESSION['login-info'] : $_COOKIE['login-info'];
 
@@ -29,6 +19,21 @@ if (isset($_COOKIE['login-info']) || isset($_SESSION['login-info'])) {
         $userData = $result->fetch_assoc();
     } else {
         $userData = null;
+    }
+
+    // Query per ottenere l'IBAN dell'account bancario associato all'utente
+    $sql_iban = "SELECT iban FROM BankAccount WHERE username = ?";
+    $stmt_iban = $conn->prepare($sql_iban);
+    $stmt_iban->bind_param("s", $_SESSION['login-info']);
+    $stmt_iban->execute();
+    $result_iban = $stmt_iban->get_result();
+
+    // Estrai l'IBAN se esiste
+    if ($result_iban->num_rows > 0) {
+        $iban_row = $result_iban->fetch_assoc();
+        $iban = $iban_row['iban'];
+    } else {
+        $iban = null; // Imposta IBAN su null se l'utente non ha un account bancario associato
     }
 
     $stmt->close();
@@ -59,7 +64,7 @@ if (isset($_COOKIE['login-info']) || isset($_SESSION['login-info'])) {
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <script src="../js/account.js"></script>
     <script src="../js/load-users.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 
+    <script src="../js/bank-transactions.js"></script>
     <title>Account dashboard</title>
 </head>
 
@@ -90,7 +95,7 @@ if (isset($_COOKIE['login-info']) || isset($_SESSION['login-info'])) {
             </div>
 
             <script>
-            <?php if (!empty($walletContent)): ?>
+            <?php if (!empty($userData['hash'])): ?>
                 var btnCopy = document.getElementById('btn-inviz');
                 btnCopy.style.visibility = "visible";
             <?php endif; ?>
@@ -105,38 +110,20 @@ if (isset($_COOKIE['login-info']) || isset($_SESSION['login-info'])) {
 
     <div class="account-balance">
         <h3>Account Balance</h3>
-        <div class="chart-container" style="height: 300px;">
-            <span id="total-balance">1000 USDT</span>
-            <canvas id="myChart"></canvas> 
+        <span id="total-balance">0 USDT</span>
+        <div style="margin-top: 15px">
+            <?php if ($iban === null): ?>
+                <!-- Mostra il pulsante "Link bank account" solo se l'utente non ha un conto bancario collegato -->
+                <button id="link-bank-account-button" onclick="linkBankAccount()">Link bank account</button>
+            <?php else: ?>
+                <!-- Mostra i pulsanti di deposito e prelievo se l'utente ha un conto bancario collegato -->
+                <div id="buttons">
+                    <button class="transaction-button" id="deposit-button" onclick="transaction('deposit')">Deposit</button>
+                    <button class="transaction-button" id="withdraw-button" onclick="transaction('withdraw')">Withdraw</button>
+                </div>
+            <?php endif; ?>
         </div>
-
-        <script>
-            var data = {
-                labels: ["1", "2", "3", "4", "5", "6", "7"], 
-                datasets: [{
-                    label: "",
-                    data: [10, 20, 30, 40, 50, 60, 70],
-                    backgroundColor: ["#3366ff", "#3399ff", "#33ccff", "#33ffff", "#66ffff", "#99ffff", "#ccffff"],
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    tension: 0.4,
-                }]
-            };
-
-            var ctx = document.getElementById('myChart').getContext('2d'); 
-            var myChart = new Chart(ctx, {
-                type: 'line',
-                data: data,
-                options: {
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    }
-                }
-            });
-        </script>
     </div>
-
 
     <div class="positions">
         <h3>Positions</h3>

@@ -1,18 +1,8 @@
 <?php
+include 'connect-to-db.php';
 header('Content-Type: application/json');
 
 session_start();
-
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "dbregolare";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
 
 $sql = "SELECT coinCode, Icon FROM crypto WHERE name='Solana' OR name='Bitcoin' OR name='Ethereum';";
 $result = $conn->query($sql);

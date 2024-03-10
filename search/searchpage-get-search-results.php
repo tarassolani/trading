@@ -1,21 +1,11 @@
 <?php
+include 'connect-to-db.php';
 header('Content-Type: application/json');
 
 // Check if prices are already stored in session
 session_start();
 
 $searchText = '%' . $_GET['searchText'] . '%';
-
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "dbRegolare";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
 
 $searchText = '%' . $_GET['searchText'] . '%';
 

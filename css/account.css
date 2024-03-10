@@ -212,7 +212,7 @@ button {
 }
 
 button:hover {
-    background-color: #222222;
+    background-color: #595858;
     filter: drop-shadow(0 0 15px rgba(48, 48, 48, 0.5));
     transition: .2s;
 }
@@ -369,13 +369,35 @@ button:hover {
 
 .search-bar-right-holder {
     position: absolute;
-    top: 20px;
+    top: 12px;
     right: 12px;
 }
 
 td{
     padding-left: 10px;
     padding-right: 10px;
+}
+
+.search-bar-wide {
+    display: flex;
+    align-items: center;
+    background-color: #1d1d1d;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.search-input {
+    flex: 1;
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 16px;
+    padding: 5px;
+    outline: none;
+}
+
+.confirm-button{
+    margin-left: 20px;
 }
 
 @keyframes spin {
