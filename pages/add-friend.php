@@ -1,20 +1,10 @@
 <?php
+include 'connect-to-db.php';
 header('Content-Type: application/json');
 
 session_start();
 
 $username = $_GET['username'];
-
-$servername = "localhost";
-$db_username = "root";
-$password = "";
-$dbname = "dbRegolare";
-
-$conn = new mysqli($servername, $db_username, $password, $dbname);
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
 
 // Controllo se l'amicizia esiste già
 $sql_check_friendship = "SELECT * FROM Friends WHERE (friend1 = ? AND friend2 = ?) OR (friend1 = ? AND friend2 = ?)";

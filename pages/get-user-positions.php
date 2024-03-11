@@ -18,7 +18,7 @@ if (isset($_COOKIE['login-info']) || isset($_SESSION['login-info'])) {
     //Poi, ottengo le informazioni sulla crypto e l'amount di ogni posizione
     $sql = "SELECT p.crypto, c.name, c.Icon, c.price, c.variation, p.amount 
             FROM position p
-            INNER JOIN crypto c ON p.crypto = c.coinCode
+            INNER JOIN Crypto c ON p.crypto = c.coinCode
             WHERE p.wallet = ?";
     
     $stmt = $conn->prepare($sql);

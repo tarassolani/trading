@@ -5,12 +5,13 @@
 //Successivamente, ogni 10 secondi, si aggiornano tutti i dati (a questo punto non vengono fatte query verso il database,
 //per non appesantire il tutto: prezzo e variazione 24h si ottengono direttamente dall'API, mentre il database viene
 //aggiornato soltanto quando vengono effettuate ricerche)
+include 'connect-to-db.php';
+session_start();
+
 $coinCode = isset($_GET["coinCode"]) ? strtoupper($_GET["coinCode"]) : "";
 $chartName = $coinCode . "USDT";
 
-session_start();
-
-include 'connect-to-db.php';
+$username = isset($_SESSION['login-info']) ? $_SESSION['login-info'] : $_COOKIE['login-info'];
 
 $sql = "SELECT Icon, price, variation, name FROM crypto WHERE coinCode = ?";
 $stmt = $conn->prepare($sql);
@@ -88,8 +89,11 @@ if (isset($cmcData['data'][$coinCode]['quote']['USDT'])) {
         <a id="logo" href="../index.php">Regolare.com</a>
 
         <div class="top-right-links">
-            <a href="../pages/signin.php"><strong>Sign in</strong></a> or <a href="../pages/signup.html"><strong>Sign
-                    up</strong></a>
+        <?php if ($username): ?>
+            <strong>Hello <a href="account.php"><?php echo $username; ?></a></strong>
+        <?php else: ?>
+            <a href="pages/signin.php"><strong>Sign in</strong></a> or <a href="pages/signup.html"><strong>Sign up</strong></a>
+        <?php endif; ?>
         </div>
     </nav>
 

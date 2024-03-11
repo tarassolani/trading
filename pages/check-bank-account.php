@@ -74,11 +74,9 @@ if ($type === 'deposit') { //Nel caso debba depositare
             }
         } else { //Se non esiste ancora una posizione
             //Crea una nuova posizione in USDT
-            $stmt_create_position = $conn->prepare("INSERT INTO position (positionId, crypto, wallet, amount) VALUES (?, 'USDT', ?, ?)");
+            $stmt_create_position = $conn->prepare("INSERT INTO position (crypto, wallet, amount) VALUES ('USDT', ?, ?)");
 
-            $newPositionId = uniqid(); //Crea un ID per identificare la posizione
-
-            $stmt_create_position->bind_param("ssd", $newPositionId, $wallet_hash, $amount);
+            $stmt_create_position->bind_param("sd", $wallet_hash, $amount);
 
             if (!$stmt_create_position->execute()) {
                 throw new Exception("Error creating position: " . $stmt_create_position->error);

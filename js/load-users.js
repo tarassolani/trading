@@ -72,11 +72,23 @@ function addFriend(friend){
 
     const td2 = tr.insertCell();
 
+    const span1 = document.createElement("span");
+    span1.textContent = "payments";
+    span1.classList.add("material-symbols-outlined");
+
+    td2.appendChild(span1);
+
+    span1.addEventListener('click', function() {
+        sendCrypto(friend);
+    });
+
+    const td3 = tr.insertCell();
+
     const span = document.createElement("span");
     span.textContent = "group_remove";
     span.classList.add("material-symbols-outlined");
 
-    td2.appendChild(span);
+    td3.appendChild(span);
 
     span.addEventListener('click', function() {
         removeFriendDB(friend);
@@ -112,5 +124,29 @@ function removeFriend(friend) {
         p.textContent = "You have no friends right now";
 
         table.appendChild(p);
+    }
+}
+
+function sendCrypto(friend) {
+    const amountToSend = prompt("Inserisci l'importo da inviare:");
+
+    if (amountToSend !== null && amountToSend !== "") {
+        fetch(`../pages/send-crypto.php?username=${friend}&amount=${amountToSend}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Errore nella richiesta.');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.error) {
+                    alert("Errore: " + data.error);
+                } else {
+                    alert("Pagamento inviato con successo!");
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    } else {
+        alert("Inserisci un importo valido!");
     }
 }

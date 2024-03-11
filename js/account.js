@@ -131,10 +131,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     //Funzione che pulisce i risultati di ricerca, quando l'input è vuoto
     function clearSearchResults() {
-        searchResultsContainer.innerHTML = '';
-        searchResultsContainer.style.visibility = "hidden";
+        searchResultsContainer.innerHTML = '<tr id="top-row"><th colspan="3" id="th-crypto-img">Crypto coin</th><th id="th-crypto-price">Price</th><th id="th-crypto-variation">24h variation</th><th id="th-crypto-supply">Amount</th></tr>';
     }
-
-
-
 });
