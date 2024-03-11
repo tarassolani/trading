@@ -103,34 +103,54 @@ h1 {
 }
 
 #left-div {
-    width: 50%;
+    width: 60%;
     float: left;
 }
 
 #right-div {
-    width: 50%;
+    width: 40%;
     float: left;
 }
 
 .account-info {
     overflow: hidden; /* Aggiungi overflow hidden per evitare problemi di layout */
+    padding-left: 10px;
 }
 
-.account-info,
-.account-balance,
-.friends,
-.positions {
+.account-balance{
+    padding-left: 15px;
+}
+
+.dashboard-table{
+    border-spacing: 20px;
     width: 80%;
-    background: transparent;
-    border: 2px solid rgba(255, 255, 255, .2);
-    backdrop-filter: blur(20px);
-    box-shadow: 0 0 10px rgba(0, 0, 0, .2);
-    border-radius: 10px;
-    padding: 20px;
     margin-left: auto;
     margin-right: auto;
-    margin-bottom: 30px;
 }
+
+#account-info-cell{
+    width: 70%;
+}
+
+
+.dashboard-table .dashboard-cell{
+    background-color: rgba(7, 7, 7, 1);
+    border: 1px solid rgb(34, 34, 34);
+    border-radius: 10px;
+    padding: 20px;
+    transition: .3s ease-in-out;
+}
+
+.dashboard-table .dashboard-cell:hover{
+    filter: drop-shadow(0 0 50px rgba(32, 32, 32, 0.5));
+    background-color: rgb(15, 15, 15);
+    transition: .2s ease-in-out;
+}
+
+.friends tr{
+    
+}
+
 
 .account-info h2,
 .account-info p,
@@ -141,7 +161,11 @@ h1 {
 
 .account-info h3{
     display: inline-block;
-    margin-top: -5px;
+    margin-top: -10px;
+}
+
+.positions, .friends h3{
+    padding-left: 12px;
 }
 
 .copy-btn{
@@ -153,6 +177,7 @@ h1 {
 .account-info h2 {
     font-size: 24px;
     margin-bottom: 10px;
+    padding-top: 10px;
 }
 
 #account-dashboard{
@@ -160,7 +185,13 @@ h1 {
     font-size: 2.5em;
     vertical-align: middle;
     text-align: left;
-    margin-left: 9%;
+}
+
+#div-account-dashboard{
+    width: 78%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: -40px;
 }
 
 .account-info p {
@@ -170,6 +201,10 @@ h1 {
 .wallet-info,
 .chart-container {
     margin-top: 20px;
+}
+
+.wallet-info{
+    margin-top: -10px;
 }
 
 .hash-container {
@@ -271,6 +306,13 @@ button:hover {
     text-align: center;
     width: 4%;
 }
+.crypto-img {
+    width: 30px;
+    height: auto;
+    margin-right: 10px;
+    margin-left: 2px;
+    vertical-align: middle;
+}
 .td-det-crypto-code{
     text-align: left;
     font-weight: bold;
@@ -357,6 +399,7 @@ button:hover {
 #already-friend {
     float: left;
     width: 100px;
+    margin-left: 20px;
 }
 
 #friends-table{
@@ -366,9 +409,13 @@ button:hover {
 
 #no-friends{
     float: left;
+    padding-left: 12px;
+    margin-top: -2px;
 }
 
 .search-bar-right-holder {
+    margin-top: 50px;
+    width: 40%;
     position: absolute;
     top: 12px;
     right: 12px;
@@ -404,4 +451,65 @@ td{
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+.transaction-button{
+    color: white;
+    border-radius: 10px;
+    padding: 10px 20px;
+    background-color: transparent;
+    transition: .3s;
+    margin-right: 10px;
+}
+
+#deposit-button{
+    background-color: #089981;
+    filter: drop-shadow(0 0 10px #0899816c);
+    transition: .3s;
+}
+
+#withdraw-button{
+    background-color: #F23645;
+    filter: drop-shadow(0 0 10px #f236466c);
+    transition: .3s;
+}
+
+#deposit-button:hover{
+    background-color: #089981;
+    color: black;
+    filter: drop-shadow(0 0 18px #0dbb9e63);
+    transition: .2s;
+}
+
+#withdraw-button:hover{
+    background-color: #F23645;
+    color: black;
+    filter: drop-shadow(0 0 18px #fa435250);
+    transition: .2s;
+}
+
+#friends-table{
+    border-collapse: collapse;
+    margin-top: 35px;
+}
+
+#left-title, #right-title{
+    display: inline;
+}
+
+#left-title{
+    float: left;
+    vertical-align: middle;
+}
+
+#right-title{
+    float: right;
+    vertical-align: middle;
+    padding-right: 15px;
+}
+
+#friend-titles{
+    width: 100%;
+    height: 50px;
+    padding-bottom: 20px;
 }
