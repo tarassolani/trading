@@ -66,8 +66,6 @@ if (isset($cmcData['data'][$coinCode]['quote']['USDT'])) {
     $percent_change_7d = isset($cmcData['data'][$coinCode]['quote']['USDT']['percent_change_7d']) ? $cmcData['data'][$coinCode]['quote']['USDT']['percent_change_7d'] : null;
     $percent_change_30d = isset($cmcData['data'][$coinCode]['quote']['USDT']['percent_change_30d']) ? $cmcData['data'][$coinCode]['quote']['USDT']['percent_change_30d'] : null;
 }
-
-$amount = 0; //Imposto amount a 0 (così la richiesta AJAX non dà errori nel caso non abbia fatto il login)
 ?>
 
 <!DOCTYPE html>
@@ -81,33 +79,11 @@ $amount = 0; //Imposto amount a 0 (così la richiesta AJAX non dà errori nel ca
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <title>Regolare.com - Crypto Info</title>
 
-    <script>
-        //Richiesta AJAX
-        function updateCryptoInfo() {
-            var imgSrc = "<?php echo $imgSrc; ?>";
-            var cryptoName = "<?php echo $cryptoName; ?>";
-            var amount = "<?php echo $amount; ?>";
-
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    document.getElementById("crypto-info-container").innerHTML = this.responseText;
-                }
-            };
-            //Nella richiesta AJAX, passo come parametri GET il coinCode, l'immagine crypto, il nome crypto e la quantita di crypto, se posseduta
-            //coinCode serve per ottenere i dati dall'API nel file php; l'immagine, nome crypto e quantita sono dati che non posso ottenere se non accedo al database
-            xhttp.open("GET", "update-crypto-info.php?coinCode=<?php echo $coinCode; ?>&imgSrc=" + encodeURIComponent(imgSrc) + "&cryptoName=" + encodeURIComponent(cryptoName) + "&amount=" + amount, true);
-            xhttp.send();
-        }
-
-        setInterval(updateCryptoInfo, 10000); //L'aggiornamento delle informazioni avviene ogni 10 secondi
-    </script>
-
 </head>
 
 <body>
     <nav>
-        <div id="menu-icon" class="material-symbols-outlined">&#xe5d2;</div>
+        <div id="menu-icon" class="material-symbols-outlined" onclick="window.open('../search/search.php', '_self')">&#xe8b6;</div>
 
         <a id="logo" href="../index.php">Regolare.com</a>
 
@@ -210,10 +186,10 @@ $amount = 0; //Imposto amount a 0 (così la richiesta AJAX non dà errori nel ca
                 <?php
 
                 //Se il login è stato effettuato, stampo anche i dati relativi alla crypto dell'utente
-                if (isset($_SESSION['user-info']) || isset($_COOKIE['user-info'])) {
+                if (isset($_SESSION['login-info']) || isset($_COOKIE['login-info'])) {
                     include 'connect-to-db.php';
 
-                    $username = isset($_COOKIE['user-info']) ? $_COOKIE['user-info'] : (isset($_SESSION['user-info']) ? $_SESSION['user-info'] : '');
+                    $username = isset($_COOKIE['login-info']) ? $_COOKIE['login-info'] : (isset($_SESSION['login-info']) ? $_SESSION['login-info'] : '');
 
                     //Query per ottenere la quantità di crypto posseduta
                     $query = "SELECT p.amount FROM position p 
@@ -227,11 +203,11 @@ $amount = 0; //Imposto amount a 0 (così la richiesta AJAX non dà errori nel ca
                     $stmt->bind_result($amount);
                     $stmt->fetch();
 
-                    $amount = ($amount !== null) ? $amount : 0; //Se l'utente non ha posizioni relative a questa crypto, amount è 0
-
+                    $amount = (isset($amount)) ? $amount : 0; //Se l'utente non ha posizioni relative a questa crypto, amount è 0
+                
                     $stmt->close();
 
-                    $valueInUSDT = $amount * $price; //Valore crypto in USDT
+                    $valueInUSDT = ($amount !== null) ? $amount * $price : 0;
 
                     $conn->close();
 
@@ -245,13 +221,13 @@ $amount = 0; //Imposto amount a 0 (così la richiesta AJAX non dà errori nel ca
                             <li class="crypto-info-item">
                                 <p><strong>Amount:</strong></p>
                                 <p class="crypto-info-value">
-                                    <?php echo ($amount !== 0) ? number_format($amount) : 'N/A'; ?>
+                                    <?php echo number_format($amount, 2) ?>
                                 </p>
                             </li>
                             <li class="crypto-info-item">
                                 <p><strong>Value in USDT:</strong></p>
                                 <p class="crypto-info-value">
-                                    <?php echo ($valueInUSDT !== 0) ? number_format($valueInUSDT, 2) : 'N/A'; ?>
+                                    <?php echo number_format($valueInUSDT, 2) ?>
                                 </p>
                             </li>
                         </ul>
@@ -260,8 +236,6 @@ $amount = 0; //Imposto amount a 0 (così la richiesta AJAX non dà errori nel ca
                 }
                 ?>
             </div>
-
-
         </div>
 
         <!-- GRAFICO -->
@@ -309,6 +283,8 @@ $amount = 0; //Imposto amount a 0 (così la richiesta AJAX non dà errori nel ca
                         <input type="number" id="sell-amount" value="10" min="1" step="10" placeholder="Amount">
                         <button class="increment-button" onclick="increment('sell-amount')">+</button>
                     </div>
+
+                    <span class="error-message good">Not enough USDT in your account!</span>
                 </div>
             </div>
 
@@ -323,7 +299,28 @@ $amount = 0; //Imposto amount a 0 (così la richiesta AJAX non dà errori nel ca
                     var input = document.getElementById(id);
                     input.stepDown();
                 }
+
+                //Richiesta AJAX
+                function updateCryptoInfo() {
+                    var imgSrc = "<?php echo $imgSrc; ?>";
+                    var cryptoName = "<?php echo $cryptoName; ?>";
+                    var amount = "<?php echo (isset($amount)) ? $amount : 0; ?>";
+
+                    var xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function () {
+                        if (this.readyState == 4 && this.status == 200) {
+                            document.getElementById("crypto-info-container").innerHTML = this.responseText;
+                        }
+                    };
+                    //Nella richiesta AJAX, passo come parametri GET il coinCode, l'immagine crypto, il nome crypto e la quantita di crypto, se posseduta
+                    //coinCode serve per ottenere i dati dall'API nel file php; l'immagine, nome crypto e quantita sono dati che non posso ottenere se non accedo al database
+                    xhttp.open("GET", "update-crypto-info.php?coinCode=<?php echo $coinCode; ?>&imgSrc=" + encodeURIComponent(imgSrc) + "&cryptoName=" + encodeURIComponent(cryptoName) + "&amount=" + amount, true);
+                    xhttp.send();
+                }
+
+                setInterval(updateCryptoInfo, 10000); //L'aggiornamento delle informazioni avviene ogni 10 secondi
             </script>
+
         </div>
     </section>
 

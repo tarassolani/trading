@@ -14,7 +14,7 @@
 
 <body>
     <nav>
-        <div id="menu-icon" class="material-symbols-outlined">&#xe5d2;</div>
+        <div id="menu-icon" class="material-symbols-outlined">&#xe8b6;</div>
 
         <a id="logo" href="../index.php">Regolare.com</a>
 

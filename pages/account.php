@@ -84,7 +84,7 @@ if (isset($_COOKIE['login-info']) || isset($_SESSION['login-info'])) {
 
 <body>
     <nav>
-        <div id="menu-icon" class="material-symbols-outlined">&#xe5d2;</div>
+        <div id="menu-icon" class="material-symbols-outlined" onclick="window.open('../search/search.php', '_self')">&#xe8b6;</div>
 
         <a id="logo" href="../index.php">Regolare.com</a>
 

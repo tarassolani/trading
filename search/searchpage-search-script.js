@@ -3,21 +3,35 @@
 
 document.addEventListener('DOMContentLoaded', function () {
     const searchInput = document.querySelector('.search-input');
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const searchText = urlParams.get('search');
+
+    console.log(searchText);
+    //Inserisco nella searchbox il testo della searchbox precedente
+    if (searchText) {
+        searchInput.value = searchText;
+        getSearchResults(searchText);
+    }
     const searchResultsContainer = document.getElementById('search-results-wider');
 
     searchInput.addEventListener('input', function () {
-        var searchText = searchInput.value.trim();
-        if (searchText.length > 0) {
-            fetch(`searchpage-get-search-results.php?searchText=${searchText}`) //Chiamata al file php che ritorna l'encode in json di tutte le informazioni
-                .then(response => response.json())
-                .then(data => {
-                    displaySearchResults(data);
-                })
-                .catch(error => console.error('Error:', error));
+        var currentSearchText = searchInput.value.trim();
+        if (currentSearchText.length > 0) {
+            getSearchResults(currentSearchText);
         } else {
             clearSearchResults();
         }
     });
+
+    function getSearchResults(searchText){
+        fetch(`searchpage-get-search-results.php?searchText=${searchText}`) //Chiamata al file php che ritorna l'encode in json di tutte le informazioni
+        .then(response => response.json())
+        .then(data => {
+            displaySearchResults(data);
+        })
+        .catch(error => console.error('Error:', error));
+    }
 
     //Funzione che mostra tutti i risultati di ricerca
     function displaySearchResults(results) {
