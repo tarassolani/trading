@@ -389,14 +389,14 @@ nav .top-right-links a:hover {
 .positive:hover {
     background-color: #089981;
     color: black;
-    filter: drop-shadow(0 0 18px #08998149);
+    filter: drop-shadow(0 0 18px #09bb9d5d);
     transition: .2s;
 }
 
 .negative:hover {
     background-color: #F23645;
     color: black;
-    filter: drop-shadow(0 0 18px #fa435231);
+    filter: drop-shadow(0 0 18px #ff3b4b6b);
     transition: .2s;
 }
 
@@ -408,4 +408,12 @@ nav .top-right-links a:hover {
 
 .performance-time {
     font-size: 16px;
+}
+
+#crypto-name{
+    font-size: 1.3em;
+}
+
+#marketcap-chart{
+    height: 100px;
 }

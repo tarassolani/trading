@@ -1,18 +1,9 @@
 <?php
 header('Content-Type: application/json');
 
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "dbRegolare";
+include 'connect-to-db.php';
 
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-$sql = "SELECT coinCode FROM crypto";
+$sql = "SELECT coinCode FROM crypto"; //Seleziona tutte le crypto dal database
 $result = $conn->query($sql);
 
 $coinCodes = [];
@@ -22,7 +13,7 @@ while ($row = $result->fetch_assoc()) {
 
 $conn->close();
 
-// Fetch prices from CoinMarketCap API
+//Inizio API CoinMarketCap
 $apiKey = 'a3975305-35e9-47e3-baae-a04ab54de810';
 $coinCodeString = implode(',', $coinCodes);
 
@@ -37,18 +28,14 @@ $cmcResponse = curl_exec($ch);
 curl_close($ch);
 
 $cmcData = json_decode($cmcResponse, true);
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+//Fine API CoinMarketCap
 
 foreach ($cmcData['data'] as $symbol => $data) {
+    //Prende i valori del prezzo e di variazione di prezzo nell'ultimo giorno
     $price = isset($data['quote']['USDT']['price']) ? $data['quote']['USDT']['price'] : null;
     $percent_change_24h = isset($data['quote']['USDT']['percent_change_24h']) ? $data['quote']['USDT']['percent_change_24h'] : null;
 
-    // Aggiorna i valori nel database
+    //Aggiorna i valori nel database
     $updateSql = "UPDATE crypto SET price = ?, variation = ? WHERE coinCode = ?";
     $updateStmt = $conn->prepare($updateSql);
     $updateStmt->bind_param('dss', $price, $percent_change_24h, $symbol);

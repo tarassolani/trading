@@ -1,26 +1,18 @@
 <?php
+//Questo file viene usato per ottenere le informazioni sulle 3 crypto che vengono sempre mostrate in home
 header('Content-Type: application/json');
 
 session_start();
 
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "dbregolare";
+include 'connect-to-db.php';
 
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-$sql = "SELECT coinCode, Icon, price, variation FROM crypto WHERE name='Solana' OR name='Bitcoin' OR name='Ethereum';";
+$sql = "SELECT coinCode, Icon, price, variation FROM crypto WHERE name='Solana' OR name='Bitcoin' OR name='Ethereum';";//Seleziona le informazioni necessarie per ogni crypto
 $result = $conn->query($sql);
 
 $crypto_data = [];
 
 while ($row = $result->fetch_assoc()) {
-    $base64Icon = base64_encode($row['Icon']);
+    $base64Icon = base64_encode($row['Icon']); //Encode dell'immagine per poterla usare come src in html
     
     $crypto_data[] = [
         'coinCode' => $row['coinCode'],

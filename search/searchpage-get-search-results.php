@@ -3,20 +3,9 @@ header('Content-Type: application/json');
 
 $searchText = '%' . $_GET['searchText'] . '%';
 
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "dbRegolare";
+include '../pages/connect-to-db.php';
 
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-$searchText = '%' . $_GET['searchText'] . '%';
-
-$sql = "SELECT coinCode, name, supply, Icon, price, variation FROM crypto WHERE name LIKE ? OR coinCode LIKE ?";
+$sql = "SELECT coinCode, name, supply, Icon, price, variation FROM crypto WHERE name LIKE ? OR coinCode LIKE ?"; //Seleziona le informazioni necessarie per ogni crypto
 $stmt = $conn->prepare($sql);
 $stmt->bind_param('ss', $searchText, $searchText);
 $stmt->execute();
@@ -25,7 +14,7 @@ $result = $stmt->get_result();
 $crypto_data = [];
 
 while ($row = $result->fetch_assoc()) {
-    $base64Icon = base64_encode($row['Icon']);
+    $base64Icon = base64_encode($row['Icon']); //Encode dell'immagine per poterla usare come src in html
 
     $crypto_data[] = [
         'coinCode' => $row['coinCode'],

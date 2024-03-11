@@ -8,7 +8,7 @@
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <title>Regolare.com</title>
-    <script src="../js/real-time-prices.js"></script> <!-- NON FUNZIONA NON SO PERCHE CHEPPALLE -->
+    <script src="../js/real-time-prices.js"></script>
     <script src="searchpage-search-script.js"></script>
 </head>
 
@@ -42,9 +42,9 @@
             <th id="th-crypto-variation">
                 24h variation
             </th>
-            <!--<th id="th-crypto-supply">
+            <th id="th-crypto-supply">
                 Supply
-            </th>-->
+            </th>
         </tr>
     </table>
 </body>

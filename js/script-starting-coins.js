@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 var cryptoDesc = document.createElement('span');
                 
-                if(`${crypto.percent_change}` > 0){
+                if(`${crypto.percent_change}` > 0){//Colore del prezzo che cambia in base al segno + o - della variazione percentuale
                     cryptoDesc.textContent = `+${crypto.percent_change}%`;
                     cryptoDesc.className = 'td-det-crypto-price-green';
                 }
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 var cryptoSlotElement = document.createElement('div');
                 cryptoSlotElement.className = 'crypto-slot';
-                cryptoSlotElement.addEventListener("click", () => {
+                cryptoSlotElement.addEventListener("click", () => {//Al click sullo slot, si apre la pagina individuale della crypto
                     window.location.href = `pages/crypto-info.php?coinCode=${crypto.coinCode}`;
                   });
                 cryptoSlotElement.appendChild(cryptoImg);
