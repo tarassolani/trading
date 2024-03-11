@@ -50,15 +50,9 @@ function transaction(type) {
                         removeInput();
                         document.getElementById("buttons").style.display = "inline-block";
 
-                        if(type === 'deposit'){
-                            addPosition(parseFloat(amount).toFixed(2));
-                        }
-                        else{
-                            removePosition(parseFloat(amount).toFixed(2));
-                        }
                     } else {
                         response_div.style.color = "red"
-;                       response_div.textContent = "Error: " + response;
+;                       response_div.textContent = response;
                     }
                 } else {
                     // Gestione degli errori della richiesta AJAX
@@ -98,55 +92,6 @@ function transaction(type) {
     container.appendChild(input);
     container.appendChild(confirmButton);
     container.appendChild(cancelButton);
-}
-
-function addPosition(quantity) {
-    var balance = document.getElementById("total-balance");
-    balance.textContent = (parseFloat(balance.textContent) + parseFloat(quantity)).toString() + " USDT";
-
-    var table = document.getElementById("search-results-wider");
-    var newRow = table.insertRow(-1); // Inserisci una nuova riga alla fine della tabella
-
-    // Esegui la richiesta AJAX al tuo script PHP
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-        // Quando la richiesta ha successo, elabora i dati ottenuti
-        var data = JSON.parse(this.responseText);
-        // Supponendo che data sia un array di oggetti con le informazioni da inserire nella tabella
-        data.forEach(function(item) {
-
-        // Aggiungi le celle alla nuova riga
-        var cell1 = newRow.insertCell(0);
-        var cell2 = newRow.insertCell(1);
-        var cell3 = newRow.insertCell(2);
-        var cell4 = newRow.insertCell(3);
-        var cell5 = newRow.insertCell(4);
-
-        // Inserisci i dati nella nuova riga
-        cell1.innerHTML = item.icon;
-        cell2.textContent = "USDT";
-        cell3.textContent = "Tether USDt";
-        cell4.textContent = quantity;
-        cell5.textContent = item.price;
-        });
-    }
-    };
-    xhttp.open("GET", "add-usdt.php", true);
-    xhttp.send();
-    }
-
-function removePosition() {
-    var balance = document.getElementById("total-balance");
-    balance.textContent = (parseFloat(balance.textContent) - parseFloat(quantity)).toString() + " USDT";
-
-    var table = document.getElementById("search-results-wider");
-    var rowsCount = table.rows.length;
-
-    // Rimuovi l'ultima riga (escludendo l'intestazione)
-    if (rowsCount > 1) {
-        table.deleteRow(-1);
-    }
 }
 
 function removeInput() {

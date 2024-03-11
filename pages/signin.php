@@ -1,5 +1,7 @@
 <?php
-if(isset($_COOKIE['login-info'])) {
+session_start();
+
+if(isset($_COOKIE['login-info']) || isset($_SESSION['login-info'])) {
     header("Location: account.php");
     exit();
 }

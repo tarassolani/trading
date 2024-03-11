@@ -31,7 +31,7 @@ if (isset($_COOKIE['login-info']) || isset($_SESSION['login-info'])) {
         $iban_row = $result_iban->fetch_assoc();
         $iban = $iban_row['iban'];
     } else {
-        $iban = null; // Imposta IBAN su null se l'utente non ha un account bancario associato
+        $iban = null; // Imposta IBAN a null se l'utente non ha un account bancario associato
     }
 
     $stmt->close();
@@ -147,8 +147,7 @@ if (isset($_COOKIE['login-info']) || isset($_SESSION['login-info'])) {
                 <th colspan="3" id="th-crypto">Crypto</th>
                 <th id="th-crypto-price">Price</th>
                 <th id="th-crypto-variation">Variation</th>
-                <th id="th-crypto-supply">Supply</th>
-                <th id="th-crypto-trading">Trading</th>
+                <th id="th-crypto-amount">Amount</th>
             </tr>
         </table>
     </div>

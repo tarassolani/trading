@@ -248,8 +248,8 @@ button:hover {
 
 #top-row th:hover {
     transition: .3s;
-    background-color: #51e5ffa1;
-    filter: drop-shadow(0 0 10px #3c67e3);
+    background-color: #089981;
+    filter: drop-shadow(0 0 10px #087260);
 }
 
 
@@ -262,8 +262,8 @@ button:hover {
 #th-crypto-variation{
     width: 10%;
 }
-#th-crypto-supply{
-    width: 30%;
+#th-crypto-amount{
+    width: 40%;
 }
 
 .td-det-crypto-img{
@@ -289,7 +289,7 @@ button:hover {
     text-align: left;
     color: #88ffba;
 }
-.td-det-crypto-supply{
+.td-det-crypto-amount{
     text-align: right;
     padding-right: 15px;
 }

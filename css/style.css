@@ -18,7 +18,7 @@
 
 .top-right-links a:hover {
    text-decoration: underline;
-   filter: drop-shadow(0 0 30px rgb(110, 214, 255));
+   filter: drop-shadow(0 0 30px #23e6c5a6);
    transition: .4s;
 }
 
