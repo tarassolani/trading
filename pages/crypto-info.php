@@ -67,6 +67,8 @@ if (isset($cmcData['data'][$coinCode]['quote']['USDT'])) {
     $percent_change_7d = isset($cmcData['data'][$coinCode]['quote']['USDT']['percent_change_7d']) ? $cmcData['data'][$coinCode]['quote']['USDT']['percent_change_7d'] : null;
     $percent_change_30d = isset($cmcData['data'][$coinCode]['quote']['USDT']['percent_change_30d']) ? $cmcData['data'][$coinCode]['quote']['USDT']['percent_change_30d'] : null;
 }
+
+$amount = 0; //Imposto amount a 0 (così la richiesta AJAX non dà errori nel caso non abbia fatto il login)
 ?>
 
 <!DOCTYPE html>
@@ -80,11 +82,33 @@ if (isset($cmcData['data'][$coinCode]['quote']['USDT'])) {
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <title>Regolare.com - Crypto Info</title>
 
+    <script>
+        //Richiesta AJAX
+        function updateCryptoInfo() {
+            var imgSrc = "<?php echo $imgSrc; ?>";
+            var cryptoName = "<?php echo $cryptoName; ?>";
+            var amount = "<?php echo $amount; ?>";
+
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("crypto-info-container").innerHTML = this.responseText;
+                }
+            };
+            //Nella richiesta AJAX, passo come parametri GET il coinCode, l'immagine crypto, il nome crypto e la quantita di crypto, se posseduta
+            //coinCode serve per ottenere i dati dall'API nel file php; l'immagine, nome crypto e quantita sono dati che non posso ottenere se non accedo al database
+            xhttp.open("GET", "update-crypto-info.php?coinCode=<?php echo $coinCode; ?>&imgSrc=" + encodeURIComponent(imgSrc) + "&cryptoName=" + encodeURIComponent(cryptoName) + "&amount=" + amount, true);
+            xhttp.send();
+        }
+
+        setInterval(updateCryptoInfo, 10000); //L'aggiornamento delle informazioni avviene ogni 10 secondi
+    </script>
+
 </head>
 
 <body>
     <nav>
-        <div id="menu-icon" class="material-symbols-outlined" onclick="window.open('../search/search.php', '_self')">&#xe8b6;</div>
+        <div id="menu-icon" class="material-symbols-outlined">&#xe5d2;</div>
 
         <a id="logo" href="../index.php">Regolare.com</a>
 
@@ -92,7 +116,7 @@ if (isset($cmcData['data'][$coinCode]['quote']['USDT'])) {
         <?php if ($username): ?>
             <strong>Hello <a href="account.php"><?php echo $username; ?></a></strong>
         <?php else: ?>
-            <a href="pages/signin.php"><strong>Sign in</strong></a> or <a href="pages/signup.html"><strong>Sign up</strong></a>
+            <a href="signin.php"><strong>Sign in</strong></a> or <a href="signup.html"><strong>Sign up</strong></a>
         <?php endif; ?>
         </div>
     </nav>
@@ -197,9 +221,9 @@ if (isset($cmcData['data'][$coinCode]['quote']['USDT'])) {
 
                     //Query per ottenere la quantità di crypto posseduta
                     $query = "SELECT p.amount FROM position p 
-              JOIN wallet w ON p.wallet = w.hash 
-              JOIN users u ON w.hash = u.hash 
-              WHERE w.username = ? AND p.crypto = ?";
+                                JOIN wallet w ON p.wallet = w.hash 
+                                JOIN users u ON w.hash = u.hash 
+                                WHERE w.username = ? AND p.crypto = ?";
 
                     $stmt = $conn->prepare($query);
                     $stmt->bind_param('ss', $username, $coinCode);
@@ -207,11 +231,11 @@ if (isset($cmcData['data'][$coinCode]['quote']['USDT'])) {
                     $stmt->bind_result($amount);
                     $stmt->fetch();
 
-                    $amount = (isset($amount)) ? $amount : 0; //Se l'utente non ha posizioni relative a questa crypto, amount è 0
-                
+                    $amount = ($amount !== null) ? $amount : 0; //Se l'utente non ha posizioni relative a questa crypto, amount è 0
+
                     $stmt->close();
 
-                    $valueInUSDT = ($amount !== null) ? $amount * $price : 0;
+                    $valueInUSDT = $amount * $price; //Valore crypto in USDT
 
                     $conn->close();
 
@@ -225,13 +249,13 @@ if (isset($cmcData['data'][$coinCode]['quote']['USDT'])) {
                             <li class="crypto-info-item">
                                 <p><strong>Amount:</strong></p>
                                 <p class="crypto-info-value">
-                                    <?php echo number_format($amount, 2) ?>
+                                    <?php echo ($amount !== 0) ? number_format($amount) : 'N/A'; ?>
                                 </p>
                             </li>
                             <li class="crypto-info-item">
                                 <p><strong>Value in USDT:</strong></p>
                                 <p class="crypto-info-value">
-                                    <?php echo number_format($valueInUSDT, 2) ?>
+                                    <?php echo ($valueInUSDT !== 0) ? number_format($valueInUSDT, 2) : 'N/A'; ?>
                                 </p>
                             </li>
                         </ul>
@@ -240,6 +264,8 @@ if (isset($cmcData['data'][$coinCode]['quote']['USDT'])) {
                 }
                 ?>
             </div>
+
+
         </div>
 
         <!-- GRAFICO -->
@@ -271,26 +297,46 @@ if (isset($cmcData['data'][$coinCode]['quote']['USDT'])) {
             <!-- TradingView Widget END -->
 
             <!-- SEZIONE TRADING -->
-            <div class="buy-sell-container">
-                <div class="buy-sell-buttons">
-                    <a href="#" class="pulsante compra">Buy</a>
-                    <label for="buy-amount" class="dollar-label">$</label>
-                    <div class="custom-number-input">
-                        <button class="decrement-button" onclick="decrement('buy-amount')">-</button>
-                        <input type="number" id="buy-amount" value="10" min="1" step="10" placeholder="Amount">
-                        <button class="increment-button" onclick="increment('buy-amount')">+</button>
-                    </div>
-                    <a href="#" class="pulsante vendi">Sell</a>
-                    <label for="sell-amount" class="dollar-label">$</label>
-                    <div class="custom-number-input">
-                        <button class="decrement-button" onclick="decrement('sell-amount')">-</button>
-                        <input type="number" id="sell-amount" value="10" min="1" step="10" placeholder="Amount">
-                        <button class="increment-button" onclick="increment('sell-amount')">+</button>
-                    </div>
-
-                    <span class="error-message good">Not enough USDT in your account!</span>
+            <div class="buy-sell-buttons">
+                <a href="#" class="btn-buy" onclick="buyCrypto('<?php echo $coinCode ?>')">Buy</a>
+                <label for="buy-amount" class="dollar-label">$</label>
+                <div class="custom-number-input">
+                    <button class="decrement-button" onclick="decrement('buy-amount')">-</button>
+                    <input type="number" id="buy-amount" value="10" min="1" step="10" placeholder="Amount">
+                    <button class="increment-button" onclick="increment('buy-amount')">+</button>
+                </div>
+                <a href="#" class="btn-sell" onclick="sellCrypto('<?php echo $coinCode ?>')">Sell</a>
+                <label for="sell-amount" class="dollar-label">$</label>
+                <div class="custom-number-input">
+                    <button class="decrement-button" onclick="decrement('sell-amount')">-</button>
+                    <input type="number" id="sell-amount" value="10" min="1" step="10" placeholder="Amount">
+                    <button class="increment-button" onclick="increment('sell-amount')">+</button>
                 </div>
             </div>
+
+            <script>
+                function buyCrypto(coinName) {
+                    const amount = document.getElementById("buy-amount").value;
+                    fetch(`buy-crypto.php?amount=${amount}&coinName=${coinName}`)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                        })
+                        .catch(error => console.error('There was a problem with the fetch operation:', error));
+                }
+
+                function sellCrypto(coinName) {
+                    const amount = document.getElementById("sell-amount").value;
+                    fetch(`sell-crypto.php?amount=${amount}&coinName=${coinName}`)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                        })
+                        .catch(error => console.error('There was a problem with the fetch operation:', error));
+                }
+            </script>
 
             <!-- Script per il funzionamento dei tasti buy e sell -->
             <script>
@@ -303,28 +349,7 @@ if (isset($cmcData['data'][$coinCode]['quote']['USDT'])) {
                     var input = document.getElementById(id);
                     input.stepDown();
                 }
-
-                //Richiesta AJAX
-                function updateCryptoInfo() {
-                    var imgSrc = "<?php echo $imgSrc; ?>";
-                    var cryptoName = "<?php echo $cryptoName; ?>";
-                    var amount = "<?php echo (isset($amount)) ? $amount : 0; ?>";
-
-                    var xhttp = new XMLHttpRequest();
-                    xhttp.onreadystatechange = function () {
-                        if (this.readyState == 4 && this.status == 200) {
-                            document.getElementById("crypto-info-container").innerHTML = this.responseText;
-                        }
-                    };
-                    //Nella richiesta AJAX, passo come parametri GET il coinCode, l'immagine crypto, il nome crypto e la quantita di crypto, se posseduta
-                    //coinCode serve per ottenere i dati dall'API nel file php; l'immagine, nome crypto e quantita sono dati che non posso ottenere se non accedo al database
-                    xhttp.open("GET", "update-crypto-info.php?coinCode=<?php echo $coinCode; ?>&imgSrc=" + encodeURIComponent(imgSrc) + "&cryptoName=" + encodeURIComponent(cryptoName) + "&amount=" + amount, true);
-                    xhttp.send();
-                }
-
-                setInterval(updateCryptoInfo, 10000); //L'aggiornamento delle informazioni avviene ogni 10 secondi
             </script>
-
         </div>
     </section>
 
