@@ -10,8 +10,6 @@ while ($row = $result->fetch_assoc()) {
     $coinCodes[] = $row['coinCode'];
 }
 
-$conn->close();
-
 //Inizio API CoinMarketCap
 $apiKey = 'a3975305-35e9-47e3-baae-a04ab54de810';
 $coinCodeString = implode(',', $coinCodes);
