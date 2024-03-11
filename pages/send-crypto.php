@@ -47,7 +47,14 @@ if ($current_balance < $amount) {
             if (!$stmt_update_balance->execute()) {
                 throw new Exception("Error during transaction: " . $stmt_update_balance->error);
             }
+        }
 
+        $stmt_check_position = $conn->prepare("SELECT positionId, amount FROM position WHERE wallet = ? AND crypto = 'USDT'");
+        $stmt_check_position->bind_param("s", $wallet_hash);
+        $stmt_check_position->execute();
+        $result_check_position = $stmt_check_position->get_result();
+
+        if ($result_check_position->num_rows > 0){
             $stmt_update_balance_receiver = $conn->prepare("UPDATE position 
                                                             INNER JOIN users ON hash = wallet
                                                             SET amount = amount + ?
@@ -56,6 +63,15 @@ if ($current_balance < $amount) {
 
             if (!$stmt_update_balance_receiver->execute()) {
                 throw new Exception("Error during transaction: " . $stmt_update_balance->error);
+            }
+        }
+        else{
+            $stmt_create_position = $conn->prepare("INSERT INTO position (crypto, wallet, amount) VALUES ('USDT', ?, ?)");
+
+            $stmt_create_position->bind_param("sd", $wallet_hash, $amount);
+
+            if (!$stmt_create_position->execute()) {
+                throw new Exception("Error creating position: " . $stmt_create_position->error);
             }
         }
 
