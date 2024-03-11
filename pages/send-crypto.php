@@ -4,7 +4,7 @@ session_start();
 
 $username = isset($_SESSION['login-info']) ? $_SESSION['login-info'] : $_COOKIE['login-info'];
 
-//Query per ottenere la hash del wallet dall'utente corrente
+//Query per ottenere la hash del wallet dell'utente corrente
 $stmt_get_wallet_hash = $conn->prepare("SELECT hash FROM users WHERE username = ?");
 $stmt_get_wallet_hash->bind_param("s", $username);
 $stmt_get_wallet_hash->execute();
@@ -15,6 +15,14 @@ $stmt_get_wallet_hash->close();
 $friend = $_GET['username'];
 $amount = $_GET['amount']; //Quantità di USDT interessata dalla transazione
 $amount = floatval($amount);
+
+//Query per ottenere la hash del wallet dell'amico
+$stmt_get_friend_wallet_hash = $conn->prepare("SELECT hash FROM users WHERE username = ?");
+$stmt_get_friend_wallet_hash->bind_param("s", $friend);
+$stmt_get_friend_wallet_hash->execute();
+$stmt_get_friend_wallet_hash->bind_result($friend_wallet_hash);
+$stmt_get_friend_wallet_hash->fetch();
+$stmt_get_friend_wallet_hash->close();
 
 $stmt_check = $conn->prepare("SELECT amount FROM position WHERE wallet = ? AND crypto = 'USDT'");
 $stmt_check->bind_param("s", $wallet_hash);
@@ -31,10 +39,9 @@ if ($current_balance < $amount) {
 
     try {
         if($current_balance == $amount){
-            $stmt_delete_position = $conn->prepare("DELETE position FROM position
-                                                    INNER JOIN users ON hash = wallet
-                                                    WHERE username = ? AND crypto = 'USDT'");
-            $stmt_delete_position->bind_param("s", $username);
+            $stmt_delete_position = $conn->prepare("DELETE FROM position
+                                                    WHERE wallet = ? AND crypto = 'USDT'");
+            $stmt_delete_position->bind_param("s", $wallet_hash);
 
             if (!$stmt_delete_position->execute()) {
                 throw new Exception("Error deleting position: " . $stmt_delete_position->error);
@@ -50,25 +57,24 @@ if ($current_balance < $amount) {
         }
 
         $stmt_check_position = $conn->prepare("SELECT positionId, amount FROM position WHERE wallet = ? AND crypto = 'USDT'");
-        $stmt_check_position->bind_param("s", $wallet_hash);
+        $stmt_check_position->bind_param("s", $friend_wallet_hash);
         $stmt_check_position->execute();
         $result_check_position = $stmt_check_position->get_result();
 
         if ($result_check_position->num_rows > 0){
             $stmt_update_balance_receiver = $conn->prepare("UPDATE position 
-                                                            INNER JOIN users ON hash = wallet
                                                             SET amount = amount + ?
-                                                            WHERE username = ? AND crypto = 'USDT'");
-            $stmt_update_balance_receiver->bind_param("ds", $amount, $friend);
+                                                            WHERE wallet = ? AND crypto = 'USDT'");
+            $stmt_update_balance_receiver->bind_param("ds", $amount, $friend_wallet_hash);
 
             if (!$stmt_update_balance_receiver->execute()) {
-                throw new Exception("Error during transaction: " . $stmt_update_balance->error);
+                throw new Exception("Error during transaction: " . $stmt_update_balance_receiver->error);
             }
         }
         else{
             $stmt_create_position = $conn->prepare("INSERT INTO position (crypto, wallet, amount) VALUES ('USDT', ?, ?)");
 
-            $stmt_create_position->bind_param("sd", $wallet_hash, $amount);
+            $stmt_create_position->bind_param("sd", $friend_wallet_hash, $amount);
 
             if (!$stmt_create_position->execute()) {
                 throw new Exception("Error creating position: " . $stmt_create_position->error);
