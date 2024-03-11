@@ -6,7 +6,7 @@ session_start();
 $cryptoName = "USDT"; // Imposta il nome della crypto
 
 // Query per ottenere i dati della crypto USDT utilizzando prepared statement
-$query = "SELECT icon, price FROM Crypto WHERE name = ?";
+$query = "SELECT Icon, price FROM Crypto WHERE name = ?";
 $stmt = $conn->prepare($query);
 
 // Verifica se lo statement è stato preparato correttamente

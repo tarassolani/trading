@@ -31,7 +31,8 @@ function createWallet() {
         walletInfo.appendChild(hashContainer);
 
         updateDatabaseWithHash(uniqueHash);
-        
+
+        document.getElementById("btn-inviz").style.visibility = "visible";
     }, 2000);
 
 }

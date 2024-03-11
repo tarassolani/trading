@@ -2,7 +2,7 @@
 include 'connect-to-db.php';
 header('Content-Type: application/json');
 
-$sql = "SELECT coinCode FROM crypto"; //Seleziona tutte le crypto dal database
+$sql = "SELECT coinCode FROM Crypto"; //Seleziona tutte le crypto dal database
 $result = $conn->query($sql);
 
 $coinCodes = [];
@@ -33,9 +33,9 @@ foreach ($cmcData['data'] as $symbol => $data) {
     $percent_change_24h = isset($data['quote']['USDT']['percent_change_24h']) ? $data['quote']['USDT']['percent_change_24h'] : null;
 
     //Aggiorna i valori nel database
-    $updateSql = "UPDATE crypto SET price = ?, variation = ? WHERE coinCode = ?";
+    $updateSql = "UPDATE Crypto SET price = ?, variation = ? WHERE coinCode = ?";
     $updateStmt = $conn->prepare($updateSql);
-    $updateStmt->bind_param('dss', $price, $percent_change_24h, $symbol);
+    $updateStmt->bind_param('dds', $price, $percent_change_24h, $symbol);
     $updateStmt->execute();
     $updateStmt->close();
 }
