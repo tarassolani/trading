@@ -117,6 +117,7 @@ h1 {
 
 .account-info,
 .account-balance,
+.friends,
 .positions {
     width: 80%;
     background: transparent;
@@ -128,7 +129,6 @@ h1 {
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 30px;
-
 }
 
 .account-info h2,
@@ -146,7 +146,9 @@ h1 {
 .copy-btn{
     margin-left: 5px;
 }
-
+#btn-inviz{
+    visibility: hidden;
+}
 .account-info h2 {
     font-size: 24px;
     margin-bottom: 10px;
@@ -172,7 +174,7 @@ h1 {
 .hash-container {
     display: flex;
     align-items: center;
-    width: 80%;
+    width: 40%;
 }
 
 #username{
@@ -186,33 +188,33 @@ h1 {
     background: transparent;
     border: 1px solid #272727;
     border-radius: 5px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
     cursor: pointer;
     transition: .4s;
 }
 
 #wallet-hash:hover {
-    white-space: normal;
-    word-wrap: break-word;
-    max-height: none;
     background-color: #272727;
     transition: .5s;
 }
 
 button {
-    margin-left: 10px;
-    padding: 10px;
-    background-color: #555;
+    padding: 15px;
+    background-color: #222222;
+    font-size: 1.05em;
+    font-weight: bold;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    transition: .3s;
+    vertical-align: middle;
+    text-align: center;
 }
 
 button:hover {
-    background-color: #777;
+    background-color: #595858;
+    filter: drop-shadow(0 0 15px rgba(48, 48, 48, 0.5));
+    transition: .2s;
 }
 
 
@@ -290,4 +292,115 @@ button:hover {
 .td-det-crypto-supply{
     text-align: right;
     padding-right: 15px;
+}
+
+/* LOADER */
+#loader {
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top: 4px solid #3498db;
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+    display: none;
+    margin-right: 5px;
+}
+
+#wallet-button.loading span{
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 5px;
+}
+
+#friends{
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #000000;
+    border-radius: 10px;
+    filter: drop-shadow(0 0 13px rgba(32, 32, 32, 0.288));
+    margin-top: 35px;
+    visibility: hidden;
+    border-collapse: collapse;
+    margin-bottom: 40px;
+}
+
+.search-result-item:first-child td:first-child { border-top-left-radius: 10px; }
+.search-result-item:first-child td:last-child { border-top-right-radius: 10px; }
+
+.search-result-item:last-child td:first-child { border-bottom-left-radius: 10px; }
+.search-result-item:last-child td:last-child { border-bottom-right-radius: 10px; }
+
+.search-result-item:last-child {
+    border-bottom: none;
+}
+
+.search-result-item{
+    width: 100%;
+    height: 50px;
+    background-color: transparent;
+    border-bottom: 1px solid #3f3f3f4f;
+    transition: .3s;
+}
+.search-result-item:hover{
+    background-color: #3f3f3f4f;
+    cursor: pointer;
+    transition: .2s;
+    filter: drop-shadow(0 0 10px rgba(83, 83, 83, 0.404));
+}
+
+.friends {
+    position: relative;
+}
+
+#already-friend {
+    float: left;
+    width: 100px;
+}
+
+#friends-table{
+    float: right;
+    margin-right: 35px;
+}
+
+#no-friends{
+    float: left;
+}
+
+.search-bar-right-holder {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+}
+
+td{
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.search-bar-wide {
+    display: flex;
+    align-items: center;
+    background-color: #1d1d1d;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.search-input {
+    flex: 1;
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 16px;
+    padding: 5px;
+    outline: none;
+}
+
+.confirm-button{
+    margin-left: 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }

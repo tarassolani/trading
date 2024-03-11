@@ -1,7 +1,6 @@
 <?php
-header('Content-Type: application/json');
-
 include 'connect-to-db.php';
+header('Content-Type: application/json');
 
 $sql = "SELECT coinCode FROM crypto"; //Seleziona tutte le crypto dal database
 $result = $conn->query($sql);

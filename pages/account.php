@@ -1,51 +1,69 @@
 <?php
+include 'connect-to-db.php';
 session_start();
 if (isset($_COOKIE['login-info']) || isset($_SESSION['login-info'])) { 
     $username = isset($_SESSION['login-info']) ? $_SESSION['login-info'] : $_COOKIE['login-info'];
-
-    include 'connect-to-db.php';
-
+  
     $sql = "SELECT name, surname, birthDate, country, city, street, streetNumber, phoneNumber, email, hash FROM users WHERE username = ?";
     $stmt = $conn->prepare($sql);
 
-    // Collega il parametro
     $stmt->bind_param("s", $username);
 
-    // Esegui la query
     $stmt->execute();
 
-    // Ottieni il risultato della query
     $result = $stmt->get_result();
 
-    // Verifica se ci sono risultati
     if ($result->num_rows > 0) {
-        // Ottieni i dati dell'utente
         $userData = $result->fetch_assoc();
     } else {
-        // Utente non trovato, gestisci come preferisci
         $userData = null;
     }
 
-    // Chiudi la connessione al database
-    $stmt->close();
-    $conn->close();
-    // Se l'hash è null, visualizza il bottone "Create Wallet", altrimenti mostra l'hash
-    $walletContent = ($userData['hash'] === null) ? '<button onclick="createWallet()">Create Wallet</button>' : '<span id="wallet-hash">' . $userData['hash'] . '</span>';
+    // Query per ottenere l'IBAN dell'account bancario associato all'utente
+    $sql_iban = "SELECT iban FROM BankAccount WHERE username = ?";
+    $stmt_iban = $conn->prepare($sql_iban);
+    $stmt_iban->bind_param("s", $username);
+    $stmt_iban->execute();
+    $result_iban = $stmt_iban->get_result();
 
-    // Altre informazioni da visualizzare nel div destro
-    $otherInfo = "<p>{$userData['name']} {$userData['surname']}</p>
-                  <p>{$userData['birthDate']}</p>
-                  <p>{$userData['country']}, {$userData['city']}</p>
+    // Estrai l'IBAN se esiste
+    if ($result_iban->num_rows > 0) {
+        $iban_row = $result_iban->fetch_assoc();
+        $iban = $iban_row['iban'];
+    } else {
+        $iban = null; // Imposta IBAN su null se l'utente non ha un account bancario associato
+    }
+
+    $stmt->close();
+
+    $sql_balance = "SELECT balance FROM BankAccount WHERE username = ?";
+    $stmt_balance = $conn->prepare($sql_balance);
+    $stmt_balance->bind_param("s", $username);
+    $stmt_balance->execute();
+    $result_balance = $stmt_balance->get_result();
+
+    // Estrai il saldo se esiste
+    if ($result_balance->num_rows > 0) {
+        $balance_row = $result_balance->fetch_assoc();
+        $balance = $balance_row['balance'];
+    } else {
+        $balance = 0; // Imposta il saldo su null se l'utente non ha un account bancario associato
+    }
+
+    $stmt_balance->close();
+    $conn->close();
+
+    $walletContent = ($userData['hash'] === null || $userData['hash'] === "") ? '<button id="wallet-button" onclick="createWallet()">
+    <span class="material-symbols-outlined" id="loader" class="loader"></span>
+    Create Wallet
+    </button>' : '<span id="wallet-hash">' . $userData['hash'] . '</span>';
+
+    $otherInfo = "<p>{$userData['birthDate']}</p>
+                  <p>{$userData['country']}, {$userData['city']}</p>    
                   <p>{$userData['street']} {$userData['streetNumber']}</p>
                   <p>{$userData['phoneNumber']}</p>
                   <p>{$userData['email']}</p>";
-} else {
-    //Utente non autenticato
-    $username = "Guest";
-    $walletContent = "";
-    $otherInfo = "";
-}
-
+    $nameLastname = $userData['name'] . " " . $userData['surname'];
 ?>
 
 <!DOCTYPE html>
@@ -57,6 +75,9 @@ if (isset($_COOKIE['login-info']) || isset($_SESSION['login-info'])) {
     <link rel="stylesheet" href="../css/account.css">
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <script src="../js/account.js"></script>
+    <script src="../js/load-users.js"></script>
+    <script src="../js/bank-transactions.js"></script>
     <title>Account dashboard</title>
 </head>
 
@@ -72,44 +93,50 @@ if (isset($_COOKIE['login-info']) || isset($_SESSION['login-info'])) {
 
     <div class="account-info">
         <div id="left-div">
-            <h2 id="username">@unclepear</h2>
-            <p id="name-surname">Benjamin 'Uncle' Pearson</p>
+            <h2 id="username">@<?php echo $username ?></h2>
+            <p id="name-surname">
+                <?php echo $nameLastname ?>
+            </p>
 
             <div class="wallet-info">
+                <br>
                 <h3>Wallet Address</h3>
-                <span class="material-symbols-outlined copy-btn" onclick="copyContent()">content_copy</span>
+                <span class="material-symbols-outlined copy-btn" id="btn-inviz" onclick="copyContent()">content_copy</span>
                 <div class="hash-container">
-                    <span id="wallet-hash">
-                        8016AC908B188B88E3DA81624AE6E9661C9096D832A0FA57681C6556FEDDE6DA79825BF838AB3C14F9C13174AEF4330C3A5A32BD9B3A7B0C96124F94D70E011898E4A2BFB0F3F556F30BDA0FFC0C5675
-                    </span>
+                    <?php echo $walletContent ?>
                 </div>
             </div>
+
+            <script>
+            <?php if (!empty($userData['hash'])): ?>
+                var btnCopy = document.getElementById('btn-inviz');
+                btnCopy.style.visibility = "visible";
+            <?php endif; ?>
+            </script>
+
         </div>
         <div id="right-div">
+            <?php echo $otherInfo ?>
         </div>
 
     </div>
 
-    <script>
-        function copyContent() {
-            var walletHash = document.getElementById("wallet-hash");
-
-            var tempInput = document.createElement("textarea");
-            tempInput.value = walletHash.textContent;
-            document.body.appendChild(tempInput);
-
-            tempInput.select();
-            document.execCommand("copy");
-
-            document.body.removeChild(tempInput);
-
-            alert("Wallet hash copied!");
-        }
-    </script>
-
     <div class="account-balance">
         <h3>Account Balance</h3>
-        <div id="chart-container"></div>
+        <span id="total-balance"><?php echo $balance . " USDT"?></span>
+        <div style="margin-top: 15px">
+            <?php if ($iban === null): ?>
+                <!-- Mostra il pulsante "Link bank account" solo se l'utente non ha un conto bancario collegato -->
+                <button id="link-bank-account-button" onclick="linkBankAccount()">Link bank account</button>
+            <?php else: ?>
+                <!-- Mostra i pulsanti di deposito e prelievo se l'utente ha un conto bancario collegato -->
+                <div id="buttons">
+                    <button class="transaction-button" id="deposit-button" onclick="transaction('deposit')">Deposit</button>
+                    <button class="transaction-button" id="withdraw-button" onclick="transaction('withdraw')">Withdraw</button>
+                </div>
+                <div id="response" style="margin-top: 10px"></div>
+            <?php endif; ?>
+        </div>
     </div>
 
     <div class="positions">
@@ -124,6 +151,65 @@ if (isset($_COOKIE['login-info']) || isset($_SESSION['login-info'])) {
             </tr>
         </table>
     </div>
-</body>
 
+    <div class="friends">
+        <h3>Friends</h3>
+        <div class="search-bar-right-holder">
+            <div class="search-bar-wide">
+                <input type="text" name="search" placeholder="Search for user..." class="search-input">
+                <span class="material-symbols-outlined size-medio" onclick="searchform.submit()">&#xe8b6;</span>
+            </div>
+        </div>
+        <table id="already-friend">
+            <?php
+            $username = isset($_SESSION['login-info']) ? $_SESSION['login-info'] : $_COOKIE['login-info'];
+
+            $servername = "localhost";
+            $db_username = "root";
+            $password = "";
+            $dbname = "dbRegolare";
+        
+            $conn = new mysqli($servername, $db_username, $password, $dbname);
+        
+            if ($conn->connect_error) {
+                die("Connection failed: " . $conn->connect_error);
+            }
+            // Query per ottenere gli amici dell'utente
+            $sql_friends = "SELECT friend1, friend2 FROM Friends WHERE friend1 = ? OR friend2 = ?";
+            $stmt_friends = $conn->prepare($sql_friends);
+            $stmt_friends->bind_param("ss", $username, $username);
+            $stmt_friends->execute();
+            $result_friends = $stmt_friends->get_result();
+
+            // Array per memorizzare gli amici
+            $friends_array = array();
+
+            // Popola l'array degli amici
+            while ($row_friends = $result_friends->fetch_assoc()) {
+                if ($row_friends['friend1'] == $username) {
+                    $friends_array[] = $row_friends['friend2'];
+                } else {
+                    $friends_array[] = $row_friends['friend1'];
+                }
+            }
+
+            // Chiudi la query degli amici
+            $stmt_friends->close();
+
+            // Popola la tabella degli amici già presenti
+            if (!empty($friends_array)) {
+                foreach ($friends_array as $friend_username) {
+                    echo "<tr><td>{$friend_username}</td><td><span class='material-symbols-outlined' onclick=\"removeFriendDB('{$friend_username}')\">group_remove</span></td></tr>";
+                }
+            } else {
+                echo '<p id="no-friends">You have no friends right now</p>';
+            }
+            $conn->close();
+            ?>
+        </table>
+
+        <table id="friends-table">
+        </table>
+    </div>
+</body>
 </html>

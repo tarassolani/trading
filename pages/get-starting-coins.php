@@ -1,12 +1,14 @@
 <?php
+include 'connect-to-db.php';
+
 //Questo file viene usato per ottenere le informazioni sulle 3 crypto che vengono sempre mostrate in home
+
 header('Content-Type: application/json');
 
 session_start();
 
-include 'connect-to-db.php';
-
 $sql = "SELECT coinCode, Icon, price, variation FROM crypto WHERE name='Solana' OR name='Bitcoin' OR name='Ethereum';";//Seleziona le informazioni necessarie per ogni crypto
+
 $result = $conn->query($sql);
 
 $crypto_data = [];

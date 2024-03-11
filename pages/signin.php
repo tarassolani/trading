@@ -1,6 +1,6 @@
 <?php
-if(isset($_COOKIE['login_info'])) {
-    header("Location: ");   //pagina taras :)
+if(isset($_COOKIE['login-info'])) {
+    header("Location: account.php");
     exit();
 }
 ?>
