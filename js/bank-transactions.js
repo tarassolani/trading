@@ -107,18 +107,34 @@ function addPosition(quantity) {
     var table = document.getElementById("search-results-wider");
     var newRow = table.insertRow(-1); // Inserisci una nuova riga alla fine della tabella
 
-    // Aggiungi le celle alla nuova riga
-    var cell1 = newRow.insertCell(0);
-    var cell2 = newRow.insertCell(1);
-    var cell3 = newRow.insertCell(2);
-    var cell4 = newRow.insertCell(3);
+    // Esegui la richiesta AJAX al tuo script PHP
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        // Quando la richiesta ha successo, elabora i dati ottenuti
+        var data = JSON.parse(this.responseText);
+        // Supponendo che data sia un array di oggetti con le informazioni da inserire nella tabella
+        data.forEach(function(item) {
 
-    // Inserisci i dati nella nuova riga
-    cell1.innerHTML = `<img src="icon/${cryptoName}.png" alt="${cryptoName}">`;
-    cell2.textContent = cryptoName;
-    cell3.textContent = quantity;
-    cell4.textContent = price;
-}
+        // Aggiungi le celle alla nuova riga
+        var cell1 = newRow.insertCell(0);
+        var cell2 = newRow.insertCell(1);
+        var cell3 = newRow.insertCell(2);
+        var cell4 = newRow.insertCell(3);
+        var cell5 = newRow.insertCell(4);
+
+        // Inserisci i dati nella nuova riga
+        cell1.innerHTML = item.icon;
+        cell2.textContent = "USDT";
+        cell3.textContent = "Tether USDt";
+        cell4.textContent = quantity;
+        cell5.textContent = item.price;
+        });
+    }
+    };
+    xhttp.open("GET", "add-usdt.php", true);
+    xhttp.send();
+    }
 
 function removePosition() {
     var balance = document.getElementById("total-balance");
@@ -132,7 +148,6 @@ function removePosition() {
         table.deleteRow(-1);
     }
 }
-
 
 function removeInput() {
     // Rimuovi l'input per il deposito
