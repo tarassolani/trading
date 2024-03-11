@@ -1,14 +1,15 @@
 <?php
 include 'connect-to-db.php';
+session_start();
 
-// Receive data sent via POST
+// Receive data sent via GET
 $type = $_GET['type']; // Transaction type (deposit or withdrawal)
 $amount = $_GET['amount']; // Transaction amount
 
-$username = $_SESSION['login-info'];
+$username = isset($_SESSION['login-info']) ? $_SESSION['login-info'] : $_COOKIE['login-info'];
 
-// Formattare l'importo con un massimo di 2 cifre decimali
-$amount = number_format($amount, 2);
+$amount = floatval($amount);
+$amount = round($amount, 2);
 
 if ($type === 'deposit') {
     $stmt_check = $conn->prepare("SELECT balance FROM BankAccount WHERE username = ?");
@@ -19,7 +20,7 @@ if ($type === 'deposit') {
     $stmt_check->close();
 
     if ($current_balance < $amount) {
-        header("Location: account.php?error=Insufficient funds.");
+        echo "error:Insufficient funds."; // Invia un messaggio di errore AJAX
         exit();
     }
     // Prepare a statement
@@ -30,10 +31,10 @@ if ($type === 'deposit') {
 
     // Execute the statement
     if ($stmt->execute()) {
-        header("Location: account.php?message=Deposit completed successfully.");
+        echo "success:Deposit completed successfully."; // Invia un messaggio di successo AJAX
         exit();
     } else {
-        header("Location: account.php?error=Error during deposit: " . $conn->error);
+        echo "error:Error during deposit: " . $conn->error; // Invia un messaggio di errore AJAX
         exit();
     }
 } elseif ($type === 'withdraw') {
@@ -45,18 +46,14 @@ if ($type === 'deposit') {
 
     // Execute the statement
     if ($stmt->execute()) {
-        header("Location: account.php?message=Withdrawal completed successfully.");
+        echo "success:Withdrawal completed successfully."; // Invia un messaggio di successo AJAX
         exit();
     } else {
-        header("Location: account.php?error=Error during withdrawal: " . $conn->error);
+        echo "error:Error during withdrawal: " . $conn->error; // Invia un messaggio di errore AJAX
         exit();
     }
 } else {
-    header("Location: account.php?error=Invalid transaction type.");
+    echo "error:Invalid transaction type."; // Invia un messaggio di errore AJAX
     exit();
 }
-
-// Close the prepared statements and connection
-$stmt->close();
-$conn->close();
 ?>

@@ -4,8 +4,6 @@ session_start();
 if (isset($_COOKIE['login-info']) || isset($_SESSION['login-info'])) {
     $username = isset($_SESSION['login-info']) ? $_SESSION['login-info'] : $_COOKIE['login-info'];
 
-    $username = isset($_SESSION['login-info']) ? $_SESSION['login-info'] : $_COOKIE['login-info'];
-
     $sql = "SELECT name, surname, birthDate, country, city, street, streetNumber, phoneNumber, email, hash FROM users WHERE username = ?";
     $stmt = $conn->prepare($sql);
 
@@ -24,7 +22,7 @@ if (isset($_COOKIE['login-info']) || isset($_SESSION['login-info'])) {
     // Query per ottenere l'IBAN dell'account bancario associato all'utente
     $sql_iban = "SELECT iban FROM BankAccount WHERE username = ?";
     $stmt_iban = $conn->prepare($sql_iban);
-    $stmt_iban->bind_param("s", $_SESSION['login-info']);
+    $stmt_iban->bind_param("s", $username);
     $stmt_iban->execute();
     $result_iban = $stmt_iban->get_result();
 
@@ -37,6 +35,22 @@ if (isset($_COOKIE['login-info']) || isset($_SESSION['login-info'])) {
     }
 
     $stmt->close();
+
+    $sql_balance = "SELECT balance FROM BankAccount WHERE username = ?";
+    $stmt_balance = $conn->prepare($sql_balance);
+    $stmt_balance->bind_param("s", $username);
+    $stmt_balance->execute();
+    $result_balance = $stmt_balance->get_result();
+
+    // Estrai il saldo se esiste
+    if ($result_balance->num_rows > 0) {
+        $balance_row = $result_balance->fetch_assoc();
+        $balance = $balance_row['balance'];
+    } else {
+        $balance = 0; // Imposta il saldo su null se l'utente non ha un account bancario associato
+    }
+
+    $stmt_balance->close();
     $conn->close();
 
     $walletContent = ($userData['hash'] === null || $userData['hash'] === "") ? '<button id="wallet-button" onclick="createWallet()">
@@ -110,7 +124,7 @@ if (isset($_COOKIE['login-info']) || isset($_SESSION['login-info'])) {
 
     <div class="account-balance">
         <h3>Account Balance</h3>
-        <span id="total-balance">0 USDT</span>
+        <span id="total-balance"><?php echo $balance . " USDT"?></span>
         <div style="margin-top: 15px">
             <?php if ($iban === null): ?>
                 <!-- Mostra il pulsante "Link bank account" solo se l'utente non ha un conto bancario collegato -->
@@ -121,6 +135,7 @@ if (isset($_COOKIE['login-info']) || isset($_SESSION['login-info'])) {
                     <button class="transaction-button" id="deposit-button" onclick="transaction('deposit')">Deposit</button>
                     <button class="transaction-button" id="withdraw-button" onclick="transaction('withdraw')">Withdraw</button>
                 </div>
+                <div id="response" style="margin-top: 10px"></div>
             <?php endif; ?>
         </div>
     </div>

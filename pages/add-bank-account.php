@@ -3,7 +3,7 @@ include 'connect-to-db.php';
 session_start();
 
 $iban = $_POST['iban'];
-$user = $_SESSION['login-info'];
+$user = isset($_SESSION['login-info']) ? $_SESSION['login-info'] : $_COOKIE['login-info'];
 
 $sql = "INSERT INTO BankAccount(iban, username) VALUES(?, ?)";
 $stmt = $conn->prepare($sql);
