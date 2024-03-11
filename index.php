@@ -19,7 +19,7 @@
 
     <div class="container">
         <h1>Regolare.com</h1>
-        <p class="description">La tua piattaforma di trading preferita.</p>
+        <p class="description">Your favorite trading platform.</p>
         <form name="searchform" action="search/search.php" method="post" class="search-form">
             <div class="search-bar">
                 <input type="text" name="search" placeholder="Search crypto..." class="search-input">

@@ -1,9 +1,9 @@
 <?php
 include 'connect-to-db.php';
 session_start();
-if (isset($_COOKIE['login-info']) || isset($_SESSION['login-info'])) {
+if (isset($_COOKIE['login-info']) || isset($_SESSION['login-info'])) { 
     $username = isset($_SESSION['login-info']) ? $_SESSION['login-info'] : $_COOKIE['login-info'];
-
+  
     $sql = "SELECT name, surname, birthDate, country, city, street, streetNumber, phoneNumber, email, hash FROM users WHERE username = ?";
     $stmt = $conn->prepare($sql);
 
@@ -64,7 +64,6 @@ if (isset($_COOKIE['login-info']) || isset($_SESSION['login-info'])) {
                   <p>{$userData['phoneNumber']}</p>
                   <p>{$userData['email']}</p>";
     $nameLastname = $userData['name'] . " " . $userData['surname'];
-}
 ?>
 
 <!DOCTYPE html>

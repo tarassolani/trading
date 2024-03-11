@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
     searchInput.addEventListener('input', function () {
         var searchText = searchInput.value.trim();
         if (searchText.length > 0) {
-            fetch(`pages/get-search-results.php?searchText=${searchText}`)
+            fetch(`pages/get-search-results.php?searchText=${searchText}`) //Chiamata al file php che ritorna l'encode in json di tutte le informazioni
                 .then(response => response.json())
                 .then(data => {
                     displaySearchResults(data);
@@ -21,12 +21,15 @@ document.addEventListener('DOMContentLoaded', function () {
         clearSearchResults();
         results.forEach(crypto => {
             const tr = searchResultsContainer.insertRow();
+            tr.addEventListener("click", () => { //Al click sulla riga della tabella, vengo reindirizzato alla pagina individuale della crypto
+                window.location.href = `pages/crypto-info.php?coinCode=${crypto.coinCode}`;
+              });
             tr.className = 'search-result-item';
 
             const td = tr.insertCell();
             td.className='td-crypto-img';
             const img = document.createElement('img');
-            img.src = 'data:image/png;base64,' + crypto.Icon;
+            img.src = 'data:image/png;base64,' + crypto.Icon;//Immagine, cioè BLOB del database
             img.alt = crypto.coinCode;
             img.className = 'crypto-img';
             td.appendChild(img);
@@ -45,12 +48,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const td5 = tr.insertCell();
             const span = document.createElement('span');
-            span.textContent = `${crypto.percent_change}%`; 
-
-            if(`${crypto.percent_change}` > 0){
+            if(`${crypto.percent_change}` > 0){//Highlight della variazione di percentuale in base al segno + o -
+                span.textContent = `+${crypto.percent_change}%`;
                 span.classList.add('highlight-green');
             }
             else{
+                span.textContent = `${crypto.percent_change}%`;
                 span.classList.add('highlight-red');
             }
             td5.appendChild(span); 

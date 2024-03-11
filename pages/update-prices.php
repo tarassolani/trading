@@ -2,10 +2,7 @@
 include 'connect-to-db.php';
 header('Content-Type: application/json');
 
-// Check if prices are already stored in session
-session_start();
-
-$sql = "SELECT coinCode FROM crypto";
+$sql = "SELECT coinCode FROM crypto"; //Seleziona tutte le crypto dal database
 $result = $conn->query($sql);
 
 $coinCodes = [];
@@ -15,11 +12,10 @@ while ($row = $result->fetch_assoc()) {
 
 $conn->close();
 
-// Fetch prices from CoinMarketCap API
+//Inizio API CoinMarketCap
 $apiKey = 'a3975305-35e9-47e3-baae-a04ab54de810';
 $coinCodeString = implode(',', $coinCodes);
 
-// Includere il campo percent_change_24h nella richiesta
 $cmcUrl = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=$coinCodeString&convert=USDT";
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $cmcUrl);
@@ -30,20 +26,23 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, array(
 $cmcResponse = curl_exec($ch);
 curl_close($ch);
 
-// Parse response and store prices and percentage changes in session
 $cmcData = json_decode($cmcResponse, true);
+//Fine API CoinMarketCap
 
-$_SESSION['crypto_prices'] = []; 
 foreach ($cmcData['data'] as $symbol => $data) {
-    $price = isset($data['quote']['USDT']['price']) ? number_format($data['quote']['USDT']['price'], 2) : 'Price not available';
+    //Prende i valori del prezzo e di variazione di prezzo nell'ultimo giorno
+    $price = isset($data['quote']['USDT']['price']) ? $data['quote']['USDT']['price'] : null;
+    $percent_change_24h = isset($data['quote']['USDT']['percent_change_24h']) ? $data['quote']['USDT']['percent_change_24h'] : null;
 
-    // Ottieni percentuale di variazione
-    $percent_change_24h = isset($data['quote']['USDT']['percent_change_24h']) ? number_format($data['quote']['USDT']['percent_change_24h'], 2) : 'Change not available';
-
-    // Salva entrambi nella sessione
-    $_SESSION['crypto_prices'][$symbol] = [
-        'price' => $price, 
-        'percent_change' => $percent_change_24h
-    ];
+    //Aggiorna i valori nel database
+    $updateSql = "UPDATE crypto SET price = ?, variation = ? WHERE coinCode = ?";
+    $updateStmt = $conn->prepare($updateSql);
+    $updateStmt->bind_param('dss', $price, $percent_change_24h, $symbol);
+    $updateStmt->execute();
+    $updateStmt->close();
 }
+
+$conn->close();
+
+echo json_encode(['success' => true]);
 ?>
