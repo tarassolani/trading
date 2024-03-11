@@ -49,6 +49,10 @@ if (isset($_COOKIE['login-info']) || isset($_SESSION['login-info'])) {
     if ($result_assets->num_rows > 0) {
         $assets_row = $result_assets->fetch_assoc();
         $balance = $assets_row['balance'];
+
+        if($balance == null){
+            $balance = 0;
+        }
     } else {
         $balance = 0; // Imposta il valore totale su zero se l'utente non ha asset criptovalutari
     }
