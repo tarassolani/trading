@@ -64,6 +64,7 @@ if (isset($_COOKIE['login-info']) || isset($_SESSION['login-info'])) {
                   <p>{$userData['phoneNumber']}</p>
                   <p>{$userData['email']}</p>";
     $nameLastname = $userData['name'] . " " . $userData['surname'];
+}
 ?>
 
 <!DOCTYPE html>

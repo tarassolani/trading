@@ -1,10 +1,10 @@
 <?php
-include 'connect-to-db.php';
+include '../pages/connect-to-db.php';
 header('Content-Type: application/json');
 
 $searchText = '%' . $_GET['searchText'] . '%';
 
-$sql = "SELECT coinCode, name, supply, Icon, price, variation FROM crypto WHERE name LIKE ? OR coinCode LIKE ?"; //Seleziona le informazioni necessarie per ogni crypto
+$sql = "SELECT coinCode, name, supply, Icon, price, variation FROM Crypto WHERE name LIKE ? OR coinCode LIKE ?"; //Seleziona le informazioni necessarie per ogni crypto
 $stmt = $conn->prepare($sql);
 $stmt->bind_param('ss', $searchText, $searchText);
 $stmt->execute();
