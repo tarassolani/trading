@@ -1,20 +1,10 @@
 <?php
+include 'connect-to-db.php';
 header('Content-Type: application/json');
 
 session_start();
 
 $searchText = '%' . $_GET['searchText'] . '%';
-
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "dbRegolare";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
 
 $sql = "SELECT username FROM Users WHERE username LIKE ? AND username <> ?";
 $stmt = $conn->prepare($sql);

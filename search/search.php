@@ -1,3 +1,8 @@
+<?php
+session_start();
+$username = isset($_SESSION['login-info']) ? $_SESSION['login-info'] : $_COOKIE['login-info'];
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -19,7 +24,11 @@
         <a id="logo" href="../index.php">Regolare.com</a>
 
         <div class="top-right-links">
+        <?php if ($username): ?>
+            <strong>Hello <a href="../pages/account.php"><?php echo $username; ?></a></strong>
+        <?php else: ?>
             <a href="../pages/signin.php"><strong>Sign in</strong></a> or <a href="../pages/signup.html"><strong>Sign up</strong></a>
+        <?php endif; ?>
         </div>
     </nav>
 

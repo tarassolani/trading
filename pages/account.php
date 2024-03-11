@@ -36,21 +36,24 @@ if (isset($_COOKIE['login-info']) || isset($_SESSION['login-info'])) {
 
     $stmt->close();
 
-    $sql_balance = "SELECT balance FROM BankAccount WHERE username = ?";
-    $stmt_balance = $conn->prepare($sql_balance);
-    $stmt_balance->bind_param("s", $username);
-    $stmt_balance->execute();
-    $result_balance = $stmt_balance->get_result();
-
-    // Estrai il saldo se esiste
-    if ($result_balance->num_rows > 0) {
-        $balance_row = $result_balance->fetch_assoc();
-        $balance = $balance_row['balance'];
+    $sql_assets = "SELECT SUM(amount * price) AS balance FROM position 
+                    INNER JOIN users ON hash = wallet
+                    INNER JOIN crypto ON crypto = coinCode
+                    WHERE username = ?";
+    $stmt_assets = $conn->prepare($sql_assets);
+    $stmt_assets->bind_param("s", $username);
+    $stmt_assets->execute();
+    $result_assets = $stmt_assets->get_result();
+    
+    // Estrai il valore totale degli asset
+    if ($result_assets->num_rows > 0) {
+        $assets_row = $result_assets->fetch_assoc();
+        $balance = $assets_row['balance'];
     } else {
-        $balance = 0; // Imposta il saldo su null se l'utente non ha un account bancario associato
+        $balance = 0; // Imposta il valore totale su zero se l'utente non ha asset criptovalutari
     }
-
-    $stmt_balance->close();
+    
+    $stmt_assets->close();
     $conn->close();
 
     $walletContent = ($userData['hash'] === null || $userData['hash'] === "") ? '<button id="wallet-button" onclick="createWallet()">
@@ -199,7 +202,7 @@ if (isset($_COOKIE['login-info']) || isset($_SESSION['login-info'])) {
             // Popola la tabella degli amici già presenti
             if (!empty($friends_array)) {
                 foreach ($friends_array as $friend_username) {
-                    echo "<tr><td>{$friend_username}</td><td><span class='material-symbols-outlined' onclick=\"removeFriendDB('{$friend_username}')\">group_remove</span></td></tr>";
+                    echo "<tr><td>{$friend_username}</td><td><span class='material-symbols-outlined' onclick=\"sendCrypto('{$friend_username}')\">payments</span></td><td><span class='material-symbols-outlined' onclick=\"removeFriendDB('{$friend_username}')\">group_remove</span></td></tr>";
                 }
             } else {
                 echo '<p id="no-friends">You have no friends right now</p>';

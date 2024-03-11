@@ -141,7 +141,7 @@ if (isset($cmcData['data'][$coinCode]['quote']['USDT'])) {
 //Questa volta, non viene più eseguita nessuna query al database per ottenere amount
 //dato che il suo valore cambia solo se l'utente fa uso dai tasti "buy" e "sell".
 //Ci si limita a controllare se l'utente ha eseguito il login
-if (isset($_SESSION['user-info']) || isset($_COOKIE['user-info'])) {
+if (isset($_SESSION['login-info']) || isset($_COOKIE['login-info'])) {
     ?>
     <div id="your-crypto">
         <p class="par-titles"><strong>Your
