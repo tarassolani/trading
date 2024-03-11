@@ -1,0 +1,419 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Poppins:wght@400;700&family=Rubik:wght@600;800&display=swap');
+
+@keyframes glowAnimationGreen {
+    0% {
+        filter: drop-shadow(0 0 10px #4ec7807e);
+        color: #67df99;
+    }
+    100% {
+        filter: drop-shadow(0 0 13px #afffd785);
+        color: #90ffbe;
+    }
+}
+@keyframes glowAnimationRed {
+    0% {
+        filter: drop-shadow(0 0 10px #dd3240af);
+        color: #F23645;
+    }
+    100% {
+        filter: drop-shadow(0 0 13px #f15260cb);
+        color: #ff4f5d;
+    }
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: black;
+    color: white;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: transparent;
+}
+
+nav #logo {
+    font-size: 2.5em;
+    font-weight: 700;
+    text-decoration: none;
+    color: #fff;
+    cursor: pointer;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+nav #logo:hover {
+    text-decoration: none;
+}
+
+nav #logo:hover .material-symbols-outlined {
+    filter: drop-shadow(0 0 10px rgba(32, 32, 32, 0.5));
+}
+
+nav #menu-icon {
+    font-size: 1.5em;
+    cursor: pointer;
+    padding-bottom: 30px;
+}
+
+nav #menu-icon:hover {
+    filter: drop-shadow(0 0 10px rgba(32, 32, 32, 0.5));
+}
+
+nav .top-right-links {
+    display: flex;
+    align-items: center;
+}
+
+nav .top-right-links a {
+    color: #fff;
+    text-decoration: none;
+    margin-right: 10px;
+    transition: .2s;
+}
+
+nav .top-right-links a:hover {
+    text-decoration: underline;
+    filter: drop-shadow(0 0 30px rgb(110, 214, 255));
+    transition: .4s;
+}
+
+.top-right-links {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 1em;
+    margin-right: 10px;
+}
+
+.top-right-links a {
+    color: #fff;
+    text-decoration: none;
+    margin-right: 5px;
+    margin-left: 5px;
+    transition: .2s;
+}
+
+.top-right-links a:hover {
+   text-decoration: underline;
+   filter: drop-shadow(0 0 30px rgb(110, 214, 255));
+   transition: .4s;
+}
+
+.tradingview-widget-container {
+    width: 100% !important;
+    height: 650px !important;
+}
+
+.crypto-info {
+    display: flex;
+    justify-content: space-between;
+    padding: 40px;
+}
+
+.crypto-left {
+    flex: 1;
+    margin-right: 30px;
+    border-radius: 15px;
+    padding: 30px;
+    overflow: hidden;
+    background-color: rgba(7, 7, 7, 1);
+    border: 1px solid rgb(34, 34, 34);
+    transition: .3s ease-in-out;
+
+}
+
+
+.crypto-left:hover {
+    filter: drop-shadow(0 0 50px rgba(32, 32, 32, 0.5));
+    background-color: rgb(15, 15, 15);
+    transition: .2s ease-in-out;
+}
+
+.crypto-left img {
+    width: 30px;
+    height: auto;
+    margin-right: 10px;
+    margin-left: 2px;
+    margin-top: 10px;
+    vertical-align: middle;
+    transition: filter 0.3s ease-in-out;
+}
+
+.crypto-left img:hover {
+    filter: drop-shadow(0 0 10px rgba(112, 112, 112, 0.8));
+    transition: filter 0.2s ease-in-out;
+}
+
+.crypto-left-text {
+    padding: 10px;
+}
+
+.crypto-left-text span {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.crypto-left-text span:first-child {
+    margin-bottom: 5px;
+}
+
+.crypto-right {
+    flex: 2;
+}
+
+#chart-container {
+    transition: .3s;
+}
+
+#chart-container:hover {
+    filter: drop-shadow(0 0 50px rgba(53, 53, 53, 0.5));
+    transition: .2s;
+}
+
+.buy-sell-container {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.buy-sell-buttons {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 10px;
+    font-size: 1.1em;
+    align-items: center;
+}
+
+.buy-sell-buttons a {
+    text-decoration: none;
+    color: white;
+    border-radius: 10px;
+    padding: 10px 20px;
+    background-color: transparent;
+    transition: .3s;
+    margin-right: 10px;
+}
+
+.buy-sell-buttons a:hover {
+    background-color: black;
+    color: white;
+    transition: .3s;
+}
+
+.buy-sell-buttons a.compra {
+    background-color: #089981;
+    filter: drop-shadow(0 0 10px #0899816c);
+    transition: .3s;
+}
+
+.buy-sell-buttons a.compra:hover {
+    background-color: #089981;
+    color: black;
+    filter: drop-shadow(0 0 18px #0dbb9e63);
+    transition: .2s;
+}
+
+.buy-sell-buttons a.vendi {
+    background-color: #F23645;
+    filter: drop-shadow(0 0 10px #f236466c);
+    transition: .3s;
+}
+
+.buy-sell-buttons a.vendi:hover {
+    background-color: #F23645;
+    color: black;
+    filter: drop-shadow(0 0 18px #fa435250);
+    transition: .2s;
+}
+
+.buy-sell-buttons label {
+    margin-left: 5px;
+    font-size: 1.2em;
+    color: rgb(70, 70, 70);
+    margin-right: 5px;
+}
+
+.custom-number-input {
+    display: flex;
+    align-items: center;
+    position: relative;
+    margin-right: 35px;
+}
+
+.custom-number-input input {
+    width: 4em;
+    padding: 5px;
+    border: 1px solid #333;
+    border-collapse: collapse;
+    background-color: transparent;
+    color: white;
+    font-size: 1.05em;
+    text-align: center;
+    line-height: 1.8;
+
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.custom-number-input input::-webkit-inner-spin-button,
+.custom-number-input input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.custom-number-input button {
+    width: 2em;
+    background-color: black;
+    color: white;
+    border-collapse: collapse;
+    margin-left: 0;
+    margin-right: 0;
+    cursor: pointer;
+    margin: 0;
+    font-size: 1.2em;
+    outline: none;
+    line-height: 1.95;
+    transition: .3s;
+}
+
+.custom-number-input button:hover {
+    background-color: #111;
+    filter: drop-shadow(0 0 20px rgba(53, 53, 53, 0.5));
+    transition: .2s;
+    color: white;
+}
+
+.custom-number-input .decrement-button {
+    border-left: 1px solid #333;
+    border-top: 1px solid #333;
+    border-bottom: 1px solid #333;
+    border-right: none;
+}
+
+.custom-number-input .increment-button {
+    border-right: 1px solid #333;
+    border-top: 1px solid #333;
+    border-bottom: 1px solid #333;
+    border-left: none;
+}
+
+#chart-container {
+    transition: .3s;
+    height: 100%;
+}
+
+#chart-container:hover {
+    filter: drop-shadow(0 0 50px rgba(53, 53, 53, 0.5));
+    transition: .2s;
+}
+
+.highlight-green {
+    background-color: #089981;
+    border-radius: 5px;
+    padding: 2px 5px;
+}
+
+.highlight-red {
+    background-color: #F23645;
+    border-radius: 5px;
+    padding: 2px 5px;
+}
+
+.crypto-price-green{
+    text-align: left;
+    color: #089981;
+    filter: drop-shadow(0 0 13px #4ec7805e);
+    animation: glowAnimationGreen 1s infinite alternate;
+}
+.crypto-price-red{
+    text-align: left;
+    color: #F23645 !important;
+    filter: drop-shadow(0 0 13px #ff2020ab);
+    animation: glowAnimationRed 1s infinite alternate;
+}
+
+.crypto-info-item {
+    display: flex;
+    justify-content: space-between;
+    margin-left: -30px;
+    margin-bottom: -15px;
+}
+
+.crypto-info-value {
+    margin-right: 10px;
+}
+
+.par-titles{
+    margin-top: 25px;
+    margin-bottom: -15px;
+    text-decoration: underline;
+    font-size: 1.05em;
+}
+
+.performance-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+    margin-right: -5px;
+}
+
+.performance-box {
+    width: calc(33.33% - 10px);
+    padding: -2px;
+    border-radius: 12px;
+    text-align: center;
+    color: white;
+    margin-right: 5px;
+}
+
+.positive {
+    background-color: #089981;
+    filter: drop-shadow(0 0 10px #08998149);
+    transition: .3s;
+}
+
+.negative {
+    background-color: #F23645;
+    filter: drop-shadow(0 0 10px #fa435231);
+    transition: .3s;
+}
+
+.positive:hover {
+    background-color: #089981;
+    color: black;
+    filter: drop-shadow(0 0 18px #09bb9d5d);
+    transition: .2s;
+}
+
+.negative:hover {
+    background-color: #F23645;
+    color: black;
+    filter: drop-shadow(0 0 18px #ff3b4b6b);
+    transition: .2s;
+}
+
+.performance-value {
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: -20px;
+}
+
+.performance-time {
+    font-size: 16px;
+}
+
+#crypto-name{
+    font-size: 1.3em;
+}
+
+#marketcap-chart{
+    height: 100px;
+}

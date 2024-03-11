@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
     searchInput.addEventListener('input', function () {
         var searchText = searchInput.value.trim();
         if (searchText.length > 0) {
-            fetch(`searchpage-get-search-results.php?searchText=${searchText}`)
+            fetch(`searchpage-get-search-results.php?searchText=${searchText}`) //Chiamata al file php che ritorna l'encode in json di tutte le informazioni
                 .then(response => response.json())
                 .then(data => {
                     displaySearchResults(data);
@@ -25,12 +25,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
         results.forEach(crypto => {
             const tr = searchResultsContainer.insertRow();
+            tr.addEventListener("click", () => { //Al click sulla riga della tabella, vengo reindirizzato alla pagina individuale della crypto
+                window.location.href = `../pages/crypto-info.php?coinCode=${crypto.coinCode}`;
+              });
             tr.className = 'search-result-item';
 
             const td = tr.insertCell();
             td.className='td-det-crypto-img';
             const img = document.createElement('img');
-            img.src = 'data:image/png;base64,' + crypto.Icon;
+            img.src = 'data:image/png;base64,' + crypto.Icon;//Immagine, cioè BLOB del database
             img.alt = crypto.coinCode;
             img.className = 'crypto-img';
             td.appendChild(img);
@@ -48,14 +51,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const td5 = tr.insertCell();
             const span = document.createElement('span');
-            span.textContent = `${crypto.percent_change}%`;
             td5.className = 'td-det-crypto-variation';
 
-            if(`${crypto.percent_change}` > 0){
+            if(`${crypto.percent_change}` > 0){//Stile variazione + prezzo, in base al segno + o - della variazione percentuale
+                span.textContent = `+${crypto.percent_change}%`;
                 span.classList.add('highlight-green');
                 td4.className = 'td-det-crypto-price-green';
             }
             else{
+                span.textContent = `${crypto.percent_change}%`;
                 span.classList.add('highlight-red');
                 td4.className = 'td-det-crypto-price-red';
             }

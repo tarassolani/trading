@@ -1,20 +1,9 @@
 <?php
 session_start();
-if (isset($_COOKIE['login-info']) || isset($_SESSION['login-info'])) {
+if (isset($_COOKIE['login-info']) || isset($_SESSION['login-info'])) { 
     $username = isset($_SESSION['login-info']) ? $_SESSION['login-info'] : $_COOKIE['login-info'];
 
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "dbRegolare";
-
-    $conn = new mysqli($servername, $username, $password, $dbname);
-
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-
-    $username = isset($_SESSION['login-info']) ? $_SESSION['login-info'] : $_COOKIE['login-info'];
+    include 'connect-to-db.php';
 
     $sql = "SELECT name, surname, birthDate, country, city, street, streetNumber, phoneNumber, email, hash FROM users WHERE username = ?";
     $stmt = $conn->prepare($sql);
@@ -51,7 +40,7 @@ if (isset($_COOKIE['login-info']) || isset($_SESSION['login-info'])) {
                   <p>{$userData['phoneNumber']}</p>
                   <p>{$userData['email']}</p>";
 } else {
-    // Utente non autenticato, gestisci come preferisci
+    //Utente non autenticato
     $username = "Guest";
     $walletContent = "";
     $otherInfo = "";
