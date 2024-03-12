@@ -37,7 +37,7 @@ if (isset($_COOKIE['login-info']) || isset($_SESSION['login-info'])) {
             'Icon' => $base64Icon,
             'price' => number_format($row['price'], 2),
             'percent_change' => number_format($row['variation'], 2),
-            'amount' => number_format($row['amount'], 2)
+            'amount' => number_format($row['amount'], 5)
         ];
     }
     $stmt->close();

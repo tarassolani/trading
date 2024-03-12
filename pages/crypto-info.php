@@ -8,10 +8,16 @@
 include 'connect-to-db.php';
 session_start();
 
+$disableTradingButtons = true;
+
 $coinCode = isset($_GET["coinCode"]) ? strtoupper($_GET["coinCode"]) : "";
 $chartName = $coinCode . "USDT";
 
-$username = isset($_SESSION['login-info']) ? $_SESSION['login-info'] : $_COOKIE['login-info'];
+$username = null;
+if (isset($_COOKIE['login-info']) || isset($_SESSION['login-info'])) {
+    $disableTradingButtons = false;
+    $username = isset($_SESSION['login-info']) ? $_SESSION['login-info'] : $_COOKIE['login-info'];
+}
 
 $sql = "SELECT Icon, price, variation, name FROM crypto WHERE coinCode = ?";
 $stmt = $conn->prepare($sql);
@@ -67,8 +73,6 @@ if (isset($cmcData['data'][$coinCode]['quote']['USDT'])) {
     $percent_change_7d = isset($cmcData['data'][$coinCode]['quote']['USDT']['percent_change_7d']) ? $cmcData['data'][$coinCode]['quote']['USDT']['percent_change_7d'] : null;
     $percent_change_30d = isset($cmcData['data'][$coinCode]['quote']['USDT']['percent_change_30d']) ? $cmcData['data'][$coinCode]['quote']['USDT']['percent_change_30d'] : null;
 }
-
-$amount = 0; //Imposto amount a 0 (così la richiesta AJAX non dà errori nel caso non abbia fatto il login)
 ?>
 
 <!DOCTYPE html>
@@ -82,28 +86,6 @@ $amount = 0; //Imposto amount a 0 (così la richiesta AJAX non dà errori nel ca
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <title>Regolare.com - Crypto Info</title>
 
-    <script>
-        //Richiesta AJAX
-        function updateCryptoInfo() {
-            var imgSrc = "<?php echo $imgSrc; ?>";
-            var cryptoName = "<?php echo $cryptoName; ?>";
-            var amount = "<?php echo $amount; ?>";
-
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    document.getElementById("crypto-info-container").innerHTML = this.responseText;
-                }
-            };
-            //Nella richiesta AJAX, passo come parametri GET il coinCode, l'immagine crypto, il nome crypto e la quantita di crypto, se posseduta
-            //coinCode serve per ottenere i dati dall'API nel file php; l'immagine, nome crypto e quantita sono dati che non posso ottenere se non accedo al database
-            xhttp.open("GET", "update-crypto-info.php?coinCode=<?php echo $coinCode; ?>&imgSrc=" + encodeURIComponent(imgSrc) + "&cryptoName=" + encodeURIComponent(cryptoName) + "&amount=" + amount, true);
-            xhttp.send();
-        }
-
-        setInterval(updateCryptoInfo, 10000); //L'aggiornamento delle informazioni avviene ogni 10 secondi
-    </script>
-
 </head>
 
 <body>
@@ -113,11 +95,13 @@ $amount = 0; //Imposto amount a 0 (così la richiesta AJAX non dà errori nel ca
         <a id="logo" href="../index.php">Regolare.com</a>
 
         <div class="top-right-links">
-        <?php if ($username): ?>
-            <strong>Hello <a href="account.php"><?php echo $username; ?></a></strong>
-        <?php else: ?>
-            <a href="signin.php"><strong>Sign in</strong></a> or <a href="signup.html"><strong>Sign up</strong></a>
-        <?php endif; ?>
+            <?php if ($username): ?>
+                <strong>Hello <a href="account.php">
+                        <?php echo "@" . $username; ?>
+                    </a></strong>
+            <?php else: ?>
+                <a href="signin.php"><strong>Sign in</strong></a> or <a href="signup.html"><strong>Sign up</strong></a>
+            <?php endif; ?>
         </div>
     </nav>
 
@@ -232,11 +216,11 @@ $amount = 0; //Imposto amount a 0 (così la richiesta AJAX non dà errori nel ca
                     $stmt->fetch();
 
                     $amount = ($amount !== null) ? $amount : 0; //Se l'utente non ha posizioni relative a questa crypto, amount è 0
-
+                
                     $stmt->close();
 
-                    $valueInUSDT = $amount * $price; //Valore crypto in USDT
-
+                    $valueInUSDT = ($amount !== null) ? $amount * $price : 0;//Valore crypto in USDT
+                
                     $conn->close();
 
                     ?>
@@ -249,7 +233,7 @@ $amount = 0; //Imposto amount a 0 (così la richiesta AJAX non dà errori nel ca
                             <li class="crypto-info-item">
                                 <p><strong>Amount:</strong></p>
                                 <p class="crypto-info-value">
-                                    <?php echo ($amount !== 0) ? number_format($amount) : 'N/A'; ?>
+                                    <?php echo ($amount !== 0) ? number_format($amount, 6) : 'N/A'; ?>
                                 </p>
                             </li>
                             <li class="crypto-info-item">
@@ -264,8 +248,6 @@ $amount = 0; //Imposto amount a 0 (così la richiesta AJAX non dà errori nel ca
                 }
                 ?>
             </div>
-
-
         </div>
 
         <!-- GRAFICO -->
@@ -297,20 +279,24 @@ $amount = 0; //Imposto amount a 0 (così la richiesta AJAX non dà errori nel ca
             <!-- TradingView Widget END -->
 
             <!-- SEZIONE TRADING -->
-            <div class="buy-sell-buttons">
-                <a href="#" class="btn-buy" onclick="buyCrypto('<?php echo $coinCode ?>')">Buy</a>
-                <label for="buy-amount" class="dollar-label">$</label>
-                <div class="custom-number-input">
-                    <button class="decrement-button" onclick="decrement('buy-amount')">-</button>
-                    <input type="number" id="buy-amount" value="10" min="1" step="10" placeholder="Amount">
-                    <button class="increment-button" onclick="increment('buy-amount')">+</button>
-                </div>
-                <a href="#" class="btn-sell" onclick="sellCrypto('<?php echo $coinCode ?>')">Sell</a>
-                <label for="sell-amount" class="dollar-label">$</label>
-                <div class="custom-number-input">
-                    <button class="decrement-button" onclick="decrement('sell-amount')">-</button>
-                    <input type="number" id="sell-amount" value="10" min="1" step="10" placeholder="Amount">
-                    <button class="increment-button" onclick="increment('sell-amount')">+</button>
+            <div class="buy-sell-container">
+                <div class="buy-sell-buttons">
+                    <a href="#" class="btn-buy" onclick="buyCrypto('<?php echo $coinCode?>')">Buy</a>
+                    <label for="buy-amount">$</label>
+                    <div class="custom-number-input">
+                        <button class="decrement-button" onclick="decrement('buy-amount')">-</button>
+                        <input type="number" id="buy-amount" value="10" min="1" step="10" placeholder="Amount">
+                        <button class="increment-button" onclick="increment('buy-amount')">+</button>
+                    </div>
+                    <a href="#" class="btn-sell" onclick="sellCrypto('<?php echo $coinCode?>')">Sell</a>
+                    <label for="sell-amount" class="dollar-label">$</label>
+                    <div class="custom-number-input">
+                        <button class="decrement-button" onclick="decrement('sell-amount')">-</button>
+                        <input type="number" id="sell-amount" value="10" min="1" step="10" placeholder="Amount">
+                        <button class="increment-button" onclick="increment('sell-amount')">+</button>
+                    </div>
+                    <span class="error-message good">Not enough USDT in your account!</span>
+
                 </div>
             </div>
 
@@ -321,7 +307,17 @@ $amount = 0; //Imposto amount a 0 (così la richiesta AJAX non dà errori nel ca
                         .then(response => {
                             if (!response.ok) {
                                 throw new Error('Network response was not ok');
+                                document.querySelector('.error-message').classList.remove('good');
+                                document.querySelector('.error-message').classList.add('bad');
+                                document.querySelector('.error-message').textContent = "Couldn't buy crypto!";
                             }
+                            else {
+                                document.querySelector('.error-message').classList.remove('bad');
+                                document.querySelector('.error-message').classList.add('good');
+                                document.querySelector('.error-message').textContent = "Crypto bought successfully!";
+                            }
+                            document.querySelector('.error-message').style.visibility = 'visible';
+                            window.location.reload(true);
                         })
                         .catch(error => console.error('There was a problem with the fetch operation:', error));
                 }
@@ -332,7 +328,17 @@ $amount = 0; //Imposto amount a 0 (così la richiesta AJAX non dà errori nel ca
                         .then(response => {
                             if (!response.ok) {
                                 throw new Error('Network response was not ok');
+                                document.querySelector('.error-message').classList.remove('good');
+                                document.querySelector('.error-message').classList.add('bad');
+                                document.querySelector('.error-message').textContent = "Couldn't sell crypto!";
                             }
+                            else {
+                                document.querySelector('.error-message').classList.remove('bad');
+                                document.querySelector('.error-message').classList.add('good');
+                                document.querySelector('.error-message').textContent = "Crypto sold successfully!";
+                            }
+                            document.querySelector('.error-message').style.visibility = 'visible';
+                            window.location.reload(true);
                         })
                         .catch(error => console.error('There was a problem with the fetch operation:', error));
                 }
@@ -349,6 +355,47 @@ $amount = 0; //Imposto amount a 0 (così la richiesta AJAX non dà errori nel ca
                     var input = document.getElementById(id);
                     input.stepDown();
                 }
+
+                //Richiesta AJAX
+                function updateCryptoInfo() {
+                    var imgSrc = "<?php echo $imgSrc; ?>";
+                    var cryptoName = "<?php echo $cryptoName; ?>";
+                    var amount = <?php echo isset($amount) ? $amount : 0; ?>;
+
+                    var xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function () {
+                        if (this.readyState == 4 && this.status == 200) {
+                            document.getElementById("crypto-info-container").innerHTML = this.responseText;
+                        }
+                    };
+                    //Nella richiesta AJAX, passo come parametri GET il coinCode, l'immagine crypto, il nome crypto e la quantita di crypto, se posseduta
+                    //coinCode serve per ottenere i dati dall'API nel file php; l'immagine, nome crypto e quantita sono dati che non posso ottenere se non accedo al database
+                    xhttp.open("GET", "update-crypto-info.php?coinCode=<?php echo $coinCode; ?>&imgSrc=" + encodeURIComponent(imgSrc) + "&cryptoName=" + encodeURIComponent(cryptoName) + "&amount=" + amount, true);
+                    xhttp.send();
+                }
+
+
+                setInterval(updateCryptoInfo, 10000); //L'aggiornamento delle informazioni avviene ogni 10 secondi
+
+                //Disabilito tasti trading
+                function toggleDisabledState() {
+                    var buyLink = document.querySelector('.btn-buy');
+                    var sellLink = document.querySelector('.btn-sell');
+
+                    if (<?php echo $disableTradingButtons ? 'true' : 'false'; ?>) {
+                        buyLink.classList.add('disabled-link');
+                        sellLink.classList.add('disabled-link');
+                    } else {
+                        buyLink.classList.remove('disabled-link');
+                        sellLink.classList.remove('disabled-link');
+                    }
+                }
+
+                //Chiamata alla funzione al caricamento della pagina
+                window.onload = function () {
+                    toggleDisabledState();
+                };
+
             </script>
         </div>
     </section>

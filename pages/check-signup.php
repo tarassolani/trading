@@ -1,6 +1,8 @@
 <?php
 include 'connect-to-db.php';
 
+session_start();
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt = $conn->prepare("INSERT INTO Users (name, surname, birthDate, country, city, street, streetNumber, phoneNumber, email, username, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
@@ -18,6 +20,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
+    $_SESSION['login-info'] = $username;
+
     if ($stmt->execute()) {
         header("Location: account.php");
         exit();
@@ -25,6 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "Error inserting record: " . $stmt->error;
     }
     $stmt->close();
+
 }
 
 $conn->close();

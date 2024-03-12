@@ -21,16 +21,19 @@ document.addEventListener('DOMContentLoaded', function () {
         clearSearchResults();
         results.forEach(user => {
             const tr = searchResultsContainer.insertRow();
-            tr.className = 'search-result-item';
+            tr.className = 'friend-result-item';
 
             const td = tr.insertCell();
             td.textContent = user.username;
+            td.className="friend-first-td";
 
             const td2 = tr.insertCell();
+            td2.className="friend-last-td";
 
             const span = document.createElement("span");
             span.textContent = "group_add";
             span.classList.add("material-symbols-outlined");
+            span.classList.add("friend-interaction");
 
             td2.appendChild(span);
 
@@ -142,11 +145,22 @@ function sendCrypto(friend) {
                 if (data.error) {
                     alert("Errore: " + data.error);
                 } else {
+                    updateBalanceUI(amountToSend);
                     alert("Pagamento inviato con successo!");
+                    window.location.reload(true);
                 }
             })
             .catch(error => console.error('Error:', error));
     } else {
         alert("Inserisci un importo valido!");
     }
+}
+
+function updateBalanceUI(amountToSend) {
+    const balanceElement = document.getElementById('total-balance');
+
+    const balanceWithoutCurrency = balanceElement.textContent.replace(/[^\d.-]/g, ''); //Rimuove spazi e simbolo del dollaro
+    const balanceAsFloat = parseFloat(balanceWithoutCurrency);
+
+    balanceElement.textContent = (balanceAsFloat - amountToSend).toFixed(2) + " USDT";
 }

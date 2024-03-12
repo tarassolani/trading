@@ -107,12 +107,8 @@ if (isset($_COOKIE['login-info']) || isset($_SESSION['login-info'])) {
             <td class="dashboard-cell" id="account-info-cell">
                 <div class="account-info">
                     <div id="left-div">
-                        <h2 id="username">@
-                            <?php echo $username ?>
-                        </h2>
-                        <p id="name-surname">
-                            <?php echo $nameLastname ?>
-                        </p>
+                        <h2 id="username">@<?php echo $username ?></h2>
+                        <p id="name-surname"><?php echo $nameLastname ?></p>
 
                         <div class="wallet-info">
                             <br>
@@ -142,7 +138,7 @@ if (isset($_COOKIE['login-info']) || isset($_SESSION['login-info'])) {
                 <div class="account-balance" id="account-balance-cell">
                     <h3>Account Balance</h3>
                     <span id="total-balance">
-                        <?php echo $balance . " USDT" ?>
+                        <?php echo number_format($balance,2) . " USDT" ?>
                     </span>
                     <div style="margin-top: 15px">
                         <?php if ($iban === null): ?>
@@ -151,9 +147,9 @@ if (isset($_COOKIE['login-info']) || isset($_SESSION['login-info'])) {
                         <?php else: ?>
                             <!-- Mostra i pulsanti di deposito e prelievo se l'utente ha un conto bancario collegato -->
                             <div id="buttons">
-                                <button class="transaction-button" id="deposit-button"
+                                <button class="transaction-button deposit-button"
                                     onclick="transaction('deposit')">Deposit</button>
-                                <button class="transaction-button" id="withdraw-button"
+                                <button class="transaction-button withdraw-button"
                                     onclick="transaction('withdraw')">Withdraw</button>
                             </div>
                             <div id="response" style="margin-top: 10px"></div>
@@ -190,9 +186,8 @@ if (isset($_COOKIE['login-info']) || isset($_SESSION['login-info'])) {
 
                     <div class="search-bar-right-holder">
                         <div class="search-bar-wide">
-                            <input type="text" name="search" placeholder="Search for user..." class="search-input">
-                            <span class="material-symbols-outlined size-medio"
-                                onclick="searchform.submit()">&#xe8b6;</span>
+                            <input type="text" name="search" placeholder="Search for users..." class="search-input">
+                            <span class="material-symbols-outlined size-medio">&#xe8b6;</span>
                         </div>
                     </div>
                     <table id="already-friend">
@@ -234,7 +229,7 @@ if (isset($_COOKIE['login-info']) || isset($_SESSION['login-info'])) {
                         // Popola la tabella degli amici già presenti
                         if (!empty($friends_array)) {
                             foreach ($friends_array as $friend_username) {
-                                echo "<tr><td>{$friend_username}</td><td><span class='material-symbols-outlined' onclick=\"sendCrypto('{$friend_username}')\">payments</span></td><td><span class='material-symbols-outlined' onclick=\"removeFriendDB('{$friend_username}')\">group_remove</span></td></tr>";
+                                echo "<tr><td>{$friend_username}</td><td><span class='material-symbols-outlined send-money' onclick=\"sendCrypto('{$friend_username}')\">payments</span></td><td><span class='material-symbols-outlined friend-interaction' onclick=\"removeFriendDB('{$friend_username}')\">group_remove</span></td></tr>";
                             }
                         } else {
                             echo '<p id="no-friends">You have no friends right now</p>';
@@ -250,6 +245,8 @@ if (isset($_COOKIE['login-info']) || isset($_SESSION['login-info'])) {
 
         </tr>
     </table>
+
+    <a id="logout" href="logout.php">Logout</a>
 
 </body>
 

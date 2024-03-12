@@ -218,26 +218,26 @@ nav .top-right-links a:hover {
     transition: .3s;
 }
 
-.buy-sell-buttons a.compra {
+.buy-sell-buttons a.btn-buy {
     background-color: #089981;
     filter: drop-shadow(0 0 10px #0899816c);
     transition: .3s;
 }
 
-.buy-sell-buttons a.compra:hover {
+.buy-sell-buttons a.btn-buy:hover {
     background-color: #089981;
     color: black;
     filter: drop-shadow(0 0 18px #0dbb9e63);
     transition: .2s;
 }
 
-.buy-sell-buttons a.vendi {
+.buy-sell-buttons a.btn-sell {
     background-color: #F23645;
     filter: drop-shadow(0 0 10px #f236466c);
     transition: .3s;
 }
 
-.buy-sell-buttons a.vendi:hover {
+.buy-sell-buttons a.btn-sell:hover {
     background-color: #F23645;
     color: black;
     filter: drop-shadow(0 0 18px #fa435250);
@@ -272,6 +272,9 @@ nav .top-right-links a:hover {
     -webkit-appearance: none;
     margin: 0;
 }
+
+.custom-number-input input:focus {outline:none;}
+
 
 .custom-number-input input::-webkit-inner-spin-button,
 .custom-number-input input::-webkit-outer-spin-button {
@@ -441,4 +444,16 @@ nav .top-right-links a:hover {
 .bad{
     color: #F23645;
     filter: drop-shadow(0 0 10px #fa43524f);
+}
+
+.disabled-link {
+    text-decoration: none;
+    color: white;
+    border-radius: 10px;
+    padding: 10px 20px;
+    background-color: rgb(121, 121, 121) !important;
+    filter: none !important;
+    transition: .3s;
+    margin-right: 10px;
+    pointer-events: none;
 }

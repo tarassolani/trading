@@ -1,6 +1,9 @@
 <?php
 session_start();
-$username = isset($_SESSION['login-info']) ? $_SESSION['login-info'] : $_COOKIE['login-info'];
+$username=null;
+if (isset($_COOKIE['login-info']) || isset($_SESSION['login-info'])) {
+    $username = isset($_SESSION['login-info']) ? $_SESSION['login-info'] : $_COOKIE['login-info'];
+}
 ?>
 
 <!DOCTYPE html>
@@ -10,7 +13,8 @@ $username = isset($_SESSION['login-info']) ? $_SESSION['login-info'] : $_COOKIE[
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <title>Regolare.com</title>
     <script src="js/script-starting-coins.js"></script>
     <script src="js/script-search-results.js"></script>
@@ -20,9 +24,12 @@ $username = isset($_SESSION['login-info']) ? $_SESSION['login-info'] : $_COOKIE[
 <body>
     <div class="top-right-links">
         <?php if ($username): ?>
-            <strong>Hello <a href="pages/account.php"><?php echo $username; ?></a></strong>
+            <strong>Hello <a href="pages/account.php">
+                    <?php echo "@".$username; ?>
+                </a></strong>
         <?php else: ?>
-            <a href="pages/signin.php"><strong>Sign in</strong></a> or <a href="pages/signup.html"><strong>Sign up</strong></a>
+            <a href="pages/signin.php"><strong>Sign in</strong></a> or <a href="pages/signup.html"><strong>Sign
+                    up</strong></a>
         <?php endif; ?>
     </div>
 

@@ -1,4 +1,4 @@
-function linkBankAccount(){
+function linkBankAccount() {
     window.location.href = "add-bank-account.html";
 }
 
@@ -21,46 +21,56 @@ function transaction(type) {
     input.id = inputId;
     input.className = "search-input";
     input.placeholder = "Enter amount";
-    input.style.marginLeft = "30px";
 
     // Crea il pulsante di conferma
     var confirmButton = document.createElement("button");
+    confirmButton.classList.add("deposit-button");
+    confirmButton.classList.add("ok-button");
     confirmButton.id = "confirm-button";
     confirmButton.textContent = "OK";
-    confirmButton.onclick = function() {
+    confirmButton.onclick = function () {
         var amount = document.getElementById(inputId).value;
-    // Verifica che l'importo non sia vuoto o negativo
-    if (amount.trim() !== "" && parseFloat(amount) > 0) {
-        // Creazione dell'oggetto XMLHttpRequest
-        var xhr = new XMLHttpRequest();
-        
-        // Definizione della funzione di gestione della risposta
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-                const response_div = document.getElementById('response');
+        // Verifica che l'importo non sia vuoto o negativo
+        if (amount.trim() !== "" && parseFloat(amount) > 0) {
+            // Creazione dell'oggetto XMLHttpRequest
+            var xhr = new XMLHttpRequest();
 
-                if (xhr.status === 200) {
-                    // Se la richiesta è stata eseguita con successo
-                    var response = xhr.responseText;
+            // Definizione della funzione di gestione della risposta
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    const response_div = document.getElementById('response');
 
-                    if (response.startsWith("success")) {
-                        response_div.style.color = "green";
-                        response_div.textContent = "Transaction completed successfully.";
+                    if (xhr.status === 200) {
+                        // Se la richiesta è stata eseguita con successo
+                        var response = xhr.responseText;
 
-                        removeInput();
-                        document.getElementById("buttons").style.display = "inline-block";
+                        if (response.startsWith("success")) {
+                            response_div.style.color = "#089981";
+                            response_div.textContent = "Transaction completed successfully.";
 
+                            var totalBalanceSpan = document.getElementById("total-balance");
+                            if (totalBalanceSpan) {
+                                //Aggiorna il account balance
+                                var currentBalance = parseFloat(totalBalanceSpan.textContent);
+                                var updatedBalance = type === "deposit" ? currentBalance + parseFloat(amount) : currentBalance - parseFloat(amount);
+                                totalBalanceSpan.textContent = updatedBalance.toFixed(2) + " USDT";
+                            }
+
+                            removeInput();
+                            document.getElementById("buttons").style.display = "inline-block";
+                            window.location.reload(true);
+
+                        } else {
+                            response_div.style.color = "#F23645"
+                                ; response_div.textContent = response;
+                        }
                     } else {
-                        response_div.style.color = "red"
-;                       response_div.textContent = response;
+                        // Gestione degli errori della richiesta AJAX
+                        response_div.style.color = "#F23645"
+                            ; response_div.textContent = "Error: Unable to complete the request.";
                     }
-                } else {
-                    // Gestione degli errori della richiesta AJAX
-                    response_div.style.color = "red"
-;                   response_div.textContent = "Error: Unable to complete the request.";
                 }
-            }
-        };
+            };
             // Ripristina i pulsanti di deposito e prelievo
             document.getElementById("buttons").style.display = "inline-block";
             // Rimuove l'input e il pulsante di conferma
@@ -68,7 +78,7 @@ function transaction(type) {
 
             // Apertura della richiesta
             xhr.open("GET", "check-bank-account.php?type=" + type + "&amount=" + amount, true);
-            
+
             // Invio della richiesta
             xhr.send();
         } else {
@@ -78,9 +88,10 @@ function transaction(type) {
 
     // Crea il pulsante di annulla
     var cancelButton = document.createElement("button");
+    cancelButton.classList.add("withdraw-button");
     cancelButton.textContent = "Cancel";
     cancelButton.id = "cancel-button";
-    cancelButton.onclick = function() {
+    cancelButton.onclick = function () {
         // Ripristina i pulsanti di deposito e prelievo
         document.getElementById("buttons").style.display = "inline-block";
         // Rimuove l'input e il pulsante di conferma

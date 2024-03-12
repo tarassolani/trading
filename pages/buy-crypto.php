@@ -1,6 +1,7 @@
 <?php
 include 'connect-to-db.php';
 session_start();
+header('Content-Type: application/json');
 
 $username = isset($_SESSION['login-info']) ? $_SESSION['login-info'] : $_COOKIE['login-info'];
 

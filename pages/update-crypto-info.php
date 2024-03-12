@@ -151,13 +151,13 @@ if (isset($_SESSION['login-info']) || isset($_COOKIE['login-info'])) {
             <li class="crypto-info-item">
                 <p><strong>Amount:</strong></p>
                 <p class="crypto-info-value">
-                    <?php echo number_format($amount,2)?>
+                    <?php echo ($amount !== 0) ? number_format($amount, 6) : 'N/A'; ?>
                 </p>
             </li>
             <li class="crypto-info-item">
                 <p><strong>Value in USDT:</strong></p>
                 <p class="crypto-info-value">
-                    <?php echo number_format($valueInUSDT, 2)?>
+                    <?php echo ($valueInUSDT !== 0) ? number_format($valueInUSDT, 2) : 'N/A'; ?>
                 </p>
             </li>
         </ul>

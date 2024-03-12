@@ -1,8 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Poppins:wght@400;700&family=Rubik:wght@600;800&display=swap');
 
 body {
-    font-family: 'Poppins', sans-serif; /* Assicurati di avere il font Poppins caricato */
-    background-color: black; /* Sostituisci con il tuo colore di sfondo */
+    font-family: 'Poppins', sans-serif;
+    /* Assicurati di avere il font Poppins caricato */
+    background-color: black;
+    /* Sostituisci con il tuo colore di sfondo */
     color: white;
     margin: 0;
     padding: 0;
@@ -44,6 +46,7 @@ nav #menu-icon {
     padding-bottom: 10px;
     margin-top: -20px;
 }
+
 .material-symbols-outlined {
     /*font-variation-settings:
     'FILL' 0,
@@ -54,11 +57,22 @@ nav #menu-icon {
     color: #555;
     transition: .2s;
 }
+
 .material-symbols-outlined:hover {
     color: rgb(248, 248, 248);
     cursor: pointer;
     transition: .3s;
 }
+
+.friend-interaction:hover {
+    filter: drop-shadow(0 0 10px #cecece88);
+}
+
+.send-money:hover {
+    color: #089981 !important;
+    filter: drop-shadow(0 0 6px #07816dad);
+}
+
 nav #menu-icon:hover {
     filter: drop-shadow(0 0 10px rgba(32, 32, 32, 0.5));
 }
@@ -67,32 +81,18 @@ nav .top-right-links {
     display: flex;
     align-items: center;
 }
+
 nav .top-right-links a {
     color: #fff;
     text-decoration: none;
     margin-right: 10px;
     transition: .2s;
 }
+
 nav .top-right-links a:hover {
     text-decoration: underline;
     filter: drop-shadow(0 0 30px rgb(110, 214, 255));
     transition: .4s;
-}
-
-.material-symbols-outlined {
-    /*font-variation-settings:
-    'FILL' 0,
-    'wght' 400,
-    'GRAD' 0,
-    'opsz' 48;*/
-    display: inline-block;
-    color: #555;
-    transition: .2s;
-}
-.material-symbols-outlined:hover {
-    color: rgb(248, 248, 248);
-    cursor: pointer;
-    transition: .3s;
 }
 
 h1 {
@@ -113,27 +113,28 @@ h1 {
 }
 
 .account-info {
-    overflow: hidden; /* Aggiungi overflow hidden per evitare problemi di layout */
+    overflow: hidden;
+    /* Aggiungi overflow hidden per evitare problemi di layout */
     padding-left: 10px;
 }
 
-.account-balance{
+.account-balance {
     padding-left: 15px;
 }
 
-.dashboard-table{
+.dashboard-table {
     border-spacing: 20px;
     width: 80%;
     margin-left: auto;
     margin-right: auto;
 }
 
-#account-info-cell{
+#account-info-cell {
     width: 70%;
 }
 
 
-.dashboard-table .dashboard-cell{
+.dashboard-table .dashboard-cell {
     background-color: rgba(7, 7, 7, 1);
     border: 1px solid rgb(34, 34, 34);
     border-radius: 10px;
@@ -141,15 +142,13 @@ h1 {
     transition: .3s ease-in-out;
 }
 
-.dashboard-table .dashboard-cell:hover{
+.dashboard-table .dashboard-cell:hover {
     filter: drop-shadow(0 0 50px rgba(32, 32, 32, 0.5));
     background-color: rgb(15, 15, 15);
     transition: .2s ease-in-out;
 }
 
-.friends tr{
-    
-}
+.friends tr {}
 
 
 .account-info h2,
@@ -159,35 +158,38 @@ h1 {
     color: #fff;
 }
 
-.account-info h3{
+.account-info h3 {
     display: inline-block;
     margin-top: -10px;
 }
 
-.positions, .friends h3{
+.positions,
+.friends h3 {
     padding-left: 12px;
 }
 
-.copy-btn{
+.copy-btn {
     margin-left: 5px;
 }
-#btn-inviz{
+
+#btn-inviz {
     visibility: hidden;
 }
+
 .account-info h2 {
     font-size: 24px;
     margin-bottom: 10px;
     padding-top: 10px;
 }
 
-#account-dashboard{
+#account-dashboard {
     font-weight: 400;
     font-size: 2.5em;
     vertical-align: middle;
     text-align: left;
 }
 
-#div-account-dashboard{
+#div-account-dashboard {
     width: 78%;
     margin-left: auto;
     margin-right: auto;
@@ -203,7 +205,7 @@ h1 {
     margin-top: 20px;
 }
 
-.wallet-info{
+.wallet-info {
     margin-top: -10px;
 }
 
@@ -213,7 +215,7 @@ h1 {
     width: 40%;
 }
 
-#username{
+#username {
     vertical-align: middle;
     margin-top: 0;
 }
@@ -255,29 +257,28 @@ button:hover {
 
 
 /* TABELLAAA */
-#search-results-wider{
+#search-results-wider {
     width: 80%;
     margin-left: auto;
     margin-right: auto;
-    background-color: #000000;
-    border-radius: 10px;
+    background-color: #030303;
     margin-top: 35px;
     border-collapse: collapse;
     margin-bottom: 40px;
     border: 1px solid #3f3f3f4f;
 }
 
-#search-results-wider td{
+#search-results-wider td {
     padding-left: 5px;
 }
 
-#search-results-wider th{
+#search-results-wider th {
     font-weight: 300;
     padding-top: 15px;
     padding-bottom: 15px;
 }
 
-#top-row th{
+#top-row th {
     border: 1px solid #3f3f3f4f;
     transition: .3s;
 }
@@ -289,23 +290,27 @@ button:hover {
 }
 
 
-#th-crypto{
-    width: 40%;
-}
-#th-crypto-price{
-    width: 10%;
-}
-#th-crypto-variation{
-    width: 10%;
-}
-#th-crypto-amount{
+#th-crypto {
     width: 40%;
 }
 
-.td-det-crypto-img{
+#th-crypto-price {
+    width: 10%;
+}
+
+#th-crypto-variation {
+    width: 10%;
+}
+
+#th-crypto-amount {
+    width: 40%;
+}
+
+.td-det-crypto-img {
     text-align: center;
     width: 4%;
 }
+
 .crypto-img {
     width: 30px;
     height: auto;
@@ -313,26 +318,31 @@ button:hover {
     margin-left: 2px;
     vertical-align: middle;
 }
-.td-det-crypto-code{
+
+.td-det-crypto-code {
     text-align: left;
     font-weight: bold;
     width: 10%;
 }
-.td-det-crypto-name{
+
+.td-det-crypto-name {
     text-align: left;
     width: 26%;
 }
-.td-det-crypto-price{
+
+.td-det-crypto-price {
     text-align: left;
     color: #88ffba;
     filter: drop-shadow(0 0 13px #4ec7807e);
     animation: glowAnimation 1s infinite alternate;
 }
-.td-det-crypto-variation{
+
+.td-det-crypto-variation {
     text-align: left;
     color: #88ffba;
 }
-.td-det-crypto-amount{
+
+.td-det-crypto-amount {
     text-align: right;
     padding-right: 15px;
 }
@@ -341,7 +351,7 @@ button:hover {
 #loader {
     border: 4px solid rgba(255, 255, 255, 0.3);
     border-radius: 50%;
-    border-top: 4px solid #3498db;
+    border-top: 4px solid #089981;
     width: 20px;
     height: 20px;
     animation: spin 1s linear infinite;
@@ -349,13 +359,13 @@ button:hover {
     margin-right: 5px;
 }
 
-#wallet-button.loading span{
+#wallet-button.loading span {
     display: inline-block;
     vertical-align: middle;
     margin-left: 5px;
 }
 
-#friends{
+#friends {
     width: 60%;
     margin-left: auto;
     margin-right: auto;
@@ -368,24 +378,19 @@ button:hover {
     margin-bottom: 40px;
 }
 
-.search-result-item:first-child td:first-child { border-top-left-radius: 10px; }
-.search-result-item:first-child td:last-child { border-top-right-radius: 10px; }
-
-.search-result-item:last-child td:first-child { border-bottom-left-radius: 10px; }
-.search-result-item:last-child td:last-child { border-bottom-right-radius: 10px; }
-
 .search-result-item:last-child {
     border-bottom: none;
 }
 
-.search-result-item{
+.search-result-item {
     width: 100%;
     height: 50px;
     background-color: transparent;
     border-bottom: 1px solid #3f3f3f4f;
     transition: .3s;
 }
-.search-result-item:hover{
+
+.search-result-item:hover {
     background-color: #3f3f3f4f;
     cursor: pointer;
     transition: .2s;
@@ -402,18 +407,19 @@ button:hover {
     margin-left: 20px;
 }
 
-#friends-table{
+#friends-table {
     float: right;
     margin-right: 35px;
 }
 
-#no-friends{
+#no-friends {
     float: left;
     padding-left: 12px;
     margin-top: -2px;
 }
 
 .search-bar-right-holder {
+    margin-right: 5px;
     margin-top: 50px;
     width: 40%;
     position: absolute;
@@ -421,7 +427,7 @@ button:hover {
     right: 12px;
 }
 
-td{
+td {
     padding-left: 10px;
     padding-right: 10px;
 }
@@ -444,16 +450,43 @@ td{
     outline: none;
 }
 
-.confirm-button{
+#deposit-amount-input, #withdraw-amount-input {
+    background-color: #030303;
+    border-radius: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    transition: .3s;
+    width: 165px;
+    margin-right: 5px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+
+#deposit-amount-input:hover, #withdraw-amount-input:hover {
+    background-color: #272727;
+    transition: .2s;
+}
+
+.confirm-button {
     margin-left: 20px;
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
-.transaction-button{
+.transaction-button {
     color: white;
     border-radius: 10px;
     padding: 10px 20px;
@@ -462,54 +495,106 @@ td{
     margin-right: 10px;
 }
 
-#deposit-button{
+.ok-button {
+    margin-left: 5px;
+    margin-right: 10px;
+}
+
+.deposit-button {
     background-color: #089981;
     filter: drop-shadow(0 0 10px #0899816c);
     transition: .3s;
 }
 
-#withdraw-button{
+.withdraw-button {
     background-color: #F23645;
     filter: drop-shadow(0 0 10px #f236466c);
     transition: .3s;
 }
 
-#deposit-button:hover{
+.deposit-button:hover {
     background-color: #089981;
     color: black;
     filter: drop-shadow(0 0 18px #0dbb9e63);
     transition: .2s;
 }
 
-#withdraw-button:hover{
+.withdraw-button:hover {
     background-color: #F23645;
     color: black;
     filter: drop-shadow(0 0 18px #fa435250);
     transition: .2s;
 }
 
-#friends-table{
+#friends-table {
     border-collapse: collapse;
     margin-top: 35px;
+    margin-right: 15px;
+    width: 300px;
 }
 
-#left-title, #right-title{
+#left-title,
+#right-title {
     display: inline;
 }
 
-#left-title{
+#left-title {
     float: left;
     vertical-align: middle;
 }
 
-#right-title{
+#right-title {
     float: right;
     vertical-align: middle;
-    padding-right: 15px;
+    padding-right: 20px;
 }
 
-#friend-titles{
+#friend-titles {
     width: 100%;
     height: 50px;
     padding-bottom: 20px;
+}
+
+.friend-result-item td {
+    padding: 15px;
+}
+
+.friend-first-td {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.friend-last-td {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.friend-result-item {
+    transition: .3s;
+    background-color: transparent;
+    width: 200px;
+}
+
+.friend-result-item:hover {
+    background-color: #030303;
+    filter: drop-shadow(0 0 20px #3b3b3b2d);
+    transition: .2s;
+}
+
+.friend-result-item span {
+    float: right;
+}
+
+#logout, #logout:visited{
+    margin-left: auto;
+    margin-right: auto;
+    color: #757575;
+    margin-bottom: 20px;
+    transition: .3s;
+}
+
+#logout:hover{
+    color: #e7e7e7;
+    filter: drop-shadow(0 0 10px #e2e2e244);
+    transition: .2s;
 }
