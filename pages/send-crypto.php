@@ -101,9 +101,7 @@ if ($current_balance < $amount) {
     }
 }
 
-// Chiudi la connessione al database
 $conn->close();
 
-// Restituisci la risposta come JSON
 echo json_encode($response);
 ?>

@@ -1,69 +1,49 @@
 <?php
 ini_set('display_errors', 1);
 
-// Function to upload a PNG image to the database
-function uploadImage($filename, $cryptoName) {
-    // Database connection
-    $conn = connectDB();
+// Funzione per caricare un'immagine PNG nel database
+function uploadImage($filename, $nomeCriptovaluta) {
+    include '../pages/connect-to-db.php';
 
-    // Check file
+    // Verifica file
     if (!file_exists($filename)) {
-        echo "Error: File " . $filename . " not found.\n";
+        echo "Errore: File " . $filename . " non trovato.\n";
         return;
     }
 
-    // Load image
+    // Carica l'immagine
     $imageData = file_get_contents($filename);
 
-    // Update query
+    // Query di aggiornamento
     $sql = "UPDATE Crypto SET icon = ? WHERE coinCode = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(1, $imageData, PDO::PARAM_LOB);
-    $stmt->bindParam(2, $cryptoName);
+    $stmt->bindParam(2, $nomeCriptovaluta);
     
-    // Execute query
+    // Esegui la query
     if ($stmt->execute()) {
-        echo "Image for " . $cryptoName . " updated successfully.\n";
+        echo "Immagine per " . $nomeCriptovaluta . " aggiornata con successo.\n";
     } else {
-        echo "Error updating " . $cryptoName . ": " . $stmt->errorInfo()[2] . "\n";
+        echo "Errore nell'aggiornamento di " . $nomeCriptovaluta . ": " . $stmt->errorInfo()[2] . "\n";
     }
 
-    // Close statement and connection
+    // Chiudi statement e connessione
     $stmt->closeCursor();
     $conn = null;
 }
 
-// Function to connect to the database
-function connectDB() {
-    // Database credentials
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "dbRegolare";
-
-    // Create connection
-    try {
-        $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        echo "Database connection successful\n";
-        return $conn;
-    } catch(PDOException $e) {
-        die("Database connection failed: " . $e->getMessage());
-    }
-}
-
-// Images directory
+// Directory delle immagini
 $dir = "icons/";
 
-// List files
+// Elenco dei file
 $files = array_diff(scandir($dir), array('.', '..'));
 
-// Loop to upload images
+// Loop per caricare le immagini
 foreach ($files as $file) {
-    // Extract cryptocurrency name
-    $cryptoName = pathinfo($file, PATHINFO_FILENAME);
+    // Estrarre il nome della criptovaluta
+    $nomeCriptovaluta = pathinfo($file, PATHINFO_FILENAME);
 
-    // Upload image
-    uploadImage($dir . $file, $cryptoName);
+    // Carica l'immagine
+    uploadImage($dir . $file, $nomeCriptovaluta);
 }
 ?>

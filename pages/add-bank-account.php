@@ -8,10 +8,8 @@ $user = isset($_SESSION['login-info']) ? $_SESSION['login-info'] : $_COOKIE['log
 $sql = "INSERT INTO BankAccount(iban, username) VALUES(?, ?)";
 $stmt = $conn->prepare($sql);
 
-// Bind parameters
 $stmt->bind_param("ss", $iban, $user);
 
-// Execute the statement
 if ($stmt->execute()) {
     header("Location: account.php?message=Bank account connected successfully");
     exit();
@@ -20,7 +18,6 @@ if ($stmt->execute()) {
     exit();
 }
 
-// Close the prepared statements and connection
 $stmt->close();
 $conn->close();
 ?>
